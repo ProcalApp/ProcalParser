@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ee58ae36-4fb9-4f30-8a80-d112008b0a5f" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/nodes/ImUnitNode.kt" afterPath="$PROJECT_DIR$/src/nodes/ImUnitNode.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/nodes/Node.kt" afterPath="$PROJECT_DIR$/src/nodes/Node.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/nodes/NumberNode.kt" afterPath="$PROJECT_DIR$/src/nodes/NumberNode.kt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -16,7 +14,7 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="Node.kt" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Node.kt" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/nodes/Node.kt">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="210">
@@ -26,7 +24,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="NumberNode.kt" pinned="false" current-in-tab="false">
+      <file leaf-file-name="NumberNode.kt" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/nodes/NumberNode.kt">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="630">
@@ -74,6 +72,7 @@
         <option value="$PROJECT_DIR$/src/nodes/Node.kt" />
         <option value="$PROJECT_DIR$/src/nodes/NumberNode.kt" />
         <option value="$PROJECT_DIR$/src/nodes/ImUnitNode.kt" />
+        <option value="$PROJECT_DIR$/src/nodes/AdditionNode.kt" />
       </list>
     </option>
   </component>
@@ -85,7 +84,7 @@
   </component>
   <component name="ProjectFrameBounds">
     <option name="x" value="-8" />
-    <option name="width" value="976" />
+    <option name="width" value="968" />
     <option name="height" value="1050" />
   </component>
   <component name="ProjectLevelVcsManager">
@@ -248,15 +247,15 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1503737982822</updated>
-      <workItem from="1503737988113" duration="5804000" />
+      <workItem from="1503737988113" duration="7480000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="5804000" />
+    <option name="totallyTimeSpent" value="7480000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="0" width="976" height="1050" extended-state="0" />
+    <frame x="-8" y="0" width="968" height="1050" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
@@ -271,7 +270,7 @@
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2651357" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.26736844" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -317,10 +316,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/nodes/NumberNode.kt">
+    <entry file="file://$PROJECT_DIR$/src/nodes/AdditionNode.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="630">
-          <caret line="30" column="1" lean-forward="false" selection-start-line="30" selection-start-column="1" selection-end-line="30" selection-end-column="1" />
+        <state relative-caret-position="315">
+          <caret line="15" column="40" lean-forward="false" selection-start-line="15" selection-start-column="40" selection-end-line="15" selection-end-column="40" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/nodes/Node.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="10" column="0" lean-forward="true" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -333,10 +340,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/nodes/Node.kt">
+    <entry file="file://$PROJECT_DIR$/src/nodes/NumberNode.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="10" column="0" lean-forward="true" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
+        <state relative-caret-position="630">
+          <caret line="30" column="1" lean-forward="false" selection-start-line="30" selection-start-column="1" selection-end-line="30" selection-end-column="1" />
           <folding />
         </state>
       </provider>
