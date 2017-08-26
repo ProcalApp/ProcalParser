@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="net.sourceforge.streamsupport:streamsupport:1.5.6" type="repository">
+    <properties maven-id="net.sourceforge.streamsupport:streamsupport:1.5.6" />
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/net/sourceforge/streamsupport/streamsupport/1.5.6/streamsupport-1.5.6.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
