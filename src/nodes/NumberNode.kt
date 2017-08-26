@@ -1,25 +1,17 @@
 package nodes
 
-import java.math.BigDecimal
-
+import calc.BigCmplx
 /**
  * Number node
  *
  * Node storing a number
  */
 
-open class NumberNode(value: BigDecimal): Node {
-    protected var value: BigDecimal = BigDecimal(0)
+class NumberNode(value: BigCmplx): Node {
+    private var value: BigCmplx = BigCmplx()
     init {
         this.value = value
     }
-
-//    override fun equals(other: Any?): Boolean {
-//        if (this == other) return true
-//        if (other == null || this::class != other::class) return false
-//        val nn: NumberNode = other as NumberNode
-//        return value == nn.value
-//    }
 
     override fun evaluate(): Node{
         return this
