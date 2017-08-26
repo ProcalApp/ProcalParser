@@ -1,9 +1,7 @@
 package Nodes
 
-import java.math.BigDecimal
-
 /**
- * Nodes.Node class interface
+ * Node class interface
  */
 
 interface Node {
