@@ -8,19 +8,18 @@ import java.math.BigDecimal
  * Node storing a number
  */
 
-open class NumberNode: Node {
+open class NumberNode(value: BigDecimal): Node {
     protected var value: BigDecimal = BigDecimal(0)
-
-    constructor(value: BigDecimal) {
+    init {
         this.value = value
     }
 
-    override fun equals(other: Any?): Boolean {
-        if (this == other) return true
-        if (other == null || this::class != other::class) return false
-        val nn: NumberNode = other as NumberNode
-        return value == nn.value
-    }
+//    override fun equals(other: Any?): Boolean {
+//        if (this == other) return true
+//        if (other == null || this::class != other::class) return false
+//        val nn: NumberNode = other as NumberNode
+//        return value == nn.value
+//    }
 
     override fun evaluate(): Node{
         return this
