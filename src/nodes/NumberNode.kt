@@ -25,7 +25,7 @@ open class NumberNode(value: BigDecimal): Node {
         return this
     }
 
-    override fun toStr(): String {
+    override fun toString(): String {
         return value.toString()
     }
 }

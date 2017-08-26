@@ -6,5 +6,5 @@ package nodes
 
 interface Node {
     fun evaluate(): Node
-    fun toStr(): String
+    override fun toString(): String
 }

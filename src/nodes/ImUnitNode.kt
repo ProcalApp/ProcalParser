@@ -11,7 +11,7 @@ class ImUnitNode : Node {
         return this
     }
 
-    override fun toStr(): String {
+    override fun toString(): String {
         return "i"
     }
 }
