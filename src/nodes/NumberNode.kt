@@ -20,4 +20,5 @@ class NumberNode(value: BigCmplx): Node {
     override fun toString(): String {
         return value.toString()
     }
+
 }
