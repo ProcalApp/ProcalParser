@@ -9,8 +9,8 @@ package calc
  */
 
 class BigCmplx(real: BigFracPwr = BigFracPwr(), imag: BigFracPwr = BigFracPwr()) {
-    private var real: BigFracPwr = BigFracPwr()
-    private var imag: BigFracPwr = BigFracPwr()
+    private var real: BigFracPwr = BigFracPwr.ZERO
+    private var imag: BigFracPwr = BigFracPwr.ZERO
 
     init {
         this.real = real

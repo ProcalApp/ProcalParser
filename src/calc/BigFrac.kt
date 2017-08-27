@@ -15,8 +15,8 @@ import java.math.RoundingMode
  */
 class BigFrac(numer: BigInteger = BigInteger.ZERO,
               denom: BigInteger = BigInteger.ONE) {
-    private var numer: BigInteger = BigInteger.valueOf(0)
-    private var denom: BigInteger = BigInteger.valueOf(1)
+    private var numer: BigInteger = BigInteger.ZERO
+    private var denom: BigInteger = BigInteger.ONE
 
     init {
         if (numer.compareTo(BigInteger.ZERO) == 0 && denom.compareTo(BigInteger.ZERO) == 0) {

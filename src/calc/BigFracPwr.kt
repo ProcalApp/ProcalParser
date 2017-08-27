@@ -17,8 +17,8 @@ import java.math.RoundingMode
 class BigFracPwr(base: BigFrac = BigFrac(0, 1),
                  expn: BigFrac = BigFrac(1, 1),
                  isPos: Boolean = true) {
-    private var base = BigFrac(0, 1)
-    private var expn = BigFrac(1, 1)
+    private var base = BigFrac.ZERO
+    private var expn = BigFrac.ONE
     private var isPos = true
 
     init {

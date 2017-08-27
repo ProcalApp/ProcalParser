@@ -40,9 +40,9 @@ fun main(args: Array<String>) {
     var fracpwr1 = BigFracPwr(BigFrac(1, 2), BigFrac(1, 2))
     var fracpwr2 = BigFracPwr(BigFrac(1, 3), BigFrac(1, 2))
     assertEquals(BigFracPwr(BigFrac(1, 2), BigFrac(-1, 2)), fracpwr1.inverse())
-    assertTrue { fracpwr1.toDecimal().toString() == "0.70710678118654752440" }
-    assertTrue { (fracpwr1 + fracpwr2).toString() == "1.28445705037617328891" }
-    assertTrue { (fracpwr1 - fracpwr2).toString() == "0.12975651199692175989" }
+    assertEquals("0.70710678118654752440", fracpwr1.toDecimal().toString())
+    assertEquals("1.28445705037617328891", (fracpwr1 + fracpwr2).toString())
+    assertEquals("0.12975651199692175989", (fracpwr1 - fracpwr2).toString())
     assertEquals(BigFracPwr(2,1,1,1), BigFracPwr.ONE + BigFracPwr.ONE)
     assertEquals(BigFracPwr(BigFrac(1, 6), BigFrac(1, 2)), fracpwr1 * fracpwr2)
     assertEquals(BigFracPwr(BigFrac(3, 2), BigFrac(1, 2)), fracpwr1 / fracpwr2)
@@ -50,12 +50,13 @@ fun main(args: Array<String>) {
     assertTrue { BigFracPwr(BigFrac(0, 1), BigFrac(2, 5)) == BigFracPwr(BigFrac(0, 1), BigFrac(1, 1)) }
 
     var fracpwr3 = BigFracPwr(1, 2, 1, 2, false)
-    assertTrue { (fracpwr2 + fracpwr3).toString() == "-0.12975651199692175989" }
-    assertTrue { BigFracPwr(1,2,3,4,false).toString() == "-(( 1 / 2 ) ^ ( 3 / 4 ))" }
-    assertTrue {(BigFracPwr(2,1,1,1,false) + BigFracPwr.ONE).toString() == "-1" }
-    assertTrue { BigFracPwr(2, -4, 3, 1).toString() == "-1 / 8"}
-    assertTrue { BigFracPwr(2, -4, -3, 1).toString() == "-8"}
-    assertTrue { BigFracPwr(2, -4, -6, 3).toString() == "4"}
+    assertEquals("-0.12975651199692175989", (fracpwr2 + fracpwr3).toString())
+    assertEquals("-(( 1 / 2 ) ^ ( 3 / 4 ))", BigFracPwr(1,2,3,4,false).toString())
+    assertEquals("-1", (BigFracPwr(2,1,1,1,false) + BigFracPwr.ONE).toString() )
+    assertEquals("-1 / 8", BigFracPwr(2, -4, 3, 1).toString())
+    assertEquals("-8", BigFracPwr(2, -4, -3, 1).toString())
+    assertEquals("4", BigFracPwr(2, -4, -6, 3).toString())
+    
 //    assertTrue { BigFracPwr(1,4,1,2) == BigFracPwr(1,2,1,1)}
 
     /* The followings are tests of BigCmplx class */
