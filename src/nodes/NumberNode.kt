@@ -13,8 +13,8 @@ class NumberNode(value: BigCmplx): Node {
         this.value = value
     }
 
-    override fun evaluate(): Node{
-        return this
+    override fun evaluate(): BigCmplx{
+        return value
     }
 
     override fun toString(): String {

@@ -1,9 +1,14 @@
 package calc
 
+import org.nevec.rjm.BigDecimalMath
 import java.math.BigDecimal
+import java.math.BigInteger
+import org.nevec.rjm.BigIntegerMath
+import java.math.MathContext
+import java.math.RoundingMode
 
 /**
- * BigFraction Class
+ * BigFrac Class
  *
  * A class using BigDecimal to store a fraction unit,
  * in a form of
@@ -12,36 +17,41 @@ import java.math.BigDecimal
  * By convention the negative sign is kept in numerator
  */
 
-class BigFrac(numer: BigDecimal = BigDecimal.ZERO,
-               denom: BigDecimal = BigDecimal.ONE) {
-    private var numer: BigDecimal = BigDecimal(0)
-    private var denom: BigDecimal = BigDecimal(1)
+class BigFrac(numer: BigInteger = BigInteger.ZERO,
+               denom: BigInteger = BigInteger.ONE) {
+    private var numer: BigInteger = BigInteger.valueOf(0)
+    private var denom: BigInteger = BigInteger.valueOf(1)
 
     init {
-        if (this.denom.compareTo(BigDecimal.ZERO) < 0) {
+        if (denom.compareTo(BigInteger.ZERO) < 0) {
             this.numer = numer.negate()
             this.denom = denom.negate()
         } else {
             this.numer = numer
             this.denom = denom
         }
+        var cf: BigInteger = findHCF(this.numer, this.denom)
+        this.numer = this.numer.divide(cf)
+        this.denom = this.denom.divide(cf)
     }
 
+    constructor(numer: Long, denom: Long) : this(BigInteger.valueOf(numer), BigInteger.valueOf(denom))
+
+    //TODO: Construct BigFrac from BigDecimal
     constructor(dec: BigDecimal) : this() {
-        // TBC
     }
 
     fun simplify(): BigFrac {
-        var cf: BigDecimal = findHCF(this.numer, this.denom)
+        var cf: BigInteger = findHCF(this.numer, this.denom)
         return BigFrac(numer.divide(cf), denom.divide(cf))
     }
     fun negate(): BigFrac {
         return BigFrac(this.numer.negate(), this.denom)
     }
     fun inverse(): BigFrac {
-        if (this.numer.compareTo(BigDecimal.ZERO) > 0) {
+        if (this.numer.compareTo(BigInteger.ZERO) > 0) {
             return BigFrac(this.denom, this.numer)
-        } else if (this.numer.compareTo(BigDecimal.ZERO) < 0) {
+        } else if (this.numer.compareTo(BigInteger.ZERO) < 0) {
             return BigFrac(this.denom.negate(), this.numer.negate())
         } else {
             throw ArithmeticException("Cannot inverse 0 fraction")
@@ -50,7 +60,7 @@ class BigFrac(numer: BigDecimal = BigDecimal.ZERO,
 
     operator fun plus(rhs: BigFrac): BigFrac {
         return BigFrac(this.numer*rhs.denom + rhs.numer*this.denom,
-                this.denom*rhs.denom).simplify()
+                this.denom*rhs.denom)
     }
 
     operator fun minus(rhs: BigFrac): BigFrac {
@@ -58,23 +68,40 @@ class BigFrac(numer: BigDecimal = BigDecimal.ZERO,
     }
 
     operator fun times(rhs: BigFrac): BigFrac {
-        return BigFrac(this.numer*rhs.numer, this.denom*rhs.denom).simplify()
+        return BigFrac(this.numer*rhs.numer, this.denom*rhs.denom)
     }
 
     operator fun div(rhs: BigFrac): BigFrac {
         return this * rhs.inverse()
     }
 
+    //TODO: Find a way to throw exception if expn is too large to be Int
+    fun pow(expn: Int): BigFrac {
+        return BigFrac(this.numer.pow(expn), this.denom.pow(expn))
+    }
+
     fun toDecimal(): BigDecimal {
-        return this.numer / this.denom
+        return try {
+            BigDecimal(this.numer).divide(BigDecimal(this.denom))
+        } catch (e: ArithmeticException) {
+            BigDecimal(this.numer).divide(BigDecimal(this.denom), 20, RoundingMode.HALF_UP)
+        }
     }
 
     fun isInt(): Boolean {
-        return this.denom.compareTo(BigDecimal.ONE) == 0
+        return this.denom.compareTo(BigInteger.ONE) == 0
     }
 
     fun isZero(): Boolean {
-        return this.numer.compareTo(BigDecimal.ZERO) == 0 && this.denom.compareTo(BigDecimal.ZERO) == 0
+        return this.numer.compareTo(BigInteger.ZERO) == 0
+    }
+
+    fun isPos(): Boolean {
+        return this.numer.compareTo(BigInteger.ZERO) > 0
+    }
+
+    fun isNeg(): Boolean {
+        return this.numer.compareTo(BigInteger.ZERO) < 0
     }
 
     override fun toString(): String {
@@ -82,6 +109,22 @@ class BigFrac(numer: BigDecimal = BigDecimal.ZERO,
             true -> this.numer.toString()
             false -> this.numer.toString() + " / " + this.denom.toString()
         }
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other?.javaClass != javaClass) return false
+        other as BigFrac
+        if (this.numer == other.numer && this.denom == other.denom) return true
+        return false
+    }
+
+    fun getNumer(): BigInteger {
+        return this.numer
+    }
+
+    fun getDenom(): BigInteger {
+        return this.denom
     }
 
 }

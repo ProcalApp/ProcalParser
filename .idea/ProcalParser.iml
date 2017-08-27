@@ -11,5 +11,6 @@
     <orderEntry type="library" name="net.orfjackal.retrolambda:retrolambda:2.5.1" level="project" />
     <orderEntry type="library" name="net.sourceforge.streamsupport:streamsupport:1.5.6" level="project" />
     <orderEntry type="library" name="KotlinJavaRuntime" level="project" />
+    <orderEntry type="library" name="rjm" level="project" />
   </component>
 </module>

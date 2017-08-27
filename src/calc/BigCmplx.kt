@@ -46,7 +46,7 @@ class BigCmplx(real: BigFrac = BigFrac(), imag: BigFrac = BigFrac()) {
     }
 
     override fun toString(): String {
-        var temp: String = ""
+        var temp = ""
         temp += if (this.real.isInt()) {
             this.real.toString() + " + "
         } else if (!this.real.isZero()){
