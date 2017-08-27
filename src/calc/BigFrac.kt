@@ -1,10 +1,7 @@
 package calc
 
-import org.nevec.rjm.BigDecimalMath
 import java.math.BigDecimal
 import java.math.BigInteger
-import org.nevec.rjm.BigIntegerMath
-import java.math.MathContext
 import java.math.RoundingMode
 
 /**
@@ -18,12 +15,15 @@ import java.math.RoundingMode
  */
 
 class BigFrac(numer: BigInteger = BigInteger.ZERO,
-               denom: BigInteger = BigInteger.ONE) {
+              denom: BigInteger = BigInteger.ONE) {
     private var numer: BigInteger = BigInteger.valueOf(0)
     private var denom: BigInteger = BigInteger.valueOf(1)
 
     init {
-        if (denom.compareTo(BigInteger.ZERO) < 0) {
+        if (numer.compareTo(BigInteger.ZERO) == 0 && denom.compareTo(BigInteger.ZERO) == 0) {
+            throw ArithmeticException("Cannot 0 div 0")
+        }
+        if (denom < BigInteger.ZERO) {
             this.numer = numer.negate()
             this.denom = denom.negate()
         } else {
@@ -45,11 +45,13 @@ class BigFrac(numer: BigInteger = BigInteger.ZERO,
         var cf: BigInteger = findHCF(this.numer, this.denom)
         return BigFrac(numer.divide(cf), denom.divide(cf))
     }
+
     fun negate(): BigFrac {
         return BigFrac(this.numer.negate(), this.denom)
     }
+
     fun inverse(): BigFrac {
-        if (this.numer.compareTo(BigInteger.ZERO) > 0) {
+        if (this.numer > BigInteger.ZERO) {
             return BigFrac(this.denom, this.numer)
         } else if (this.numer.compareTo(BigInteger.ZERO) < 0) {
             return BigFrac(this.denom.negate(), this.numer.negate())
@@ -59,8 +61,8 @@ class BigFrac(numer: BigInteger = BigInteger.ZERO,
     }
 
     operator fun plus(rhs: BigFrac): BigFrac {
-        return BigFrac(this.numer*rhs.denom + rhs.numer*this.denom,
-                this.denom*rhs.denom)
+        return BigFrac(this.numer * rhs.denom + rhs.numer * this.denom,
+                this.denom * rhs.denom)
     }
 
     operator fun minus(rhs: BigFrac): BigFrac {
@@ -68,7 +70,7 @@ class BigFrac(numer: BigInteger = BigInteger.ZERO,
     }
 
     operator fun times(rhs: BigFrac): BigFrac {
-        return BigFrac(this.numer*rhs.numer, this.denom*rhs.denom)
+        return BigFrac(this.numer * rhs.numer, this.denom * rhs.denom)
     }
 
     operator fun div(rhs: BigFrac): BigFrac {
@@ -97,15 +99,15 @@ class BigFrac(numer: BigInteger = BigInteger.ZERO,
     }
 
     fun isPos(): Boolean {
-        return this.numer.compareTo(BigInteger.ZERO) > 0
+        return this.numer > BigInteger.ZERO
     }
 
     fun isNeg(): Boolean {
-        return this.numer.compareTo(BigInteger.ZERO) < 0
+        return this.numer < BigInteger.ZERO
     }
 
     override fun toString(): String {
-        return when (this.isInt()){
+        return when (this.isInt()) {
             true -> this.numer.toString()
             false -> this.numer.toString() + " / " + this.denom.toString()
         }

@@ -5,7 +5,7 @@ package calc
  *
  * A class using BigDecimal to store a complex unit,
  * in a form of
- * (a/b) + (c/d) i
+ * (a/b) + (c/d)i
  */
 
 class BigCmplx(real: BigFrac = BigFrac(), imag: BigFrac = BigFrac()) {
@@ -49,14 +49,16 @@ class BigCmplx(real: BigFrac = BigFrac(), imag: BigFrac = BigFrac()) {
         var temp = ""
         temp += if (this.real.isInt()) {
             this.real.toString() + " + "
-        } else if (!this.real.isZero()){
+        } else if (!this.real.isZero()) {
             "(" + this.real.toString() + ") + "
-        } else {}
+        } else {
+        }
         temp += if (this.imag.isInt()) {
             this.imag.toString() + "i"
-        } else if (!this.imag.isZero()){
+        } else if (!this.imag.isZero()) {
             "(" + this.imag.toString() + ")i"
-        } else {}
+        } else {
+        }
         return temp
     }
 
