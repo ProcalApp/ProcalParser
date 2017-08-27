@@ -1,16 +1,32 @@
 package nodes
 
 import calc.BigCmplx
+import calc.BigFrac
+import org.bychan.core.basic.Lexeme
+import org.bychan.core.basic.Parser
+import java.math.BigDecimal
+
 /**
  * Number node
  *
  * Node storing a number
  */
 
-class NumberNode(value: BigCmplx): Node {
+class NumberNode: Node {
     private var value: BigCmplx = BigCmplx()
+
     init {
-        this.value = value
+        this.value = BigCmplx()
+    }
+
+    constructor(value: BigDecimal) {
+        this.value = BigCmplx(BigFrac(value))
+    }
+
+    constructor(left: Node?, parser: Parser<Node>, lexeme: Lexeme<Node>) {
+        this.value = BigCmplx(BigFrac(BigDecimal(
+                if (lexeme.text().equals(".")) "0" else lexeme.text()
+        )))
     }
 
     override fun evaluate(): BigCmplx{
