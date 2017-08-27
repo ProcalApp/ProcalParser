@@ -56,7 +56,7 @@ fun main(args: Array<String>) {
     assertEquals("-1 / 8", BigFracPwr(2, -4, 3, 1).toString())
     assertEquals("-8", BigFracPwr(2, -4, -3, 1).toString())
     assertEquals("4", BigFracPwr(2, -4, -6, 3).toString())
-    
+
 //    assertTrue { BigFracPwr(1,4,1,2) == BigFracPwr(1,2,1,1)}
 
     /* The followings are tests of BigCmplx class */
