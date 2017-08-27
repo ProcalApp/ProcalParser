@@ -30,7 +30,7 @@ class BigFrac(numer: BigInteger = BigInteger.ZERO,
             this.numer = numer
             this.denom = denom
         }
-        var cf: BigInteger = findHCF(this.numer, this.denom)
+        var cf: BigInteger = Utility.findHCF(this.numer, this.denom)
         this.numer = this.numer.divide(cf)
         this.denom = this.denom.divide(cf)
     }
@@ -42,7 +42,7 @@ class BigFrac(numer: BigInteger = BigInteger.ZERO,
     }
 
     fun simplify(): BigFrac {
-        var cf: BigInteger = findHCF(this.numer, this.denom)
+        var cf: BigInteger = Utility.findHCF(this.numer, this.denom)
         return BigFrac(numer.divide(cf), denom.divide(cf))
     }
 
