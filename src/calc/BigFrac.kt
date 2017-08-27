@@ -13,7 +13,6 @@ import java.math.RoundingMode
  *
  * By convention the negative sign is kept in numerator
  */
-
 class BigFrac(numer: BigInteger = BigInteger.ZERO,
               denom: BigInteger = BigInteger.ONE) {
     private var numer: BigInteger = BigInteger.valueOf(0)
@@ -94,6 +93,13 @@ class BigFrac(numer: BigInteger = BigInteger.ZERO,
         return this.denom.compareTo(BigInteger.ONE) == 0
     }
 
+    fun isEvenInt(): Boolean {
+        return this.isInt() && (this.numer.mod(BigInteger.valueOf(2)).toInt() == 0)
+    }
+
+    fun isOddInt(): Boolean {
+        return this.isInt() && (this.numer.mod(BigInteger.valueOf(2)).toInt() == 1)
+    }
     fun isZero(): Boolean {
         return this.numer.compareTo(BigInteger.ZERO) == 0
     }
@@ -127,6 +133,11 @@ class BigFrac(numer: BigInteger = BigInteger.ZERO,
 
     fun getDenom(): BigInteger {
         return this.denom
+    }
+
+    companion object {
+        val ONE = BigFrac(1,1)
+        val ZERO = BigFrac(0,1)
     }
 
 }

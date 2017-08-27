@@ -5,12 +5,12 @@ package calc
  *
  * A class using BigDecimal to store a complex unit,
  * in a form of
- * (a/b) + (c/d)i
+ * (a/b)^(m/n) + (c/d)^(p/q)i
  */
 
-class BigCmplx(real: BigFrac = BigFrac(), imag: BigFrac = BigFrac()) {
-    private var real: BigFrac = BigFrac()
-    private var imag: BigFrac = BigFrac()
+class BigCmplx(real: BigFracPwr = BigFracPwr(), imag: BigFracPwr = BigFracPwr()) {
+    private var real: BigFracPwr = BigFracPwr()
+    private var imag: BigFracPwr = BigFracPwr()
 
     init {
         this.real = real
@@ -19,22 +19,6 @@ class BigCmplx(real: BigFrac = BigFrac(), imag: BigFrac = BigFrac()) {
 
     fun conjugate(): BigCmplx {
         return BigCmplx(this.real, this.imag.negate())
-    }
-
-    operator fun plus(rhs: BigCmplx): BigCmplx {
-        return BigCmplx(this.real + rhs.real, this.imag + rhs.imag)
-    }
-
-    operator fun minus(rhs: BigCmplx): BigCmplx {
-        return BigCmplx(this.real - rhs.real, this.imag - rhs.imag)
-    }
-
-    operator fun times(rhs: BigCmplx): BigCmplx {
-        return BigCmplx(this.real * rhs.real, this.imag * rhs.imag)
-    }
-
-    operator fun div(rhs: BigCmplx): BigCmplx {
-        return BigCmplx(this.real / rhs.real, this.imag / rhs.imag)
     }
 
     fun isReal(): Boolean {
