@@ -51,11 +51,12 @@ fun main(args: Array<String>) {
 
     var fracpwr3 = BigFracPwr(1, 2, 1, 2, false)
     assertEquals("-0.12975651199692175989", (fracpwr2 + fracpwr3).toString())
-    assertEquals("-(( 1 / 2 ) ^ ( 3 / 4 ))", BigFracPwr(1,2,3,4,false).toString())
+    assertEquals("-( 1 / 2 ) ^ ( 3 / 4 )", BigFracPwr(1,2,3,4,false).toString())
     assertEquals("-1", (BigFracPwr(2,1,1,1,false) + BigFracPwr.ONE).toString() )
     assertEquals("-1 / 8", BigFracPwr(2, -4, 3, 1).toString())
     assertEquals("-8", BigFracPwr(2, -4, -3, 1).toString())
     assertEquals("4", BigFracPwr(2, -4, -6, 3).toString())
+    assertEquals("( 1 / 2 ) ^ ( -3 / 2 )", BigFracPwr(BigFrac(2,4), BigFrac(-3,2)).toString())
 
 //    assertTrue { BigFracPwr(1,4,1,2) == BigFracPwr(1,2,1,1)}
 

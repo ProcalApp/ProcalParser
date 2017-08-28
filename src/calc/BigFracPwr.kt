@@ -47,6 +47,7 @@ class BigFracPwr(base: BigFrac = BigFrac(0, 1),
     }
 
     constructor(baseNumer: Long, baseDenom: Long, expnNumer: Long, expnDenom: Long, isPos: Boolean = true) : this(BigFrac(baseNumer, baseDenom), BigFrac(expnNumer, expnDenom), isPos)
+    constructor(dec: BigDecimal) : this(BigFrac(dec))
 
     fun toDecimal(): BigDecimal {
         return BigDecimalMath.pow(base.toDecimal().setScale(20, RoundingMode.HALF_UP), expn.toDecimal().setScale(20, RoundingMode.HALF_UP))
@@ -149,7 +150,7 @@ class BigFracPwr(base: BigFrac = BigFrac(0, 1),
 
     override fun toString(): String {
         return if (this.isPos) { "" } else { "-" } +
-                if (this.expn == BigFrac.ONE) { "" } else { "(" } +
+//                if (this.expn == BigFrac.ONE) { "" } else { "(" } +
                 if (!this.base.isInt() && this.expn != BigFrac.ONE) { "( "} else { "" } +
                 this.base.toString() +
                 if (!this.base.isInt() && this.expn != BigFrac.ONE) { " )" } else { "" } +
@@ -166,7 +167,7 @@ class BigFracPwr(base: BigFrac = BigFrac(0, 1),
                             } else {
                                 ""
                             }
-                } + if (this.isPos || this.expn == BigFrac.ONE) { "" } else { ")" }
+                }// + if (!this.isPos || this.expn == BigFrac.ONE) { "" } else { ")" }
     }
 
     //TODO: Find a way to simplify something like (1/4)^(1/2)

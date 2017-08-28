@@ -1,6 +1,7 @@
 package nodes
 
 import calc.BigCmplx
+import calc.BigFracPwr
 import calc.BigFrac
 import org.bychan.core.basic.Lexeme
 import org.bychan.core.basic.Parser
@@ -20,13 +21,13 @@ class NumberNode: Node {
     }
 
     constructor(value: BigDecimal) {
-        this.value = BigCmplx(BigFrac(value))
+        this.value = BigCmplx(BigFracPwr(BigFrac(value)))
     }
 
     constructor(left: Node?, parser: Parser<Node>, lexeme: Lexeme<Node>) {
-        this.value = BigCmplx(BigFrac(BigDecimal(
+        this.value = BigCmplx(BigFracPwr(BigFrac(BigDecimal(
                 if (lexeme.text().equals(".")) "0" else lexeme.text()
-        )))
+        ))))
     }
 
     override fun evaluate(): BigCmplx{

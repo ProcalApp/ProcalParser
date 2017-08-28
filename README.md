@@ -6,10 +6,14 @@ This is a parser for procal - an Android calculator app with high precision and 
 
 ## Authors
 
-* bryanchun
-* danvim
-* dipsywong98
+* [bryanchun]: https://github.com/bryanchun
+
+* [danvim]: https://github.com/danvim
+
+  dipsywong98
+
 * LLLLinda
+
 * mcreng
 
 ## Dependencies
