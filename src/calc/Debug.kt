@@ -16,7 +16,7 @@ fun main(args: Array<String>) {
     var frac3 = BigFrac(3, 6)
     assertEquals(BigFrac(1, 2), frac3)
     assertEquals(BigFrac(6, 12), frac3)
-    assertEquals(BigFrac(1, 2), frac3.simplify())
+//    assertEquals(BigFrac(1, 2), frac3.simplify())
     assertEquals(BigFrac(2, 1), frac3.inverse())
     assertEquals(true, BigFrac(1, -2).getNumer().compareTo(BigInteger.ZERO) < 0)
     assertEquals(BigFrac(-1, 2), frac3.negate())

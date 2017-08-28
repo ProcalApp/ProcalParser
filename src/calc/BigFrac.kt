@@ -40,7 +40,8 @@ class BigFrac(numer: BigInteger = BigInteger.ZERO,
     constructor(dec: BigDecimal) : this() {
     }
 
-    fun simplify(): BigFrac {
+    //should not be used since fractions are simplified in constructors
+    private fun simplify(): BigFrac {
         var cf: BigInteger = Utility.findHCF(this.numer, this.denom)
         return BigFrac(numer.divide(cf), denom.divide(cf))
     }
