@@ -2,185 +2,185 @@ package calc
 
 import org.nevec.rjm.BigDecimalMath
 import java.math.BigDecimal
+import java.math.BigInteger
 import java.math.RoundingMode
 
 /**
- * BigFracPwr Class
+ * @class BigFracPwr Class
  *
- * A class using BigDecimal to store a fraction power unit,
- * in a form of
- * (a/b) ^ (m/n)
- *
- * By convention the negative sign is kept in numerator
+ * @brief A class using BigDecimal to store a fraction power unit
+ * @form  (p/q) * (a/b) ^ (m/n)
  */
 
-class BigFracPwr(base: BigFrac = BigFrac(0, 1),
-                 expn: BigFrac = BigFrac(1, 1),
-                 isPos: Boolean = true) {
-    private var base = BigFrac.ZERO
-    private var expn = BigFrac.ONE
-    private var isPos = true
+/** @rule Default value 0 */
+class BigFracPwr(prop: BigFrac = BigFrac.ONE,
+                 base: BigFrac = BigFrac.ZERO,
+                 expn: BigFrac = BigFrac.ONE) {
 
+    private var prop: BigFrac
+    private var base: BigFrac
+    private var expn: BigFrac
+
+    //TODO: Roots simplification & rationalization
     init {
-        this.base = base
-        this.expn = expn
-        this.isPos = isPos
-        if (this.base.isZero() && this.expn.isZero()) {
-            throw ArithmeticException("Cannot have 0^0")
-        } else if (this.base.isZero()) {
-            this.expn = BigFrac.ONE // all to 0^1
-            this.isPos = true
-        } else if (this.expn.isZero()) {
+        /** @rule No 0^0 */
+        if (base == BigFrac.ZERO && expn == BigFrac.ZERO)
+            throw ArithmeticException("No 0^0")
+        /** @rule Uniform 0 definition: 1 * 0 ^ 1 */
+        else if (prop == BigFrac.ZERO || base == BigFrac.ZERO) {
+            this.prop = BigFrac.ONE
+            this.base = BigFrac.ZERO
             this.expn = BigFrac.ONE
-            this.base = BigFrac.ONE // all to 1^1
-        } else if (this.expn.isInt() && this.expn.isPos()) {
-            this.base = this.base.pow(this.expn.getNumer().toInt())
-            this.expn = BigFrac.ONE  // all to (a/b)^1
-        } else if (this.expn.isInt() && this.expn.isNeg()) {
-            this.base = this.base.inverse().pow(this.expn.negate().getNumer().toInt())
-            this.expn = BigFrac.ONE// all to (a/b)^1
         }
-        if (this.base.isNeg() && this.expn == BigFrac.ONE){
-            this.base = this.base.negate()
-            this.isPos = !this.isPos
+        /** @rule Uniform 1 definition: 1 * 1 ^ 1 */
+        else if (base == BigFrac.ONE) {
+            this.prop = BigFrac.ONE
+            this.base = prop
+            this.expn = BigFrac.ONE
+        }
+        /** @rule Simplification of integer expn: 1 * (a / b) ^ 1 */
+        else if (expn.isInt()) {
+            if (expn.isPos()) {
+                this.prop = BigFrac.ONE
+                this.base = prop * base.pow(expn.getInt())
+                this.expn = BigFrac.ONE
+            } else if (expn.isNeg()) {
+                this.prop = BigFrac.ONE
+                this.base = prop * base.pow(-expn.getInt())
+                this.expn = BigFrac.ONE
+            }
+            /** @rule Uniform integer definition: 1 * n ^ 1 */
+            else {
+                this.prop = BigFrac.ONE
+                this.base = prop
+                this.expn = BigFrac.ONE
+            }
+        }
+        /** @rule Simplification of negative expn: to positive indices */
+        else if (expn.isNeg()) {
+            this.prop = prop
+            this.base = base.inverse()
+            this.expn = expn.negate()
+        } else {
+            this.prop = prop
+            this.base = base
+            this.expn = expn
         }
     }
 
-    constructor(baseNumer: Long, baseDenom: Long, expnNumer: Long, expnDenom: Long, isPos: Boolean = true) : this(BigFrac(baseNumer, baseDenom), BigFrac(expnNumer, expnDenom), isPos)
-    constructor(dec: BigDecimal) : this(BigFrac(dec))
+    constructor(propNumer: Long, propDenom: Long, baseNumer: Long, baseDenom: Long, expnNumer: Long, expnDenom: Long) :
+            this(BigFrac(propNumer, propDenom), BigFrac(baseNumer, baseDenom), BigFrac(expnNumer, expnDenom))
 
     fun toDecimal(): BigDecimal {
-        return BigDecimalMath.pow(base.toDecimal().setScale(20, RoundingMode.HALF_UP), expn.toDecimal().setScale(20, RoundingMode.HALF_UP))
+        return (prop.toDecimal().setScale(25, RoundingMode.HALF_UP) *
+                BigDecimalMath.pow(base.toDecimal().setScale(25, RoundingMode.HALF_UP),
+                        expn.toDecimal().setScale(25, RoundingMode.HALF_UP))).setScale(25, RoundingMode.HALF_UP)
+    }
+
+    fun isZero(): Boolean {
+        return this.base == BigFrac.ZERO
+    }
+
+    fun isInt(): Boolean {
+        return this.base.isInt() && this.expn == BigFrac.ONE || this.isZero()
+    }
+
+    fun isFrac(): Boolean {
+        return this.prop == BigFrac.ONE && this.expn == BigFrac.ONE
+    }
+
+    fun negate(): BigFracPwr {
+        return BigFracPwr(this.prop.negate(), this.base, this.expn)
     }
 
     fun inverse(): BigFracPwr {
-        return BigFracPwr(this.base, this.expn.negate())
+        return BigFracPwr(this.prop.inverse(), this.base.inverse(), this.expn)
+    }
+
+    fun isPos(): Boolean {
+        return this.prop.getNumer() > BigInteger.ZERO
+    }
+
+    fun isNeg(): Boolean {
+        return this.prop.getNumer() < BigInteger.ZERO
     }
 
     operator fun plus(rhs: BigFracPwr): Any {
-        return if (this.isPos && rhs.isPos)
-            if (this.expn == BigFrac.ONE && rhs.expn == BigFrac.ONE) {
-                BigFracPwr(this.base+rhs.base, BigFrac.ONE)
-            } else this.toDecimal() + rhs.toDecimal()
-        else if (this.isPos && !rhs.isPos) {
-            this - rhs.negate()
-        } else if (!this.isPos && rhs.isPos) {
-            rhs - this.negate()
-        } else {
-            var temp: Any = this.negate() + rhs.negate()
-            if (temp is BigFracPwr) {
-                return temp.negate()
-            } else (temp as BigDecimal).negate()
-        }
+        /** @rule frac + frac -> frac */
+        return if (this.isFrac() && rhs.isFrac())
+            BigFracPwr(base = this.base + rhs.base)
+        /** @rule addition of like terms -> change prop */
+        else if (this.base == rhs.base && this.expn == rhs.expn)
+            BigFracPwr(this.prop + rhs.prop, this.base, this.expn)
+        /** @rule cast to BigDecimal if cannot be simplified */
+        else this.toDecimal() + rhs.toDecimal()
     }
 
     operator fun minus(rhs: BigFracPwr): Any {
-        return if (this.isPos && rhs.isPos)
-            if (this.expn == BigFrac.ONE && rhs.expn == BigFrac.ONE) {
-                BigFracPwr(this.base-rhs.base, BigFrac.ONE)
-            } else this.toDecimal() - rhs.toDecimal()
-        else if (this.isPos && !rhs.isPos) {
-            this + rhs.negate()
-        } else if (!this.isPos && rhs.isPos) {
-            var temp: Any = this.negate() + rhs.negate()
-            if (temp is BigFracPwr) {
-                return temp.negate()
-            } else (temp as BigDecimal).negate()
-        } else {
-            rhs - this
-        }
+        return this + rhs.negate()
     }
 
     operator fun times(rhs: BigFracPwr): Any {
-        var needNegate: Boolean = this.isPos xor rhs.isPos
-        return if (needNegate) {
-            if (this.base != rhs.base && this.expn != rhs.expn && this.expn != rhs.expn.negate()) {
-                (this.toDecimal() * rhs.toDecimal()).setScale(20, RoundingMode.HALF_UP)
-            } else if (this.base == rhs.base && this.expn == rhs.expn) {
-                BigFracPwr(this.base, this.expn + this.expn)
-            } else if (this.base == rhs.base) {
-                BigFracPwr(this.base, this.expn + rhs.expn)
-            } else if (this.expn == rhs.expn) {
-                BigFracPwr(this.base * rhs.base, this.expn)
-            } else {
-                BigFracPwr(this.base / rhs.base, this.expn)
-            }
-        } else {
-            if (this.base != rhs.base && this.expn != rhs.expn && this.expn != rhs.expn.negate()) {
-                (this.toDecimal() * rhs.toDecimal()).setScale(20, RoundingMode.HALF_UP)
-            } else if (this.base == rhs.base && this.expn == rhs.expn) {
-                BigFracPwr(this.base, this.expn + this.expn)
-            } else if (this.base == rhs.base) {
-                BigFracPwr(this.base, this.expn + rhs.expn)
-            } else if (this.expn == rhs.expn) {
-                BigFracPwr(this.base * rhs.base, this.expn)
-            } else {
-                BigFracPwr(this.base / rhs.base, this.expn)
-            }.negate()
-        }
+        /** @rule rhs expn == 1 -> multiply with prop */
+        return if (rhs.expn == BigFrac.ONE)
+            BigFracPwr(this.prop * rhs.base, this.base, this.expn)
+        /** @rule same base -> indices law */
+        else if (this.base == rhs.base)
+            BigFracPwr(this.prop * rhs.prop, this.base, this.expn + rhs.expn)
+        /** @rule inverse base -> indices law */
+        else if (this.base == rhs.base.inverse())
+            BigFracPwr(this.prop * rhs.prop, this.base, this.expn - rhs.expn)
+        /** @rule same expn -> group base */
+        else if (this.expn == rhs.expn)
+            BigFracPwr(this.prop * rhs.prop, this.base * rhs.base, this.expn)
+        /** @rule cast to BigDecimal if cannot be simplified */
+        else (this.toDecimal() * rhs.toDecimal()).setScale(25, RoundingMode.HALF_UP)
     }
 
     operator fun div(rhs: BigFracPwr): Any {
         return this * rhs.inverse()
     }
 
-    fun isFrac(): Boolean {
-        return this.expn == BigFrac.ONE
+    operator fun unaryMinus(): BigFracPwr {
+        return this.negate()
     }
 
-    fun isInt(): Boolean {
-        return this.expn == BigFrac.ONE && this.base.isInt()
+    operator fun compareTo(other: BigFracPwr): Int {
+        if (this == other) return 0
+        val temp = this - other
+        if (temp is BigDecimal) {
+            return temp.compareTo(BigDecimal.ZERO)
+        } else if (temp is BigFracPwr) {
+            return if (temp.isPos()) 1 else 0
+        } else throw Exception("Don't know what happened") //should not be invoked
     }
 
-    fun isZero(): Boolean {
-        return this.base.isZero()
-    }
-
-    fun isNeg(): Boolean {
-        return !this.isPos
-    }
-
-    fun isPos(): Boolean {
-        return this.isPos
-    }
-
-    fun negate(): BigFracPwr {
-        return BigFracPwr(this.base, this.expn, !this.isPos)
-    }
 
     override fun toString(): String {
-        return if (this.isPos) { "" } else { "-" } +
-//                if (this.expn == BigFrac.ONE) { "" } else { "(" } +
-                if (!this.base.isInt() && this.expn != BigFrac.ONE) { "( "} else { "" } +
-                this.base.toString() +
-                if (!this.base.isInt() && this.expn != BigFrac.ONE) { " )" } else { "" } +
-                if (this.expn == BigFrac.ONE) { "" } else {
-                    " ^ " +
-                            if (!this.expn.isInt()) {
-                                "( "
-                            } else {
-                                ""
-                            } +
-                            this.expn.toString() +
-                            if (!this.expn.isInt()) {
-                                " )"
-                            } else {
-                                ""
-                            }
-                }// + if (!this.isPos || this.expn == BigFrac.ONE) { "" } else { ")" }
+        return if (this.isFrac()) {
+            this.base.toString()
+        } else if (this.prop == BigFrac.ONE) {
+            this.base.toString() + " ^ " + this.expn.toString()
+        } else this.prop.toString() + " * " + this.base.toString() + " ^ " + this.expn.toString()
     }
 
-    //TODO: Find a way to simplify something like (1/4)^(1/2)
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other?.javaClass != javaClass) return false
         other as BigFracPwr
-        if (this.base == other.base && this.expn == other.expn) return true
+        if (this.prop == other.prop && this.base == other.base && this.expn == other.expn) return true
         return false
     }
 
-    companion object {
-        val ONE = BigFracPwr(1,1,0,1)
-        val ZERO = BigFracPwr(0,1,1,1)
+    override fun hashCode(): Int {
+        return this.prop.hashCode() * 31 * 31 +
+                this.base.hashCode() * 31 +
+                this.expn.hashCode()
     }
+
+    companion object {
+        val ONE = BigFracPwr(base = BigFrac.ONE)
+        val ZERO = BigFracPwr()
+    }
+
 }

@@ -1,8 +1,8 @@
 package nodes
 
 import calc.BigCmplx
-import calc.BigFracPwr
 import calc.BigFrac
+import calc.BigFracPwr
 import org.bychan.core.basic.Lexeme
 import org.bychan.core.basic.Parser
 import java.math.BigDecimal
