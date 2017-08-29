@@ -6,6 +6,10 @@ import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 fun main(args: Array<String>) {
+    /* The followings are tests of Utility object */
+    assertEquals(false, Utility.isInt(BigInteger("2312323442343242341")))
+    assertEquals(true, Utility.isInt(BigInteger("2")))
+
     /* The followings are tests of BigFrac class */
     val frac1 = BigFrac(1, 2)
     val frac2 = BigFrac(1, 3)
@@ -111,4 +115,5 @@ fun main(args: Array<String>) {
 
     /* The followings are tests of BigCmplx class */
     println(BigCmplx(BigFracPwr(2,1,3,4,2,3), BigFracPwr(1,4,2,5,2,3)))
+
 }

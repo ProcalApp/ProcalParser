@@ -31,7 +31,7 @@ class BigFrac(numer: BigInteger = BigInteger.ZERO,
             this.denom = denom
         }
         /** @rule Always in simplest form */
-        var cf: BigInteger = Utility.findHCF(this.numer, this.denom)
+        val cf: BigInteger = Utility.findHCF(this.numer, this.denom)
         this.numer = this.numer.divide(cf)
         this.denom = this.denom.divide(cf)
     }
@@ -84,7 +84,6 @@ class BigFrac(numer: BigInteger = BigInteger.ZERO,
         return this.negate()
     }
 
-    //TODO: Find a way to throw exception if expn is too large to be Int
     fun pow(expn: Int): BigFrac {
         return BigFrac(this.numer.pow(expn), this.denom.pow(expn))
     }
@@ -97,9 +96,8 @@ class BigFrac(numer: BigInteger = BigInteger.ZERO,
         }
     }
 
-    //TODO: Need to check if it is in range of Int
     fun isInt(): Boolean {
-        return this.denom.compareTo(BigInteger.ONE) == 0
+        return this.denom.compareTo(BigInteger.ONE) == 0 && Utility.isInt(this.numer)
     }
 
     fun isEvenInt(): Boolean {
