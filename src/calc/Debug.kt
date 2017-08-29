@@ -107,5 +107,5 @@ fun main(args: Array<String>) {
     println(BigFracPwr(base = frac1, expn = frac2) / BigFracPwr(base = frac2, expn = frac1))
 
     /* The followings are tests of BigCmplx class */
-
+    println(BigCmplx(BigFracPwr(2,1,3,4,2,3), BigFracPwr(1,4,2,5,2,3)))
 }

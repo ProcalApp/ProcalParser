@@ -8,14 +8,9 @@ package calc
  * (a/b)^(m/n) + (c/d)^(p/q)i
  */
 
-class BigCmplx(real: BigFracPwr = BigFracPwr(), imag: BigFracPwr = BigFracPwr()) {
-    private var real: BigFracPwr = BigFracPwr.ZERO
-    private var imag: BigFracPwr = BigFracPwr.ZERO
-
-    init {
-        this.real = real
-        this.imag = imag
-    }
+class BigCmplx(real: BigFracPwr = BigFracPwr.ZERO, imag: BigFracPwr = BigFracPwr.ZERO) {
+    private var real: BigFracPwr = real
+    private var imag: BigFracPwr = imag
 
     fun conjugate(): BigCmplx {
         return BigCmplx(this.real, this.imag.negate())
@@ -30,20 +25,8 @@ class BigCmplx(real: BigFracPwr = BigFracPwr(), imag: BigFracPwr = BigFracPwr())
     }
 
     override fun toString(): String {
-        var temp = ""
-        temp += if (this.real.isInt()) {
-            this.real.toString() + " + "
-        } else if (!this.real.isZero()) {
-            "(" + this.real.toString() + ") + "
-        } else {
-        }
-        temp += if (this.imag.isInt()) {
-            this.imag.toString() + "i"
-        } else if (!this.imag.isZero()) {
-            "(" + this.imag.toString() + ")i"
-        } else {
-        }
-        return temp
+        return if (!this.real.isZero()) this.real.toString() else {""} +
+                if  (!this.imag.isZero()) " + " + this.imag.toString() + " i" else ""
     }
 
 }
