@@ -38,6 +38,9 @@ fun main(args: Array<String>) {
 
     assertEquals("-( 1 / 2 )", BigFrac(2, -4).toString())
 
+    assertEquals("( 4507624986057943639 / 5340232221128654848 )", BigFrac(dec = BigDecimal("2.12345678912398732114")).toString())
+    assertEquals("( 25 / 9 )", BigFrac(dec = BigDecimal("2.777777777777777777777")).toString())
+
     /** @test BigFracPwr */
     /** @rule No 0^0 */
     try {

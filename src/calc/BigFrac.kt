@@ -37,10 +37,11 @@ class BigFrac(numer: BigInteger = BigInteger.ZERO,
     }
 
     constructor(numer: Long, denom: Long) : this(BigInteger.valueOf(numer), BigInteger.valueOf(denom))
+    // Copy constructor
+    constructor(copy: BigFrac) : this(copy.numer, copy.denom)
 
-    //TODO: Construct BigFrac from BigDecimal
-    constructor(dec: BigDecimal) : this() {
-    }
+    constructor(dec: BigDecimal) : this(DecToFrac.dectofrac(dec))
+
 
     //should not be used since fractions are simplified in constructors
     private fun simplify(): BigFrac {
@@ -157,7 +158,7 @@ class BigFrac(numer: BigInteger = BigInteger.ZERO,
         return if (this.isInt()) {
             this.numer.toInt()
         } else {
-            throw ArithmeticException("Trying to invoke getInt() for non-Int BigFrac")
+            throw ArithmeticException("Trying to invoke getInt() for non-Int BigFrac") // should not be invoked
         }
     }
 
