@@ -1,5 +1,6 @@
 package calc
 
+import exceptions.ZeroPowerZeroException
 import java.math.BigDecimal
 import java.math.BigInteger
 import kotlin.test.assertEquals
@@ -49,8 +50,8 @@ fun main(args: Array<String>) {
     /** @rule No 0^0 */
     try {
         BigFracPwr(base = BigFrac.ZERO, expn = BigFrac.ZERO)
-    } catch (e: ArithmeticException) {
-        assertEquals("java.lang.ArithmeticException: No 0^0", e.toString())
+    } catch (e: ZeroPowerZeroException) {
+        assertEquals("exceptions.ZeroPowerZeroException: Cannot have zero powered by zero.", e.toString())
     }
     /** @rule Uniform 0 definition: 1 * 0 ^ 1 */
     assertEquals("0", BigFracPwr(BigFrac(5, 1)).toString())

@@ -3,6 +3,7 @@ package calc
 import java.math.BigDecimal
 import java.math.BigInteger
 import java.math.RoundingMode
+import exceptions.*
 
 /**
  * @class BigFrac Class
@@ -20,7 +21,7 @@ class BigFrac(numer: BigInteger = BigInteger.ZERO,
     init {
         /** @rule No n/0 */
         if (denom.compareTo(BigInteger.ZERO) == 0) {
-            throw ArithmeticException("Cannot divide by zero")
+            throw DivideByZeroException()
         }
         /** @rule Negative sign always kept in numerator */
         if (denom < BigInteger.ZERO) {
@@ -59,7 +60,7 @@ class BigFrac(numer: BigInteger = BigInteger.ZERO,
         } else if (this.numer.compareTo(BigInteger.ZERO) < 0) {
             return BigFrac(this.denom.negate(), this.numer.negate())
         } else {
-            throw ArithmeticException("Cannot inverse 0 fraction")
+            throw DivideByZeroException()
         }
     }
 
@@ -91,7 +92,7 @@ class BigFrac(numer: BigInteger = BigInteger.ZERO,
     fun toDecimal(): BigDecimal {
         return try {
             BigDecimal(this.numer).divide(BigDecimal(this.denom))
-        } catch (e: ArithmeticException) {
+        } catch (e: ArithmeticException) { // for un-ending decimals
             BigDecimal(this.numer).divide(BigDecimal(this.denom), 25, RoundingMode.HALF_UP)
         }
     }
@@ -156,7 +157,7 @@ class BigFrac(numer: BigInteger = BigInteger.ZERO,
         return if (this.isInt()) {
             this.numer.toInt()
         } else {
-            throw ArithmeticException("Trying to invoke getInt() for non-Int BigFrac") // should not be invoked
+            throw IntegerTooLargeException()
         }
     }
 

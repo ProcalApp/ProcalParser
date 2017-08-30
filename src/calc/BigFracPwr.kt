@@ -1,5 +1,7 @@
 package calc
 
+import exceptions.InvalidException
+import exceptions.ZeroPowerZeroException
 import org.nevec.rjm.BigDecimalMath
 import java.math.BigDecimal
 import java.math.BigInteger
@@ -25,7 +27,7 @@ class BigFracPwr(prop: BigFrac = BigFrac.ONE,
     init {
         /** @rule No 0^0 */
         if (base == BigFrac.ZERO && expn == BigFrac.ZERO)
-            throw ArithmeticException("No 0^0")
+            throw ZeroPowerZeroException()
         /** @rule Uniform 0 definition: 1 * 0 ^ 1 */
         else if (prop == BigFrac.ZERO || base == BigFrac.ZERO) {
             this.prop = BigFrac.ONE
@@ -152,7 +154,7 @@ class BigFracPwr(prop: BigFrac = BigFrac.ONE,
             return temp.compareTo(BigDecimal.ZERO)
         } else if (temp is BigFracPwr) {
             return if (temp.isPos()) 1 else 0
-        } else throw Exception("Don't know what happened") //should not be invoked
+        } else throw InvalidException() //should not be invoked
     }
 
 
