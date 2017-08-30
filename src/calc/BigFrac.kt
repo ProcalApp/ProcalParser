@@ -18,9 +18,9 @@ class BigFrac(numer: BigInteger = BigInteger.ZERO,
     private var denom: BigInteger
 
     init {
-        /** @rule No 0/0 */
-        if (numer.compareTo(BigInteger.ZERO) == 0 && denom.compareTo(BigInteger.ZERO) == 0) {
-            throw ArithmeticException("Cannot 0 div 0")
+        /** @rule No n/0 */
+        if (denom.compareTo(BigInteger.ZERO) == 0) {
+            throw ArithmeticException("Cannot divide by zero")
         }
         /** @rule Negative sign always kept in numerator */
         if (denom < BigInteger.ZERO) {
