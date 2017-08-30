@@ -6,7 +6,7 @@ import org.bychan.core.basic.Lexeme
 import org.bychan.core.basic.Parser
 
 class StatementNode(left: Node?, parser: Parser<Node>, lexeme: Lexeme<Node>): Node {
-    protected val left: Node
+    protected val left: Node = left!!
     protected val right: Node?
     protected val isLast: Boolean
 
@@ -21,13 +21,12 @@ class StatementNode(left: Node?, parser: Parser<Node>, lexeme: Lexeme<Node>): No
 
     override fun toString(): String {
         if (!isLast)
-            return left.toString() + ":\n" + right.toString()
+            return "$left:\n$right"
         else
-            return left.toString() + ":"
+            return "$left:"
     }
 
     init {
-        this.left = left!!
         isLast = ProcalParserHelper.nextIsStatementEnd(parser)
         if (!isLast)
             this.right = parser.expr(left, lexeme.lbp())

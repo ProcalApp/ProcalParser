@@ -16,12 +16,8 @@ import java.math.BigDecimal
 class NumberNode: Node {
     private var value: BigCmplx = BigCmplx()
 
-    init {
-        this.value = BigCmplx()
-    }
-
-    constructor(value: BigDecimal) {
-        this.value = BigCmplx(BigFracPwr(BigFrac(value)))
+    constructor(value: BigCmplx) {
+        this.value = value
     }
 
     constructor(left: Node?, parser: Parser<Node>, lexeme: Lexeme<Node>) {

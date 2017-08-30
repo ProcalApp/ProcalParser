@@ -1,12 +1,10 @@
 import calc.BigCmplx
+import exceptions.MissingSeparatorException
 import org.bychan.core.dynamic.Language
 import org.bychan.core.dynamic.LanguageBuilder
-import org.bychan.core.dynamic.TokenDefinitionBuilder
-import com.sun.org.apache.xerces.internal.dom.DOMNormalizer.abort
 import nodes.*
 import org.bychan.core.basic.EndToken
 import org.bychan.core.basic.Parser
-import kotlin.reflect.jvm.internal.impl.load.kotlin.JvmType
 
 
 object ProcalParserHelper {
@@ -32,36 +30,75 @@ object ProcalParserHelper {
 
     }
 
+    /**
+     * Tokens defined in the Procal language
+     */
     object Tokens {
-        val loopFor: TokenDefinitionBuilder<Node> = b.newToken()
-                .named("for").matchesString("For")
+
+        //# Recursions
+
+        //  For Loop
+
+        val loopFor = b.newToken().named("for")
+                .matchesString("For")
                 .nud{ left, parser, lexeme -> ForLoopNode(left, parser, lexeme)}
 
-        val loopTo: TokenDefinitionBuilder<Node> = b.newToken()
-                .named("to").matchesString("To")
+        val loopTo = b.newToken().named("to")
+                .matchesString("To")
 
-        val loopStep: TokenDefinitionBuilder<Node> = b.newToken()
-                .named("step").matchesString("Step")
+        val loopStep = b.newToken().named("step")
+                .matchesString("Step")
 
-        val loopNext: TokenDefinitionBuilder<Node> = b.newToken()
-                .named("next").matchesString("Next")
+        val loopNext = b.newToken().named("next")
+                .matchesString("Next")
 
-        val colon: TokenDefinitionBuilder<Node> = b.newToken()
+
+        //  While Loop
+
+        val loopWhile = b.newToken().named("while")
+                .matchesString("While")
+                .nud(::WhileLoopNode)
+
+        val loopWhileEnd = b.newToken().named("whileEnd")
+                .matchesString("WhileEnd")
+
+
+        //  Recursion Utilities
+
+        val loopBreak = b.newToken().named("break")
+                .matchesString("Break")
+                .nud(::BreakNode)
+
+
+        //  Memory
+
+        val mPlus = b.newToken().named("M+")
+                .matchesString("M+")
+                .led(::MPlusNode)
+
+        val mMinus = b.newToken().named("M-")
+                .matchesString("M-")
+                .led(::MMinusNode)
+
+        val colon = b.newToken().named("colon")
                 .matchesString(":")
-                .led{ left, parser, lexeme -> StatementNode(left, parser, lexeme)}
+                .led(::StatementNode)
 
-        val variable: TokenDefinitionBuilder<Node> = b.newToken()
-                .named("variable").matchesPattern("\\$[A-Za-z_][A-Za-z_0-9]*")
-                .nud{ left, parser, lexeme -> VariableNode(left, parser, lexeme)}
+        val answer = b.newToken().named("answer")
+                .matchesString("Ans")
+                .nud(::AnswerNode)
 
-        val number: TokenDefinitionBuilder<Node> = b.newToken()
-                .named("number").matchesPattern("\\d+\\.?\\d+|\\d+\\.|\\.\\d+|\\.|\\d+")
-                .nud{ left, parser, lexeme -> NumberNode(left, parser, lexeme)}
+        val variable = b.newToken().named("variable")
+                .matchesPattern("\\$[A-Za-z_][A-Za-z_0-9]*")
+                .nud(::VariableNode)
 
-        val set: TokenDefinitionBuilder<Node> = b.newToken()
-                .named("set").matchesString("->")
-                .led { left, parser, lexeme -> AssignmentNode(left, parser, lexeme)
-                }
+        val number = b.newToken().named("number")
+                .matchesPattern("\\d+\\.?\\d+|\\d+\\.|\\.\\d+|\\.|\\d+")
+                .nud(::NumberNode)
+
+        val set = b.newToken().named("set")
+                .matchesString("->")
+                .led(::AssignmentNode)
 
     }
 
@@ -81,7 +118,7 @@ object ProcalParserHelper {
 
     fun nextMustBeSeparator(parser: Parser<Node>, nodeName: String) {
         if (!nextIsStatementEnd(parser))
-            parser.abort<Any>("You must end '" + nodeName + "' with 'colon' or a 'display' if the statement is not the end of a code block.");
+            throw MissingSeparatorException("You must end '$nodeName' with 'colon' or 'display' if statement is not at end of code block.");
     }
 
     fun indent(s: String): String {

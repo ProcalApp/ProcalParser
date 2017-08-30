@@ -1,13 +1,22 @@
 package exceptions
 
-/** @brief Invoked as division by zero operatio is attempted */
-class DivideByZeroException(override var message: String = "Cannot divide by zero."): Exception()
+/** Generic parsing exception thrown during Procal language parsing*/
+open class ParsingException(override var message: String = "Parsing failed."): RuntimeException()
 
-/** @brief Invoked as certain int-only operations such as .pow() takes in non-int value */
-class IntegerTooLargeException(override var message: String = "Certain operations do not support large values."): Exception()
+/** Missing statement conclusion at end of scope or statement*/
+class MissingSeparatorException(override var message: String = "You must end statement with 'colon' or 'display' if statement is not at end of code block."): ParsingException()
 
-/** @brief Invoked as zero powered by zero is attempted */
-class ZeroPowerZeroException(override var message: String = "Cannot have zero powered by zero."): Exception()
+/** Breaking from loop*/
+class BreakException(override var message: String = "Breaking from loop."): RuntimeException()
 
-/** @brief Should never be invoked, should only be used in cases where else clause is mandatory yet there is no chance reaching there */
-class InvalidException(override var message: String = "Should not have reached this state. "): Exception()
+/** Invoked as division by zero operation is attempted */
+class DivideByZeroException(override var message: String = "Cannot divide by zero."): ArithmeticException()
+
+/** Invoked as certain int-only operations such as .pow() takes in non-int value */
+class IntegerTooLargeException(override var message: String = "Certain operations do not support large values."): ArithmeticException()
+
+/** Invoked as zero powered by zero is attempted */
+class ZeroPowerZeroException(override var message: String = "Cannot have zero powered by zero."): ArithmeticException()
+
+/** Should never be invoked, should only be used in cases where else clause is mandatory yet there is no chance reaching there */
+class InvalidException(override var message: String = "Should not have reached this state. "): RuntimeException()

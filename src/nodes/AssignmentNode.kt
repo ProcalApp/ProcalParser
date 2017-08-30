@@ -6,18 +6,19 @@ import calc.BigCmplx
 import org.bychan.core.basic.Lexeme
 import org.bychan.core.basic.Parser
 
-class AssignmentNode(private val left: Node?, parser: Parser<Node>, lexeme: Lexeme<Node>) : Node {
+class AssignmentNode(left: Node?, parser: Parser<Node>, lexeme: Lexeme<Node>) : Node {
+    private val left: Node = left!!
     private val right: Node
     private val variableName: String
 
     override fun evaluate(): BigCmplx {
-        val leftResult: BigCmplx = left!!.evaluate()
+        val leftResult: BigCmplx = left.evaluate()
         VariableMap.setValue(variableName, leftResult)
         return leftResult
     }
 
     override fun toString(): String {
-        return left.toString() + "->$" + variableName
+        return "$left->$$variableName"
     }
 
     init {

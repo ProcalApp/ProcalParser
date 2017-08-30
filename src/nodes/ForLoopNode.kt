@@ -6,9 +6,6 @@ import ProcalParserHelper.nextMustBeSeparator
 import calc.BigCmplx
 import org.bychan.core.basic.Lexeme
 import org.bychan.core.basic.Parser
-import com.sun.org.apache.xerces.internal.impl.xs.opti.SchemaDOM.indent
-
-
 
 class ForLoopNode(left: Node?, parser: Parser<Node>, lexeme: Lexeme<Node>) : Node {
 
@@ -29,10 +26,9 @@ class ForLoopNode(left: Node?, parser: Parser<Node>, lexeme: Lexeme<Node>) : Nod
     }
 
     override fun toString(): String {
-        return "For " + initNode.toString() + " -> " + controlVariable.toString() +
-                " To " + toNode.toString() +
-                (if (stepNode == null) "" else " Step " + stepNode.toString()) + ":\n" +
-                ProcalParserHelper.indent(doNode.toString()) +
+        return "For $initNode -> $controlVariable To $toNode" +
+                (if (stepNode == null) ":" else " Step $stepNode:") +
+                "\n${ProcalParserHelper.indent(doNode.toString())}" +
                 "\nNext"
     }
 
@@ -51,9 +47,9 @@ class ForLoopNode(left: Node?, parser: Parser<Node>, lexeme: Lexeme<Node>) : Nod
         } else
             null
 
-        parser.swallow("colon")
+        val colon = parser.swallow("colon")
 
-        doNode = parser.expr(left, lexeme.lbp())
+        doNode = parser.expr(left, colon.lbp())
 
         parser.swallow("next")
         nextMustBeSeparator(parser, "next")
