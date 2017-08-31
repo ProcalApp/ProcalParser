@@ -147,7 +147,7 @@ object ProcalParserHelper {
                 .nud(::VariableNode)
 
         val number = b.newToken().named("number")
-                .matchesPattern("\\d+\\.?\\d+|\\d+\\.|\\.\\d+|\\.|\\d+")
+                .matchesPattern("(?:\\d+)?\\.(?:\\d+)?|\\d+")
                 .nud(::NumberNode)
 
         val set = b.newToken().named("set")
