@@ -4,6 +4,7 @@ import org.bychan.core.dynamic.Language
 import org.bychan.core.dynamic.LanguageBuilder
 import nodes.*
 import org.bychan.core.basic.EndToken
+import org.bychan.core.basic.Lexeme
 import org.bychan.core.basic.Parser
 
 
@@ -70,7 +71,8 @@ object ProcalParserHelper {
                 .nud(::BreakNode)
 
 
-        //  Memory
+
+        //# Memory
 
         val mPlus = b.newToken().named("M+")
                 .matchesString("M+")
@@ -80,9 +82,61 @@ object ProcalParserHelper {
                 .matchesString("M-")
                 .led(::MMinusNode)
 
+
+
+        //# Conditionals
+
+        //  Shorthand If
+
+        val shorthandIf = b.newToken().named("shorthandIf")
+                .matchesString("=>")
+                .led(::ShorthandIfNode)
+
         val colon = b.newToken().named("colon")
                 .matchesString(":")
-                .led(::StatementNode)
+                .led { left, parser, lexeme -> StatementNode(left, parser, lexeme) }
+
+
+        //# Arithmetic Operators
+
+        val plus = b.newToken().named("plus")
+                .matchesString("+")
+                .nud{ left, parser, lexeme -> parser.expr(left, lexeme.lbp())} //Ignore positive sign
+                .led(::AdditionNode)
+
+        val minus = b.newToken().named("minus")
+                .matchesString("-")
+                .nud(::NegationNode)
+                .led(::SubtractionNode)
+
+        val exponential = b.newToken().named("exponential")
+                .matchesPattern("E-*\\d+")
+                .nud(::ExponentialNode)
+
+        val multiply = b.newToken().named("multiply")
+                .matchesString("*")
+                .led(::MultiplicationNode)
+
+        val hiddenMultiply = b.newToken().named("hiddenMultiply")
+                .matchesString("`")
+                .led(::HiddenMultiplicationNode)
+
+        val divide = b.newToken().named("divide")
+                .matchesString("/")
+                .led(::DivisionNode)
+
+        val power = b.newToken().named("power")
+                .matchesString("^")
+                .led(::PowerNode)
+
+        val tenPower = b.newToken().named("10^")
+                .matchesString("^")
+                .nud(::TenPowerNode)
+                .led { left, parser, lexeme -> HiddenMultiplicationNode(left, TenPowerNode(left, parser, lexeme))}
+
+
+
+        //# Value Representations
 
         val answer = b.newToken().named("answer")
                 .matchesString("Ans")
