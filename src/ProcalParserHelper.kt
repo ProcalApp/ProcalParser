@@ -4,7 +4,6 @@ import org.bychan.core.dynamic.Language
 import org.bychan.core.dynamic.LanguageBuilder
 import nodes.*
 import org.bychan.core.basic.EndToken
-import org.bychan.core.basic.Lexeme
 import org.bychan.core.basic.Parser
 
 
@@ -86,6 +85,8 @@ object ProcalParserHelper {
 
         //# Conditionals
 
+        //  If-Statement
+
         //  Shorthand If
 
         val shorthandIf = b.newToken().named("shorthandIf")
@@ -95,6 +96,7 @@ object ProcalParserHelper {
         val colon = b.newToken().named("colon")
                 .matchesString(":")
                 .led { left, parser, lexeme -> StatementNode(left, parser, lexeme) }
+
 
 
         //# Arithmetic Operators
@@ -108,6 +110,10 @@ object ProcalParserHelper {
                 .matchesString("-")
                 .nud(::NegationNode)
                 .led(::SubtractionNode)
+
+        val negate = b.newToken().named("negate")
+                .matchesString("(-)")
+                .nud(::NegationNode)
 
         val exponential = b.newToken().named("exponential")
                 .matchesPattern("E-*\\d+")
@@ -130,9 +136,31 @@ object ProcalParserHelper {
                 .led(::PowerNode)
 
         val tenPower = b.newToken().named("10^")
-                .matchesString("^")
+                .matchesString("\\10^")
                 .nud(::TenPowerNode)
                 .led { left, parser, lexeme -> HiddenMultiplicationNode(left, TenPowerNode(left, parser, lexeme))}
+
+        val permutation = b.newToken().named("permutation")
+                .matchesString("P")
+                .led(::PermutationNode)
+
+        val combination = b.newToken().named("combination")
+                .matchesString("C")
+                .led(::CombinationNode)
+
+        val percent = b.newToken().named("percent")
+                .matchesString("%")
+                .led(::PercentNode)
+
+
+        //# Grouping
+
+        val lparen = b.newToken().named("lparen")
+                .matchesString("(")
+                .nud(::ParenthesisNode)
+
+        val rparen = b.newToken().named("rparen")
+                .matchesString(")")
 
 
 
@@ -146,13 +174,45 @@ object ProcalParserHelper {
                 .matchesPattern("\\$[A-Za-z_][A-Za-z_0-9]*")
                 .nud(::VariableNode)
 
+        val constant = b.newToken().named("constant")
+                .matchesPattern("&[A-Za-z_][A-Za-z_0-9]*")
+                .nud(::ConstantNode)
+
         val number = b.newToken().named("number")
                 .matchesPattern("(?:\\d+)?\\.(?:\\d+)?|\\d+")
                 .nud(::NumberNode)
 
+        val randomNumber = b.newToken().named("randomNumber")
+                .matchesString("Ran#")
+                .nud(::RandomNumberNode)
+
         val set = b.newToken().named("set")
                 .matchesString("->")
                 .led(::AssignmentNode)
+
+
+
+        //# IO Operators
+
+
+
+        //# Functions
+
+        //  Prefix Functions
+
+        //  Suffix Functions
+
+
+
+        //# Comparison Operators
+
+
+
+        //# Boolean Operators
+
+
+
+        //# Special Tokens
 
     }
 

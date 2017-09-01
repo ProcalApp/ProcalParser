@@ -9,6 +9,9 @@ class MissingSeparatorException(override var message: String = "You must end sta
 /** Breaking from loop*/
 class BreakException(override var message: String = "Breaking from loop."): RuntimeException()
 
+/** Constant not found*/
+class IllegalConstantException(override var message: String = "Constant not present"): IllegalArgumentException()
+
 /** Invoked as division by zero operation is attempted */
 class DivideByZeroException(override var message: String = "Cannot divide by zero."): ArithmeticException()
 
