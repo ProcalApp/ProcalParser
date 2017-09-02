@@ -10,12 +10,13 @@ import java.math.RoundingMode
 /**
  * @class BigFracPwr Class
  *
- * @brief A class using BigDecimal to store a fraction power unit
+ * A class using BigDecimal to store a fraction power unit
  * @form  (p/q) * (a/b) ^ (m/n)
+ * @domain Complex, for negative base and fraction expn
  */
 
 /** @rule Default value 0 */
-class BigFracPwr(prop: BigFrac = BigFrac.ONE,
+open class BigFracPwr(prop: BigFrac = BigFrac.ONE,
                  base: BigFrac = BigFrac.ZERO,
                  expn: BigFrac = BigFrac.ONE) {
 
@@ -74,9 +75,9 @@ class BigFracPwr(prop: BigFrac = BigFrac.ONE,
             this(BigFrac(propNumer, propDenom), BigFrac(baseNumer, baseDenom), BigFrac(expnNumer, expnDenom))
 
     fun toDecimal(): BigDecimal {
-        return (prop.toDecimal().setScale(25, RoundingMode.HALF_UP) *
-                BigDecimalMath.pow(base.toDecimal().setScale(25, RoundingMode.HALF_UP),
-                        expn.toDecimal().setScale(25, RoundingMode.HALF_UP))).setScale(25, RoundingMode.HALF_UP)
+        return (prop.toDecimal().setScale(Utility.SCALE) *
+                base.toDecimal().setScale(Utility.SCALE)
+                        .pow(expn.toDecimal().setScale(Utility.SCALE))).setScale(Utility.SCALE)
     }
 
     fun isZero(): Boolean {
@@ -136,7 +137,7 @@ class BigFracPwr(prop: BigFrac = BigFrac.ONE,
         else if (this.expn == rhs.expn)
             BigFracPwr(this.prop * rhs.prop, this.base * rhs.base, this.expn)
         /** @rule cast to BigDecimal if cannot be simplified */
-        else (this.toDecimal() * rhs.toDecimal()).setScale(25, RoundingMode.HALF_UP)
+        else (this.toDecimal() * rhs.toDecimal()).setScale(Utility.SCALE)
     }
 
     operator fun div(rhs: BigFracPwr): Any {
@@ -152,9 +153,10 @@ class BigFracPwr(prop: BigFrac = BigFrac.ONE,
         val temp = this - other
         if (temp is BigDecimal) {
             return temp.compareTo(BigDecimal.ZERO)
-        } else if (temp is BigFracPwr) {
+        } else { // temp is BigFracPwr
+            temp as BigFracPwr
             return if (temp.isPos()) 1 else 0
-        } else throw InvalidException() //should not be invoked
+        }
     }
 
 

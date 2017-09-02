@@ -80,39 +80,60 @@ fun main(args: Array<String>) {
             BigFracPwr(-1, 2, 3, 2, 1, 2).inverse())
     /** @fun plus() */
     /** @rule frac + frac -> frac */
-    println(BigFracPwr(base = frac1) + BigFracPwr(base = frac2))
+    assertEquals("( 5 / 6 )", (BigFracPwr(base = frac1) + BigFracPwr(base = frac2)).toString())
     /** @rule addition of like terms -> change prop */
-    println(BigFracPwr(base = frac1) + BigFracPwr(base = frac1))
+    assertEquals("1", (BigFracPwr(base = frac1) + BigFracPwr(base = frac1)).toString())
     /** @rule cast to BigDecimal if cannot be simplified */
-    println(BigFracPwr(base = frac1, expn = frac2) + BigFracPwr(base = frac2, expn = frac1))
+    assertEquals("1.3710507951737255018850016", (BigFracPwr(base = frac1, expn = frac2) + BigFracPwr(base = frac2, expn = frac1)).toString())
 
     /** @fun minus() */
     /** @rule frac + frac -> frac */
-    println(BigFracPwr(base = frac1) - BigFracPwr(base = frac2))
+    assertEquals("( 1 / 6 )", (BigFracPwr(base = frac1) - BigFracPwr(base = frac2)).toString())
     /** @rule addition of like terms -> change prop */
-    println(BigFracPwr(base = frac1) - BigFracPwr(base = frac1))
+    assertEquals("0", (BigFracPwr(base = frac1) - BigFracPwr(base = frac1)).toString())
     /** @rule cast to BigDecimal if cannot be simplified */
-    println(BigFracPwr(base = frac1, expn = frac2) - BigFracPwr(base = frac2, expn = frac1))
+    assertEquals("0.2163502567944739728667040", (BigFracPwr(base = frac1, expn = frac2) - BigFracPwr(base = frac2, expn = frac1)).toString())
 
     /** @fun times() */
     /** @rule rhs expn == 1 -> multiply with prop */
-    println(BigFracPwr(frac1, frac1, frac2) * BigFracPwr(frac2, BigFrac.ONE, BigFrac.ONE))
+    assertEquals("( 1 / 6 ) * ( 1 / 2 ) ^ ( 1 / 3 )", (BigFracPwr(frac1, frac1, frac2) * BigFracPwr(frac2, BigFrac.ONE, BigFrac.ONE)).toString())
     /** @rule same expn -> indices law */
-    println(BigFracPwr(base = frac1, expn = frac2) * BigFracPwr(base = frac2, expn = frac2))
+    assertEquals("( 1 / 6 ) ^ ( 1 / 3 )", (BigFracPwr(base = frac1, expn = frac2) * BigFracPwr(base = frac2, expn = frac2)).toString())
     /** @rule same base -> group base */
-    println(BigFracPwr(base = frac1, expn = frac2) * BigFracPwr(base = frac1, expn = frac1))
+    assertEquals("( 1 / 2 ) ^ ( 5 / 6 )", (BigFracPwr(base = frac1, expn = frac2) * BigFracPwr(base = frac1, expn = frac1)).toString())
     /** @rule cast to BigDecimal if cannot be simplified */
-    println(BigFracPwr(base = frac1, expn = frac2) * BigFracPwr(base = frac2, expn = frac1))
+    assertEquals("0.4582432123328675421278264", (BigFracPwr(base = frac1, expn = frac2) * BigFracPwr(base = frac2, expn = frac1)).toString())
 
     /** @fun div() */
     /** @rule rhs expn == 1 -> multiply with prop */
-    println(BigFracPwr(frac1, frac1, frac2) / BigFracPwr(frac2, BigFrac.ONE, BigFrac.ONE))
+    assertEquals("( 3 / 2 ) * ( 1 / 2 ) ^ ( 1 / 3 )", (BigFracPwr(frac1, frac1, frac2) / BigFracPwr(frac2, BigFrac.ONE, BigFrac.ONE)).toString())
     /** @rule same expn -> indices law */
-    println(BigFracPwr(base = frac1, expn = frac2) / BigFracPwr(base = frac2, expn = frac2))
+    assertEquals("( 3 / 2 ) ^ ( 1 / 3 )", (BigFracPwr(base = frac1, expn = frac2) / BigFracPwr(base = frac2, expn = frac2)).toString())
     /** @rule same base -> group base */
-    println(BigFracPwr(base = frac1, expn = frac2) / BigFracPwr(base = frac1, expn = frac1))
+    assertEquals("2 ^ ( 1 / 6 )", (BigFracPwr(base = frac1, expn = frac2) / BigFracPwr(base = frac1, expn = frac1)).toString())
     /** @rule cast to BigDecimal if cannot be simplified */
-    println(BigFracPwr(base = frac1, expn = frac2) / BigFracPwr(base = frac2, expn = frac1))
+    assertEquals("1.3747296369986026263834789", (BigFracPwr(base = frac1, expn = frac2) / BigFracPwr(base = frac2, expn = frac1)).toString())
+
+    /* The followings are tests of BigPiFracPwr class */
+    val pfp1 = BigPiFracPwr.PI
+    val pfp2 = (BigPiFracPwr.ONE + BigPiFracPwr.ONE) as BigPiFracPwr
+    /** @fun toDecimal() */
+    assertEquals("3.1415926535897932384626434", pfp1.toDecimal().toString())
+    /** @fun negate() */
+    assertEquals("-1 * pi", pfp1.negate().toString())
+    /** @fun plus() */
+    assertEquals("2 * pi", (pfp1 + pfp1).toString())
+    assertEquals("5.1415926535897932384626434", (pfp1 + pfp2).toString())
+    /** @fun minus() */
+    assertEquals("0", (pfp1 - pfp1).toString())
+    assertEquals("1.1415926535897932384626434", (pfp1 - pfp2).toString())
+    /** @fun times() */
+    assertEquals("9.8696044010893586188344911", (pfp1 * pfp1).toString())
+    assertEquals("2 * pi", (pfp1 * pfp2).toString())
+    /** @fun div() */
+    assertEquals("pi", (pfp1 / pfp1).toString())
+    assertEquals("( 1 / 2 ) * pi", (pfp1 / pfp2).toString())
+    assertEquals("0.6366197723675813430755351", (pfp2 / pfp1).toString())
 
     /* The followings are tests of BigCmplx class */
     println(BigCmplx(BigFracPwr(2,1,3,4,2,3), BigFracPwr(1,4,2,5,2,3)))

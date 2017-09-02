@@ -1,12 +1,21 @@
 package calc
 
+import exceptions.ZeroPowerZeroException
+import org.nevec.rjm.BigDecimalMath
+import java.math.BigDecimal
 import java.math.BigInteger
+import java.math.RoundingMode
 
 /**
  * Essential math utility functions
  */
 object Utility {
-    /** @brief Find HCF of two BigInteger */
+    val PI = BigDecimal("3.141592653589793238462643383279502884197")
+
+    val SCALE = Pair(25, RoundingMode.HALF_UP)
+
+
+    /** Find HCF of two BigInteger */
     fun findHCF(m: BigInteger, n: BigInteger): BigInteger {
         var a: BigInteger = m
         var b: BigInteger = n
@@ -20,9 +29,42 @@ object Utility {
         return a.abs()
     }
 
-    /** @brief Check if the value of BigInteger can fit in an Int */
+    /** Check if the value of BigInteger can fit in an Int */
     fun isInt(bigInt: BigInteger): Boolean {
         return bigInt.toInt().toLong() == bigInt.toLong()
     }
+
+
 }
 
+/** Override original BigDecimal.setScale method */
+fun BigDecimal.setScale(pair: Pair<Int, RoundingMode>): BigDecimal {
+    return setScale(pair.first, pair.second)
+}
+
+/** Override original BigDecimalMath .pow() method */
+fun BigDecimal.pow(rhs: BigDecimal): BigDecimal {
+    if (this >= BigDecimal.ZERO) {
+        if (rhs.compareTo(BigDecimal.ZERO) == 0) {
+            throw ZeroPowerZeroException()
+        }
+        return BigDecimalMath.pow(this, rhs)
+    } else {
+        if (rhs.scale() == 0 && rhs.remainder(BigDecimal(2)).compareTo(BigDecimal.ZERO) == 0) {
+            return BigDecimalMath.pow(this.negate(), rhs)
+        } else if (rhs.scale() == 0 && Math.abs(this.remainder(BigDecimal(2)).compareTo(BigDecimal.ZERO)) == 1) {
+            return BigDecimalMath.pow(this.negate(), rhs).negate()
+        } else {
+            val rgtFrac = BigFrac(rhs)
+            return if (rgtFrac.getDenom().remainder(BigInteger.valueOf(2)) == BigInteger.ZERO) {
+                throw ArithmeticException("Cannot take negative even root.") //TODO: Complex Decimal
+            } else {
+                if (rgtFrac.getNumer().remainder(BigInteger.valueOf(2)) == BigInteger.ZERO) {
+                    BigDecimalMath.pow(this.negate(), rhs)
+                } else {
+                    BigDecimalMath.pow(this.negate(), rhs).negate()
+                }
+            }
+        }
+    }
+}

@@ -8,8 +8,9 @@ import exceptions.*
 /**
  * @class BigFrac Class
  *
- * @brief A class using BigDecimal to store a fraction unit
+ * A class using BigDecimal to store a fraction unit
  * @form a/b
+ * @domain Real only
  */
 
 /** @rule Default value 0 */
