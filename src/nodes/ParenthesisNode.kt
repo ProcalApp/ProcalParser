@@ -1,7 +1,7 @@
 package nodes
 
 import ProcalParserHelper.Tokens
-import calc.BigCmplxExact
+import calc.BigCmplx
 import org.bychan.core.basic.Lexeme
 import org.bychan.core.basic.Parser
 
@@ -9,7 +9,7 @@ class ParenthesisNode(left: Node?, parser: Parser<Node>, lexeme: Lexeme<Node>): 
 
     private val right: Node
 
-    override fun evaluate(): BigCmplxExact {
+    override fun evaluate(): BigCmplx {
         return right.evaluate()
     }
 
@@ -23,7 +23,7 @@ class ParenthesisNode(left: Node?, parser: Parser<Node>, lexeme: Lexeme<Node>): 
 
     init {
         var right = parser.expr(left, lexeme.lbp())
-        val nextLexeme = parser.next();
+        val nextLexeme = parser.next()
         if (nextLexeme.token == Tokens.lparen.token)
             right = MultiplicationNode(right, parser.expr(right, nextLexeme.lbp()))
         if (!ProcalParserHelper.nextIsStatementEnd(parser))

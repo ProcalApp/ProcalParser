@@ -1,7 +1,7 @@
 package nodes
 
 import ProcalParserHelper.VariableMap
-import calc.BigCmplxExact
+import calc.BigCmplx
 import org.bychan.core.basic.Lexeme
 import org.bychan.core.basic.Parser
 
@@ -13,7 +13,7 @@ open class VariableNode(private val variableName: String) : Node {
         return variableName
     }
 
-    override fun evaluate(): BigCmplxExact {
+    override fun evaluate(): BigCmplx {
         return VariableMap.getValue(variableName)
     }
 
