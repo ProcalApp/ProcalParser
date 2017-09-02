@@ -1,8 +1,9 @@
 package calc
 
 import java.math.BigDecimal
+
 /**
- * BigPiFracPwr Class
+ * BigRealExact Class
  *
  * A class using BigDecimal to store a fraction power unit with pi
  * Form: (p/q) * (a/b) ^ (m/n) * pi^{0, 1}
@@ -10,31 +11,31 @@ import java.math.BigDecimal
  */
 
 /** Rule: Default value 0 */
-class BigPiFracPwr(private val bigFracPwr: BigFracPwr = BigFracPwr.ZERO,
-                   private val hasPi: Boolean = false){
+class BigRealExact(private val bigFracPwr: BigFracPwr = BigFracPwr.ZERO,
+                   private val hasPi: Boolean = false) {
 
     constructor(prop: BigFrac = BigFrac.ONE,
                 base: BigFrac = BigFrac.ZERO,
                 expn: BigFrac = BigFrac.ONE,
-                hasPi: Boolean = false): this(BigFracPwr(prop,base,expn), hasPi)
+                hasPi: Boolean = false) : this(BigFracPwr(prop, base, expn), hasPi)
 
     fun toDecimal(): BigDecimal {
         return if (this.hasPi)
             (bigFracPwr.toDecimal() * Utility.PI.setScale(Utility.SCALE)).setScale(Utility.SCALE)
-            else bigFracPwr.toDecimal()
+        else bigFracPwr.toDecimal()
     }
 
-    fun negate(): BigPiFracPwr {
-        return BigPiFracPwr(this.bigFracPwr.negate(), hasPi)
+    fun negate(): BigRealExact {
+        return BigRealExact(this.bigFracPwr.negate(), hasPi)
     }
 
-    operator fun plus(rhs: BigPiFracPwr): Any {
+    operator fun plus(rhs: BigRealExact): Any {
         if (this.hasPi != rhs.hasPi) {
             return this.toDecimal() + rhs.toDecimal()
         } else {
             val temp = this.bigFracPwr + rhs.bigFracPwr
             if (temp is BigFracPwr)
-                return BigPiFracPwr(temp, this.hasPi)
+                return BigRealExact(temp, this.hasPi)
             else if (this.hasPi)
                 return ((temp as BigDecimal) * Utility.PI.setScale(Utility.SCALE)).setScale(Utility.SCALE)
             else
@@ -42,23 +43,23 @@ class BigPiFracPwr(private val bigFracPwr: BigFracPwr = BigFracPwr.ZERO,
         }
     }
 
-    operator fun minus(rhs: BigPiFracPwr): Any {
+    operator fun minus(rhs: BigRealExact): Any {
         return this + rhs.negate()
     }
 
-    operator fun times(rhs: BigPiFracPwr): Any {
+    operator fun times(rhs: BigRealExact): Any {
         val temp = this.bigFracPwr * rhs.bigFracPwr
         if (temp is BigFracPwr && !(this.hasPi && rhs.hasPi)) {
-            return BigPiFracPwr(temp, this.hasPi xor rhs.hasPi)
+            return BigRealExact(temp, this.hasPi xor rhs.hasPi)
         } else {
             return (this.toDecimal() * rhs.toDecimal()).setScale(Utility.SCALE)
         }
     }
 
-    operator fun div(rhs: BigPiFracPwr): Any {
+    operator fun div(rhs: BigRealExact): Any {
         val temp = this.bigFracPwr / rhs.bigFracPwr
         if (temp is BigFracPwr && !(!this.hasPi && rhs.hasPi)) {
-            return BigPiFracPwr(temp, this.hasPi xor rhs.hasPi)
+            return BigRealExact(temp, this.hasPi xor rhs.hasPi)
         } else {
             return (this.toDecimal() / rhs.toDecimal()).setScale(Utility.SCALE)
         }
@@ -77,15 +78,21 @@ class BigPiFracPwr(private val bigFracPwr: BigFracPwr = BigFracPwr.ZERO,
     }
 
     override fun toString(): String {
-        if (this.bigFracPwr == BigFracPwr.ONE) { return "pi" }
-        else if (this.bigFracPwr == BigFracPwr.ZERO) { return "0" }
-        else return this.bigFracPwr.toString() + if (this.hasPi) { " * pi" } else { "" }
+        if (this.bigFracPwr == BigFracPwr.ONE) {
+            return "pi"
+        } else if (this.bigFracPwr == BigFracPwr.ZERO) {
+            return "0"
+        } else return this.bigFracPwr.toString() + if (this.hasPi) {
+            " * pi"
+        } else {
+            ""
+        }
     }
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other?.javaClass != javaClass) return false
-        other as BigPiFracPwr
+        other as BigRealExact
         if (this.bigFracPwr == other.bigFracPwr && this.hasPi == other.hasPi) return true
         return false
     }
@@ -96,9 +103,9 @@ class BigPiFracPwr(private val bigFracPwr: BigFracPwr = BigFracPwr.ZERO,
     }
 
     companion object {
-        val ONE = BigPiFracPwr(BigFracPwr.ONE,false)
-        val ZERO = BigPiFracPwr()
-        val PI = BigPiFracPwr(BigFracPwr.ONE, true)
+        val ONE = BigRealExact(BigFracPwr.ONE, false)
+        val ZERO = BigRealExact()
+        val PI = BigRealExact(BigFracPwr.ONE, true)
     }
 
 }

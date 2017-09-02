@@ -3,7 +3,7 @@ package nodes
 import ProcalParserHelper.Tokens
 import ProcalParserHelper.VariableMap
 import ProcalParserHelper.nextMustBeSeparator
-import calc.BigCmplxFrac
+import calc.BigCmplxExact
 import org.bychan.core.basic.Lexeme
 import org.bychan.core.basic.Parser
 
@@ -15,12 +15,12 @@ class ForLoopNode(left: Node?, parser: Parser<Node>, lexeme: Lexeme<Node>) : Nod
     private val doNode: Node
     private val stepNode: Node?
 
-    override fun evaluate(): BigCmplxFrac {
-        val toResult: BigCmplxFrac = toNode.evaluate()
+    override fun evaluate(): BigCmplxExact {
+        val toResult: BigCmplxExact = toNode.evaluate()
         val controlVariableName: String = controlVariable.getName()
         VariableMap.setValue(controlVariableName, initNode.evaluate())
-        var doResult: BigCmplxFrac = BigCmplxFrac()
-        var controlVariableValue: BigCmplxFrac
+        var doResult: BigCmplxExact = BigCmplxExact()
+        var controlVariableValue: BigCmplxExact
 
         TODO("not implemented")
     }

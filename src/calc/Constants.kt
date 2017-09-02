@@ -1,14 +1,14 @@
 package calc
 
+import api.Utility.fromUnicode
+import org.nevec.rjm.BigDecimalMath
 import java.math.BigDecimal
 import java.math.MathContext
-import org.nevec.rjm.BigDecimalMath
-import api.Utility.fromUnicode
 
 /**
  * Constants
  */
-enum class Constants (var value: BigDecimal, var constantName: String, var unit: String, var display: String) {
+enum class Constants(var value: BigDecimal, var constantName: String, var unit: String, var display: String) {
     pi(BigDecimalMath.pi(MathContext(20)),
             "pi", "-", fromUnicode(0x03C0)),
     exp(BigDecimalMath.exp(MathContext(20)),

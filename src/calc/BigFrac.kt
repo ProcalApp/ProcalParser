@@ -1,9 +1,10 @@
 package calc
 
+import exceptions.DivideByZeroException
+import exceptions.IntegerTooLargeException
 import java.math.BigDecimal
 import java.math.BigInteger
 import java.math.RoundingMode
-import exceptions.*
 
 /**
  * BigFrac Class
@@ -98,8 +99,8 @@ class BigFrac(numer: BigInteger = BigInteger.ZERO,
         }
     }
 
-    fun evaluate(): BigCmplxDec {
-        return BigCmplxDec(BigDecimal(this.numer).divide(BigDecimal(this.denom), 25, RoundingMode.HALF_UP))
+    fun evaluate(): BigCmplxApprox {
+        return BigCmplxApprox(BigDecimal(this.numer).divide(BigDecimal(this.denom), 25, RoundingMode.HALF_UP))
     }
 
     fun isInt(): Boolean {

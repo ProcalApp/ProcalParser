@@ -1,7 +1,7 @@
 package nodes
 
 import ProcalParserHelper.Tokens
-import calc.BigCmplxFrac
+import calc.BigCmplxExact
 import org.bychan.core.basic.Lexeme
 import org.bychan.core.basic.Parser
 
@@ -9,7 +9,7 @@ class ParenthesisNode(left: Node?, parser: Parser<Node>, lexeme: Lexeme<Node>): 
 
     private val right: Node
 
-    override fun evaluate(): BigCmplxFrac {
+    override fun evaluate(): BigCmplxExact {
         return right.evaluate()
     }
 

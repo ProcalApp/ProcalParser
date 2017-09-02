@@ -116,9 +116,9 @@ fun main(args: Array<String>) {
     /** @rule cast to BigDecimal if cannot be simplified */
     assertEquals("1.3747296369986026263834789", (BigFracPwr(base = frac1, expn = frac2) / BigFracPwr(base = frac2, expn = frac1)).toString())
 
-    /* The followings are tests of BigPiFracPwr class */
-    val pfp1 = BigPiFracPwr.PI
-    val pfp2 = (BigPiFracPwr.ONE + BigPiFracPwr.ONE) as BigPiFracPwr
+    /* The followings are tests of BigRealExact class */
+    val pfp1 = BigRealExact.PI
+    val pfp2 = (BigRealExact.ONE + BigRealExact.ONE) as BigRealExact
     /** @fun toDecimal() */
     assertEquals("3.1415926535897932384626434", pfp1.toDecimal().toString())
     /** @fun negate() */
@@ -137,14 +137,14 @@ fun main(args: Array<String>) {
     assertEquals("( 1 / 2 ) * pi", (pfp1 / pfp2).toString())
     assertEquals("0.6366197723675813430755351", (pfp2 / pfp1).toString())
 
-    /* The followings are tests of BigCmplxDec class */
-    val cd1 = BigCmplxDec("2", "3")
-    val cd2 = BigCmplxDec("3", "-2")
-    assertEquals("5 + i", (cd1+cd2).toString())
-    assertEquals("-1 + 5i", (cd1-cd2).toString())
-    assertEquals("12 + 5i", (cd1*cd2).toString())
-    assertEquals("i", (cd1/cd2).toString())
+    /* The followings are tests of BigCmplxApprox class */
+    val cd1 = BigCmplxApprox("2", "3")
+    val cd2 = BigCmplxApprox("3", "-2")
+    assertEquals("5 + i", (cd1 + cd2).toString())
+    assertEquals("-1 + 5i", (cd1 - cd2).toString())
+    assertEquals("12 + 5i", (cd1 * cd2).toString())
+    assertEquals("i", (cd1 / cd2).toString())
 
-    /* The followings are tests of BigCmplxFrac class */
+    /* The followings are tests of BigCmplxExact class */
 
 }

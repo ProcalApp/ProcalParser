@@ -1,6 +1,6 @@
 package nodes
 
-import calc.BigCmplxFrac
+import calc.BigCmplxExact
 import org.bychan.core.basic.Lexeme
 import org.bychan.core.basic.Parser
 
@@ -19,7 +19,7 @@ class DivisionNode : Node {
         this.right = parser.expr(left, lexeme.lbp())
     }
 
-    override fun evaluate(): BigCmplxFrac {
+    override fun evaluate(): BigCmplxExact {
         TODO("not implemented")
     }
 

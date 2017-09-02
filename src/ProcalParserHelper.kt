@@ -1,4 +1,4 @@
-import calc.BigCmplxFrac
+import calc.BigCmplxExact
 import exceptions.MissingSeparatorException
 import org.bychan.core.dynamic.Language
 import org.bychan.core.dynamic.LanguageBuilder
@@ -15,15 +15,15 @@ object ProcalParserHelper {
 
     object VariableMap {
 
-        private val storage: MutableMap<String, BigCmplxFrac> = HashMap()
+        private val storage: MutableMap<String, BigCmplxExact> = HashMap()
 
-        fun getValue(name: String): BigCmplxFrac {
+        fun getValue(name: String): BigCmplxExact {
             if (storage.containsKey(name))
                 return storage[name]!!
-            return setValue(name, BigCmplxFrac())
+            return setValue(name, BigCmplxExact())
         }
 
-        fun setValue(name: String, value: BigCmplxFrac): BigCmplxFrac {
+        fun setValue(name: String, value: BigCmplxExact): BigCmplxExact {
             storage[name] = value
             return value
         }

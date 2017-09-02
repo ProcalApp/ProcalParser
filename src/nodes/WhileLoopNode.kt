@@ -1,6 +1,6 @@
 package nodes
 
-import calc.BigCmplxFrac
+import calc.BigCmplxExact
 import org.bychan.core.basic.Lexeme
 import org.bychan.core.basic.Parser
 import ProcalParserHelper.Tokens
@@ -10,7 +10,7 @@ class WhileLoopNode(left: Node?, parser: Parser<Node>, lexeme: Lexeme<Node>): No
     private val conditionNode: Node
     private val doNode: Node
 
-    override fun evaluate(): BigCmplxFrac {
+    override fun evaluate(): BigCmplxExact {
         TODO("not implemented")
     }
 

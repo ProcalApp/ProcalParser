@@ -1,6 +1,6 @@
 package nodes
 
-import calc.BigCmplxFrac
+import calc.BigCmplxExact
 import org.bychan.core.basic.Lexeme
 import org.bychan.core.basic.Parser
 
@@ -9,7 +9,7 @@ class PowerNode(left: Node?, parser: Parser<Node>, lexeme: Lexeme<Node>): Node {
     private val left: Node = left!!
     private val right: Node = parser.expr(left, lexeme.lbp())
 
-    override fun evaluate(): BigCmplxFrac {
+    override fun evaluate(): BigCmplxExact {
         TODO("not implemented")
     }
 

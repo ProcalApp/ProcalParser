@@ -4,42 +4,55 @@ import exceptions.NullException
 
 /**
  * BigCmplx class
- * A container for either BigCmplxFrac or BigCmplxDec
+ * A container for either BigCmplxExact or BigCmplxApprox
  */
+/* TODO: Operators implementation */
 
 class BigCmplx {
-    private var frac: BigCmplxFrac? = null
-    private var dec: BigCmplxDec? = null
+    private var exact: BigCmplxExact? = null
+    private var approx: BigCmplxApprox? = null
 
-    constructor(frac: BigCmplxFrac) { this.frac = frac }
-    constructor(dec: BigCmplxDec) { this.dec = dec }
-
-    fun getVal() : Any {
-        return this.frac ?: this.dec ?: throw NullException()
+    /** Prefer exact value than approx value */
+    init {
+        if (exact != null) approx = null
     }
 
-    fun getDec() : BigCmplxDec {
-        return this.frac?.evaluate() ?: this.dec ?: throw NullException()
+    constructor(exact: BigCmplxExact) {
+        this.exact = exact; this.approx = null
     }
 
-    operator fun plus(rhs: BigCmplx) : BigCmplx {
+    constructor(approx: BigCmplxApprox) {
+        this.approx = approx; this.exact = null
+    }
+
+    fun getVal(): Any {
+        return this.exact ?: this.approx ?: throw NullException()
+    }
+
+    fun getDec(): BigCmplxApprox {
+        return this.exact?.evaluate() ?: this.approx ?: throw NullException()
+    }
+
+    operator fun plus(rhs: BigCmplx): BigCmplx {
         return ZERO
     }
 
-    operator fun minus(rhs: BigCmplx) : BigCmplx {
+    operator fun minus(rhs: BigCmplx): BigCmplx {
         return ZERO
     }
-    operator fun times(rhs: BigCmplx) : BigCmplx {
+
+    operator fun times(rhs: BigCmplx): BigCmplx {
         return ZERO
     }
-    operator fun div(rhs: BigCmplx) : BigCmplx {
+
+    operator fun div(rhs: BigCmplx): BigCmplx {
         return ZERO
     }
 
     companion object {
-        val ONE = BigCmplx(BigCmplxFrac.ONE)
-        val ZERO = BigCmplx(BigCmplxFrac.ZERO)
-        val PI = BigCmplx(BigCmplxFrac.PI)
-        val I = BigCmplx(BigCmplxFrac.I)
+        val ONE = BigCmplx(BigCmplxExact.ONE)
+        val ZERO = BigCmplx(BigCmplxExact.ZERO)
+        val PI = BigCmplx(BigCmplxExact.PI)
+        val I = BigCmplx(BigCmplxExact.I)
     }
 }

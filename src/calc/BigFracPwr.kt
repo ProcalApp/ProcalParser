@@ -11,17 +11,22 @@ import java.math.BigInteger
  * Form: (p/q) * (a/b) ^ (m/n)
  * Domain: Real only, fails for negative base & fraction expn
  */
+/* TODO: Roots simplification */
+/* TODO: Rationalization */
+/* TODO: Handling complex cases (probably need BigReal to achieve)
+ *    |- Throw exceptions for negative base & fraction expn with even denominator
+ *    |- Disallow root multiplication (e.g. sqrt(-2) * sqrt(-2) = -2 not 2)
+ */
 
 /** Rule: Default value 0 */
 open class BigFracPwr(prop: BigFrac = BigFrac.ONE,
-                 base: BigFrac = BigFrac.ZERO,
-                 expn: BigFrac = BigFrac.ONE) {
+                      base: BigFrac = BigFrac.ZERO,
+                      expn: BigFrac = BigFrac.ONE) {
 
     private var prop: BigFrac
     private var base: BigFrac
     private var expn: BigFrac
 
-    //TODO: Roots simplification & rationalization
     init {
         /** Rule: No 0^0 */
         if (base == BigFrac.ZERO && expn == BigFrac.ZERO)
