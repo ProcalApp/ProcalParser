@@ -6,7 +6,7 @@ import calc.BigCmplx
  * Node class interface
  */
 
-public interface Node {
+interface Node {
     fun evaluate(): BigCmplx
     override fun toString(): String
 }

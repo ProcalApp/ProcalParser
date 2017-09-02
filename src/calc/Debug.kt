@@ -135,6 +135,14 @@ fun main(args: Array<String>) {
     assertEquals("( 1 / 2 ) * pi", (pfp1 / pfp2).toString())
     assertEquals("0.6366197723675813430755351", (pfp2 / pfp1).toString())
 
+    /* The followings are tests of BigCmplxDec class */
+    val cd1 = BigCmplxDec("2", "3")
+    val cd2 = BigCmplxDec("3", "-2")
+    assertEquals("5 + i", (cd1+cd2).toString())
+    assertEquals("-1 + 5i", (cd1-cd2).toString())
+    assertEquals("12 + 5i", (cd1*cd2).toString())
+    assertEquals("i", (cd1/cd2).toString())
+
     /* The followings are tests of BigCmplx class */
     println(BigCmplx(BigFracPwr(2,1,3,4,2,3), BigFracPwr(1,4,2,5,2,3)))
 

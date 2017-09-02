@@ -1,11 +1,8 @@
 package calc
 
-import exceptions.InvalidException
 import exceptions.ZeroPowerZeroException
-import org.nevec.rjm.BigDecimalMath
 import java.math.BigDecimal
 import java.math.BigInteger
-import java.math.RoundingMode
 
 /**
  * @class BigFracPwr Class

@@ -10,10 +10,8 @@ import java.math.BigDecimal
  */
 
 /** @rule Default value 0 */
-class BigPiFracPwr(bigFracPwr: BigFracPwr = BigFracPwr.ZERO,
-                   hasPi: Boolean = false){
-    var hasPi: Boolean = hasPi
-    var bigFracPwr = bigFracPwr
+class BigPiFracPwr(private val bigFracPwr: BigFracPwr = BigFracPwr.ZERO,
+                   private val hasPi: Boolean = false){
 
     constructor(prop: BigFrac = BigFrac.ONE,
                 base: BigFrac = BigFrac.ZERO,

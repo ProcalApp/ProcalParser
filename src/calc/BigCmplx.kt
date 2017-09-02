@@ -8,7 +8,7 @@ package calc
  * (a/b)^(m/n) + (c/d)^(p/q)i
  */
 
-public class BigCmplx(real: BigFracPwr = BigFracPwr.ZERO, imag: BigFracPwr = BigFracPwr.ZERO) {
+class BigCmplx(real: BigFracPwr = BigFracPwr.ZERO, imag: BigFracPwr = BigFracPwr.ZERO) {
     private var real: BigFracPwr = real
     private var imag: BigFracPwr = imag
 
