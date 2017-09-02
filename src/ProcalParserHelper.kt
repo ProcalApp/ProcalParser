@@ -70,7 +70,8 @@ object ProcalParserHelper {
                 .nud(::BreakNode)
 
 
-        //  Memory
+
+        //# Memory
 
         val mPlus = b.newToken().named("M+")
                 .matchesString("M+")
@@ -80,9 +81,90 @@ object ProcalParserHelper {
                 .matchesString("M-")
                 .led(::MMinusNode)
 
+
+
+        //# Conditionals
+
+        //  If-Statement
+
+        //  Shorthand If
+
+        val shorthandIf = b.newToken().named("shorthandIf")
+                .matchesString("=>")
+                .led(::ShorthandIfNode)
+
         val colon = b.newToken().named("colon")
                 .matchesString(":")
-                .led(::StatementNode)
+                .led { left, parser, lexeme -> StatementNode(left, parser, lexeme) }
+
+
+
+        //# Arithmetic Operators
+
+        val plus = b.newToken().named("plus")
+                .matchesString("+")
+                .nud{ left, parser, lexeme -> parser.expr(left, lexeme.lbp())} //Ignore positive sign
+                .led(::AdditionNode)
+
+        val minus = b.newToken().named("minus")
+                .matchesString("-")
+                .nud(::NegationNode)
+                .led(::SubtractionNode)
+
+        val negate = b.newToken().named("negate")
+                .matchesString("(-)")
+                .nud(::NegationNode)
+
+        val exponential = b.newToken().named("exponential")
+                .matchesPattern("E-*\\d+")
+                .nud(::ExponentialNode)
+
+        val multiply = b.newToken().named("multiply")
+                .matchesString("*")
+                .led(::MultiplicationNode)
+
+        val hiddenMultiply = b.newToken().named("hiddenMultiply")
+                .matchesString("`")
+                .led(::HiddenMultiplicationNode)
+
+        val divide = b.newToken().named("divide")
+                .matchesString("/")
+                .led(::DivisionNode)
+
+        val power = b.newToken().named("power")
+                .matchesString("^")
+                .led(::PowerNode)
+
+        val tenPower = b.newToken().named("10^")
+                .matchesString("\\10^")
+                .nud(::TenPowerNode)
+                .led { left, parser, lexeme -> HiddenMultiplicationNode(left, TenPowerNode(left, parser, lexeme))}
+
+        val permutation = b.newToken().named("permutation")
+                .matchesString("P")
+                .led(::PermutationNode)
+
+        val combination = b.newToken().named("combination")
+                .matchesString("C")
+                .led(::CombinationNode)
+
+        val percent = b.newToken().named("percent")
+                .matchesString("%")
+                .led(::PercentNode)
+
+
+        //# Grouping
+
+        val lparen = b.newToken().named("lparen")
+                .matchesString("(")
+                .nud(::ParenthesisNode)
+
+        val rparen = b.newToken().named("rparen")
+                .matchesString(")")
+
+
+
+        //# Value Representations
 
         val answer = b.newToken().named("answer")
                 .matchesString("Ans")
@@ -92,13 +174,45 @@ object ProcalParserHelper {
                 .matchesPattern("\\$[A-Za-z_][A-Za-z_0-9]*")
                 .nud(::VariableNode)
 
+        val constant = b.newToken().named("constant")
+                .matchesPattern("&[A-Za-z_][A-Za-z_0-9]*")
+                .nud(::ConstantNode)
+
         val number = b.newToken().named("number")
-                .matchesPattern("\\d+\\.?\\d+|\\d+\\.|\\.\\d+|\\.|\\d+")
+                .matchesPattern("(?:\\d+)?\\.(?:\\d+)?|\\d+")
                 .nud(::NumberNode)
+
+        val randomNumber = b.newToken().named("randomNumber")
+                .matchesString("Ran#")
+                .nud(::RandomNumberNode)
 
         val set = b.newToken().named("set")
                 .matchesString("->")
                 .led(::AssignmentNode)
+
+
+
+        //# IO Operators
+
+
+
+        //# Functions
+
+        //  Prefix Functions
+
+        //  Suffix Functions
+
+
+
+        //# Comparison Operators
+
+
+
+        //# Boolean Operators
+
+
+
+        //# Special Tokens
 
     }
 
