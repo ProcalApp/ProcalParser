@@ -5,14 +5,14 @@ import java.math.BigDecimal
 import java.math.BigInteger
 
 /**
- * @class BigFracPwr Class
+ * BigFracPwr Class
  *
  * A class using BigDecimal to store a fraction power unit
- * @form  (p/q) * (a/b) ^ (m/n)
- * @domain Complex, for negative base and fraction expn
+ * Form: (p/q) * (a/b) ^ (m/n)
+ * Domain: Real only, fails for negative base & fraction expn
  */
 
-/** @rule Default value 0 */
+/** Rule: Default value 0 */
 open class BigFracPwr(prop: BigFrac = BigFrac.ONE,
                  base: BigFrac = BigFrac.ZERO,
                  expn: BigFrac = BigFrac.ONE) {
@@ -23,22 +23,22 @@ open class BigFracPwr(prop: BigFrac = BigFrac.ONE,
 
     //TODO: Roots simplification & rationalization
     init {
-        /** @rule No 0^0 */
+        /** Rule: No 0^0 */
         if (base == BigFrac.ZERO && expn == BigFrac.ZERO)
             throw ZeroPowerZeroException()
-        /** @rule Uniform 0 definition: 1 * 0 ^ 1 */
+        /** Rule: Uniform 0 definition: 1 * 0 ^ 1 */
         else if (prop == BigFrac.ZERO || base == BigFrac.ZERO) {
             this.prop = BigFrac.ONE
             this.base = BigFrac.ZERO
             this.expn = BigFrac.ONE
         }
-        /** @rule Uniform 1 definition: 1 * 1 ^ 1 */
+        /** Rule: Uniform 1 definition: 1 * 1 ^ 1 */
         else if (base == BigFrac.ONE) {
             this.prop = BigFrac.ONE
             this.base = prop
             this.expn = BigFrac.ONE
         }
-        /** @rule Simplification of integer expn: 1 * (a / b) ^ 1 */
+        /** Rule: Simplification of integer expn: 1 * (a / b) ^ 1 */
         else if (expn.isInt()) {
             if (expn.isPos()) {
                 this.prop = BigFrac.ONE
@@ -49,14 +49,14 @@ open class BigFracPwr(prop: BigFrac = BigFrac.ONE,
                 this.base = prop * base.pow(-expn.getInt())
                 this.expn = BigFrac.ONE
             }
-            /** @rule Uniform integer definition: 1 * n ^ 1 */
+            /** Rule: Uniform integer definition: 1 * n ^ 1 */
             else {
                 this.prop = BigFrac.ONE
                 this.base = prop
                 this.expn = BigFrac.ONE
             }
         }
-        /** @rule Simplification of negative expn: to positive indices */
+        /** Rule: Simplification of negative expn: to positive indices */
         else if (expn.isNeg()) {
             this.prop = prop
             this.base = base.inverse()
@@ -106,13 +106,13 @@ open class BigFracPwr(prop: BigFrac = BigFrac.ONE,
     }
 
     operator fun plus(rhs: BigFracPwr): Any {
-        /** @rule frac + frac -> frac */
+        /** Rule: frac + frac -> frac */
         return if (this.isFrac() && rhs.isFrac())
             BigFracPwr(base = this.base + rhs.base)
-        /** @rule addition of like terms -> change prop */
+        /** Rule: addition of like terms -> change prop */
         else if (this.base == rhs.base && this.expn == rhs.expn)
             BigFracPwr(this.prop + rhs.prop, this.base, this.expn)
-        /** @rule cast to BigDecimal if cannot be simplified */
+        /** Rule: cast to BigDecimal if cannot be simplified */
         else this.toDecimal() + rhs.toDecimal()
     }
 
@@ -121,19 +121,19 @@ open class BigFracPwr(prop: BigFrac = BigFrac.ONE,
     }
 
     operator fun times(rhs: BigFracPwr): Any {
-        /** @rule rhs expn == 1 -> multiply with prop */
+        /** Rule: rhs expn == 1 -> multiply with prop */
         return if (rhs.expn == BigFrac.ONE)
             BigFracPwr(this.prop * rhs.base, this.base, this.expn)
-        /** @rule same base -> indices law */
+        /** Rule: same base -> indices law */
         else if (this.base == rhs.base)
             BigFracPwr(this.prop * rhs.prop, this.base, this.expn + rhs.expn)
-        /** @rule inverse base -> indices law */
+        /** Rule: inverse base -> indices law */
         else if (this.base == rhs.base.inverse())
             BigFracPwr(this.prop * rhs.prop, this.base, this.expn - rhs.expn)
-        /** @rule same expn -> group base */
+        /** Rule: same expn -> group base */
         else if (this.expn == rhs.expn)
             BigFracPwr(this.prop * rhs.prop, this.base * rhs.base, this.expn)
-        /** @rule cast to BigDecimal if cannot be simplified */
+        /** Rule: cast to BigDecimal if cannot be simplified */
         else (this.toDecimal() * rhs.toDecimal()).setScale(Utility.SCALE)
     }
 

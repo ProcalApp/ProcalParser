@@ -3,6 +3,7 @@ package nodes
 import calc.BigCmplxFrac
 import calc.BigFrac
 import calc.BigFracPwr
+import calc.BigPiFracPwr
 import org.bychan.core.basic.Lexeme
 import org.bychan.core.basic.Parser
 import java.math.BigDecimal
@@ -21,9 +22,9 @@ class NumberNode: Node {
     }
 
     constructor(left: Node?, parser: Parser<Node>, lexeme: Lexeme<Node>) {
-        this.value = BigCmplxFrac(BigFracPwr(BigFrac(BigDecimal(
+        this.value = BigCmplxFrac(BigPiFracPwr(BigFracPwr(BigFrac(BigDecimal(
                 if (lexeme.text().equals(".")) "0" else lexeme.text()
-        ))))
+        )))))
     }
 
     override fun evaluate(): BigCmplxFrac {

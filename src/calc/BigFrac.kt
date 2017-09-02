@@ -6,25 +6,25 @@ import java.math.RoundingMode
 import exceptions.*
 
 /**
- * @class BigFrac Class
+ * BigFrac Class
  *
  * A class using BigDecimal to store a fraction unit
- * @form a/b
- * @domain Real only
+ * Form: a/b
+ * Domain: Real only
  */
 
-/** @rule Default value 0 */
+/** Rule: Default value 0 */
 class BigFrac(numer: BigInteger = BigInteger.ZERO,
               denom: BigInteger = BigInteger.ONE) {
     private var numer: BigInteger
     private var denom: BigInteger
 
     init {
-        /** @rule No n/0 */
+        /** Rule: No n/0 */
         if (denom.compareTo(BigInteger.ZERO) == 0) {
             throw DivideByZeroException()
         }
-        /** @rule Negative sign always kept in numerator */
+        /** Rule: Negative sign always kept in numerator */
         if (denom < BigInteger.ZERO) {
             this.numer = numer.negate()
             this.denom = denom.negate()
@@ -32,7 +32,7 @@ class BigFrac(numer: BigInteger = BigInteger.ZERO,
             this.numer = numer
             this.denom = denom
         }
-        /** @rule Always in simplest form */
+        /** Rule: Always in simplest form */
         val cf: BigInteger = Utility.findHCF(this.numer, this.denom)
         this.numer = this.numer.divide(cf)
         this.denom = this.denom.divide(cf)
@@ -128,10 +128,10 @@ class BigFrac(numer: BigInteger = BigInteger.ZERO,
 
     override fun toString(): String {
         return when (this.isInt()) {
-        /** @rule Always omit denominator of 1 */
+        /** Rule: Always omit denominator of 1 */
             true -> this.numer.toString()
             false -> when (this.isNeg()) {
-            /** @rule Negative sign outside bracket */
+            /** Rule: Negative sign outside bracket */
                 true -> "-( " + this.numer.negate().toString() + " / " + this.denom.toString() + " )"
                 false -> "( " + this.numer.toString() + " / " + this.denom.toString() + " )"
             }

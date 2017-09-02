@@ -6,8 +6,8 @@ import java.math.BigDecimal
  * BigCmplxDec class
  *
  * A class storing a complex number with BigDeciaml real and imaginary parts
- * @form a + bi
- * @doamin Complex
+ * Form: a + bi
+ * Domain: Complex
  */
 
 class BigCmplxDec(real: BigDecimal = BigDecimal.ZERO, imag: BigDecimal = BigDecimal.ZERO) {
@@ -74,5 +74,11 @@ class BigCmplxDec(real: BigDecimal = BigDecimal.ZERO, imag: BigDecimal = BigDeci
 
     override fun hashCode(): Int {
         return this.real.hashCode() * 31 + this.imag.hashCode()
+    }
+
+    companion object {
+        val ONE = BigCmplxDec(BigDecimal.ONE)
+        val ZERO = BigCmplxDec(BigDecimal.ZERO)
+        val I = BigCmplxDec(imag = BigDecimal.ONE)
     }
 }

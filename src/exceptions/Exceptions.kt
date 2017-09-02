@@ -23,3 +23,6 @@ class ZeroPowerZeroException(override var message: String = "Cannot have zero po
 
 /** Should never be invoked, should only be used in cases where else clause is mandatory yet there is no chance reaching there */
 class InvalidException(override var message: String = "Should not have reached this state. "): RuntimeException()
+
+/** Invoked as null BigCmplx is called */
+class NullException(override var message: String = "Attempting to resolve null value.") : RuntimeException()

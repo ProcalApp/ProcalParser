@@ -2,14 +2,14 @@ package calc
 
 import java.math.BigDecimal
 /**
- * @class BigPiFracPwr Class
+ * BigPiFracPwr Class
  *
  * A class using BigDecimal to store a fraction power unit with pi
- * @form  (p/q) * (a/b) ^ (m/n) * pi^{0, 1}
- * @domain Complex for negative base and fraction expn
+ * Form: (p/q) * (a/b) ^ (m/n) * pi^{0, 1}
+ * Domain: Real only, fails for negative base & fraction expn
  */
 
-/** @rule Default value 0 */
+/** Rule: Default value 0 */
 class BigPiFracPwr(private val bigFracPwr: BigFracPwr = BigFracPwr.ZERO,
                    private val hasPi: Boolean = false){
 
@@ -64,6 +64,18 @@ class BigPiFracPwr(private val bigFracPwr: BigFracPwr = BigFracPwr.ZERO,
         }
     }
 
+    fun isZero(): Boolean {
+        return this.bigFracPwr == BigFracPwr.ZERO
+    }
+
+    fun isInt(): Boolean {
+        return this.bigFracPwr.isInt() && !this.hasPi
+    }
+
+    fun isFrac(): Boolean {
+        return this.bigFracPwr.isFrac() && !this.hasPi
+    }
+
     override fun toString(): String {
         if (this.bigFracPwr == BigFracPwr.ONE) { return "pi" }
         else if (this.bigFracPwr == BigFracPwr.ZERO) { return "0" }
@@ -85,7 +97,7 @@ class BigPiFracPwr(private val bigFracPwr: BigFracPwr = BigFracPwr.ZERO,
 
     companion object {
         val ONE = BigPiFracPwr(BigFracPwr.ONE,false)
-        val ZERO = BigFracPwr()
+        val ZERO = BigPiFracPwr()
         val PI = BigPiFracPwr(BigFracPwr.ONE, true)
     }
 
