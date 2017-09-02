@@ -38,10 +38,30 @@ class BigCmplxDec(real: BigDecimal = BigDecimal.ZERO, imag: BigDecimal = BigDeci
                 (this.imag * rhs.real - this.real * rhs.imag) / (rhs.real.pow(2) + rhs.imag.pow(2)))
     }
 
+    fun isReal(): Boolean {
+        return this.imag.compareTo(BigDecimal.ZERO) == 0
+    }
+
+    fun isPureImag(): Boolean {
+        return this.real.compareTo(BigDecimal.ZERO) == 0
+    }
+
     override fun toString(): String {
-        return if (this.real.compareTo(BigDecimal.ZERO) != 0) { this.real.stripTrailingZeros().toPlainString() + " + " } else { "" } +
-                if (this.imag.compareTo(BigDecimal.ZERO) == 0) { "" }
-                else if (this.imag.compareTo(BigDecimal.ONE) == 0) { "i" } else  { this.imag.stripTrailingZeros().toPlainString() + "i" }
+        return if (this.isReal()) {
+            this.real.stripTrailingZeros().toPlainString()
+        } else if (this.isPureImag()) {
+            if (this.imag.compareTo(BigDecimal.ONE) == 0) {
+                "i"
+            } else {
+                this.imag.stripTrailingZeros().toPlainString() + "i"
+            }
+        } else {
+            if (this.imag.compareTo(BigDecimal.ONE) == 0) {
+                this.real.stripTrailingZeros().toPlainString() + " + i"
+            } else {
+                this.real.stripTrailingZeros().toPlainString() + " + " + this.imag.stripTrailingZeros().toPlainString() + "i"
+            }
+        }
     }
 
     override fun equals(other: Any?): Boolean {

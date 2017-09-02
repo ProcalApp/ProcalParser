@@ -1,19 +1,19 @@
 package calc
 
 /**
- * BigCmplx Class
+ * BigCmplxFrac Class
  *
  * A class using BigDecimal to store a complex unit,
  * in a form of
  * (a/b)^(m/n) + (c/d)^(p/q)i
  */
 
-class BigCmplx(real: BigFracPwr = BigFracPwr.ZERO, imag: BigFracPwr = BigFracPwr.ZERO) {
+class BigCmplxFrac(real: BigFracPwr = BigFracPwr.ZERO, imag: BigFracPwr = BigFracPwr.ZERO) {
     private var real: BigFracPwr = real
     private var imag: BigFracPwr = imag
 
-    fun conjugate(): BigCmplx {
-        return BigCmplx(this.real, this.imag.negate())
+    fun conjugate(): BigCmplxFrac {
+        return BigCmplxFrac(this.real, this.imag.negate())
     }
 
     fun isReal(): Boolean {

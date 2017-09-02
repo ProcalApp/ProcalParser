@@ -98,6 +98,10 @@ class BigFrac(numer: BigInteger = BigInteger.ZERO,
         }
     }
 
+    fun evaluate(): BigCmplxDec {
+        return BigCmplxDec(BigDecimal(this.numer).divide(BigDecimal(this.denom), 25, RoundingMode.HALF_UP))
+    }
+
     fun isInt(): Boolean {
         return this.denom.compareTo(BigInteger.ONE) == 0 && Utility.isInt(this.numer)
     }

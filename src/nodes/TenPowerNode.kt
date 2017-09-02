@@ -1,6 +1,6 @@
 package nodes
 
-import calc.BigCmplx
+import calc.BigCmplxFrac
 import org.bychan.core.basic.Lexeme
 import org.bychan.core.basic.Parser
 
@@ -8,7 +8,7 @@ class TenPowerNode(left: Node?, parser: Parser<Node>, lexeme: Lexeme<Node>): Nod
 
     private val right: Node = parser.expr(left, lexeme.lbp())
 
-    override fun evaluate(): BigCmplx {
+    override fun evaluate(): BigCmplxFrac {
         TODO("not implemented")
     }
 

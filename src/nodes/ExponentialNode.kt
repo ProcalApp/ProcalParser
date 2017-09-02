@@ -1,6 +1,6 @@
 package nodes
 
-import calc.BigCmplx
+import calc.BigCmplxFrac
 import org.bychan.core.basic.Lexeme
 import org.bychan.core.basic.Parser
 
@@ -8,7 +8,7 @@ class ExponentialNode(left: Node?, parser: Parser<Node>, lexeme: Lexeme<Node>) :
 
     private val i: Int = Integer.parseInt(lexeme.text().substring(1))
 
-    override fun evaluate(): BigCmplx {
+    override fun evaluate(): BigCmplxFrac {
         TODO("not implemented")
     }
 

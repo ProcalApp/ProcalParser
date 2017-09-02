@@ -1,12 +1,12 @@
 package nodes
 
-import calc.BigCmplx
+import calc.BigCmplxFrac
 
 /**
  * Node class interface
  */
 
 interface Node {
-    fun evaluate(): BigCmplx
+    fun evaluate(): BigCmplxFrac
     override fun toString(): String
 }

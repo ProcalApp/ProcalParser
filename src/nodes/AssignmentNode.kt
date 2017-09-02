@@ -2,7 +2,7 @@ package nodes
 
 import ProcalParserHelper.Tokens
 import ProcalParserHelper.VariableMap
-import calc.BigCmplx
+import calc.BigCmplxFrac
 import org.bychan.core.basic.Lexeme
 import org.bychan.core.basic.Parser
 
@@ -11,8 +11,8 @@ class AssignmentNode(left: Node?, parser: Parser<Node>, lexeme: Lexeme<Node>) : 
     private val right: Node
     private val variableName: String
 
-    override fun evaluate(): BigCmplx {
-        val leftResult: BigCmplx = left.evaluate()
+    override fun evaluate(): BigCmplxFrac {
+        val leftResult: BigCmplxFrac = left.evaluate()
         VariableMap.setValue(variableName, leftResult)
         return leftResult
     }

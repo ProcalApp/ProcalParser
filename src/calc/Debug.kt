@@ -14,6 +14,8 @@ fun main(args: Array<String>) {
     /* The followings are tests of BigFrac class */
     val frac1 = BigFrac(1, 2)
     val frac2 = BigFrac(1, 3)
+    assertEquals("0.5", frac1.evaluate().toString())
+    assertEquals("0.3333333333333333333333333", frac1.evaluate().toString())
     assertEquals(BigFrac(5, 6), frac1 + frac2)
     assertEquals(BigFrac(1, 6), frac1 - frac2)
     assertEquals(BigFrac(1, 6), frac1 * frac2)
@@ -143,7 +145,7 @@ fun main(args: Array<String>) {
     assertEquals("12 + 5i", (cd1*cd2).toString())
     assertEquals("i", (cd1/cd2).toString())
 
-    /* The followings are tests of BigCmplx class */
-    println(BigCmplx(BigFracPwr(2,1,3,4,2,3), BigFracPwr(1,4,2,5,2,3)))
+    /* The followings are tests of BigCmplxFrac class */
+    println(BigCmplxFrac(BigFracPwr(2,1,3,4,2,3), BigFracPwr(1,4,2,5,2,3)))
 
 }

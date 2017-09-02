@@ -1,7 +1,6 @@
 package nodes
 
-import calc.BigCmplx
-import exceptions.BreakException
+import calc.BigCmplxFrac
 import org.bychan.core.basic.Lexeme
 import org.bychan.core.basic.Parser
 
@@ -10,7 +9,7 @@ class ShorthandIfNode(left: Node?, parser: Parser<Node>, lexeme: Lexeme<Node>): 
     private val ifNode = left!!
     private val thenNode = parser.expr(left, lexeme.lbp())
 
-    override fun evaluate(): BigCmplx {
+    override fun evaluate(): BigCmplxFrac {
         TODO("not implemented")
     }
 

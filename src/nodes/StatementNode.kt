@@ -1,7 +1,7 @@
 package nodes
 
 import ProcalParserHelper.VariableMap
-import calc.BigCmplx
+import calc.BigCmplxFrac
 import org.bychan.core.basic.Lexeme
 import org.bychan.core.basic.Parser
 
@@ -10,8 +10,8 @@ class StatementNode(left: Node?, parser: Parser<Node>, lexeme: Lexeme<Node>): No
     protected val right: Node?
     protected val isLast: Boolean
 
-    override fun evaluate(): BigCmplx {
-        val leftResult: BigCmplx = left.evaluate()
+    override fun evaluate(): BigCmplxFrac {
+        val leftResult: BigCmplxFrac = left.evaluate()
         VariableMap.setValue("~Ans", leftResult)
         if (!isLast)
             return right!!.evaluate()
