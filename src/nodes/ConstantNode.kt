@@ -1,13 +1,13 @@
 package nodes
 
 import calc.BigCmplx
-import calc.BigCmplxApprox
+import calc.BigCmplxDecimal
 import org.bychan.core.basic.Lexeme
 import org.bychan.core.basic.Parser
 
 open class ConstantNode(private val constantName: String) : Node {
 
-    private val value: BigCmplx = BigCmplx(BigCmplxApprox()) //TODO refer to init
+    private val value: BigCmplx = BigCmplx(BigCmplxDecimal()) //TODO refer to init
 
     constructor(left: Node?, parser: Parser<Node>, lexeme: Lexeme<Node>):this(lexeme.text())
 

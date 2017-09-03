@@ -145,6 +145,18 @@ fun main(args: Array<String>) {
     assertEquals("12 + 5i", (cd1 * cd2).toString())
     assertEquals("i", (cd1 / cd2).toString())
 
-    /* The followings are tests of BigCmplxExact class */
-
+    /* The followings are tests of BigReal class */
+    val r1 = BigReal.ONE
+    val r2 = BigReal.PI
+    val r3 = BigReal(BigDecimal("2.00909090"))
+    assertEquals("4.1415926535897932384626434", (r1+r2).toString())
+    assertEquals("5.1506835535897932384626434", (r2+r3).toString())
+    assertEquals("2 * pi", (r2+r2).toString())
+    assertEquals("-2.1415926535897932384626434", (r1-r2).toString())
+    assertEquals("0", (r1-r1).toString())
+    assertEquals("pi", (r1*r2).toString())
+    assertEquals("6.3117452118341059282768268", (r2*r3).toString())
+    assertEquals("1.5636886581835561738210269", (r2/r3).toString())
+    assertEquals("2.0090909", (r3/r1).toString())
+    
 }

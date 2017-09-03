@@ -19,7 +19,7 @@ class NumberNode: Node {
     }
 
     constructor(left: Node?, parser: Parser<Node>, lexeme: Lexeme<Node>) {
-        this.value = BigCmplx(BigCmplxApprox(BigDecimal(
+        this.value = BigCmplx(BigCmplxDecimal(BigDecimal(
                 if (lexeme.text() == ".") "0" else lexeme.text()
         )))
     }
