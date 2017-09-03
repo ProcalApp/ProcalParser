@@ -104,4 +104,22 @@ class BigReal {
             this.exact.toString()
         else this.decimal!!.stripTrailingZeros().toPlainString()
     }
+
+    override fun hashCode(): Int {
+        return if (this.exact != null)
+            this.exact!!.hashCode()
+        else this.decimal!!.hashCode()
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other?.javaClass != javaClass) return false
+        other as BigReal
+        if (this.exact != null && other.exact != null)
+            return this.exact == other.exact
+        else if (this.decimal != null && other.decimal != null)
+            return this.decimal!!.compareTo(other.decimal) == 0
+        else
+            return false
+    }
 }
