@@ -6,7 +6,7 @@ import java.math.BigDecimal
 /**
  * BigReal class
  * A container for either BigRealExact or BigDecimal
- * Form: (a/b) * (c/d) ^ (e/f) or x
+ * Form: (p/q) * (a/b) ^ (m/n) * pi^{0, 1} or x
  * Domain: Real
  */
 
