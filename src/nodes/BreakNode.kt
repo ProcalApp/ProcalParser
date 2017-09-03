@@ -1,6 +1,6 @@
 package nodes
 
-import calc.BigCmplxExact
+import calc.BigCmplx
 import exceptions.BreakException
 import org.bychan.core.basic.Lexeme
 import org.bychan.core.basic.Parser
@@ -11,7 +11,7 @@ class BreakNode(left: Node?, parser: Parser<Node>, lexeme: Lexeme<Node>): Node {
         ProcalParserHelper.nextMustBeSeparator(parser, "break")
     }
 
-    override fun evaluate(): BigCmplxExact {
+    override fun evaluate(): BigCmplx {
         throw BreakException()
     }
 

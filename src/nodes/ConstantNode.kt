@@ -1,12 +1,13 @@
 package nodes
 
-import calc.BigCmplxExact
+import calc.BigCmplx
+import calc.BigCmplxApprox
 import org.bychan.core.basic.Lexeme
 import org.bychan.core.basic.Parser
 
 open class ConstantNode(private val constantName: String) : Node {
 
-    private val value: BigCmplxExact = BigCmplxExact()
+    private val value: BigCmplx = BigCmplx(BigCmplxApprox()) //TODO refer to init
 
     constructor(left: Node?, parser: Parser<Node>, lexeme: Lexeme<Node>):this(lexeme.text())
 
@@ -14,7 +15,7 @@ open class ConstantNode(private val constantName: String) : Node {
         return constantName
     }
 
-    override fun evaluate(): BigCmplxExact {
+    override fun evaluate(): BigCmplx {
         return ProcalParserHelper.VariableMap.getValue(constantName)
     }
 

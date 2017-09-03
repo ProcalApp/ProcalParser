@@ -1,6 +1,6 @@
 package nodes
 
-import calc.BigCmplxExact
+import calc.BigCmplx
 import org.bychan.core.basic.Lexeme
 import org.bychan.core.basic.Parser
 
@@ -8,7 +8,7 @@ class NegationNode(left: Node?, parser: Parser<Node>, lexeme: Lexeme<Node>) : No
 
     private val right: Node = parser.expr(left, lexeme.lbp())
 
-    override fun evaluate(): BigCmplxExact {
+    override fun evaluate(): BigCmplx {
         TODO("not implemented")
     }
 

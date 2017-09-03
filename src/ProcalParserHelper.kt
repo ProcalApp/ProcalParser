@@ -1,3 +1,4 @@
+import calc.BigCmplx
 import calc.BigCmplxExact
 import exceptions.MissingSeparatorException
 import org.bychan.core.dynamic.Language
@@ -15,15 +16,15 @@ object ProcalParserHelper {
 
     object VariableMap {
 
-        private val storage: MutableMap<String, BigCmplxExact> = HashMap()
+        private val storage: MutableMap<String, BigCmplx> = HashMap()
 
-        fun getValue(name: String): BigCmplxExact {
+        fun getValue(name: String): BigCmplx {
             if (storage.containsKey(name))
                 return storage[name]!!
-            return setValue(name, BigCmplxExact())
+            return setValue(name, BigCmplx(BigCmplxExact()))
         }
 
-        fun setValue(name: String, value: BigCmplxExact): BigCmplxExact {
+        fun setValue(name: String, value: BigCmplx): BigCmplx {
             storage[name] = value
             return value
         }
@@ -232,7 +233,7 @@ object ProcalParserHelper {
 
     fun nextMustBeSeparator(parser: Parser<Node>, nodeName: String) {
         if (!nextIsStatementEnd(parser))
-            throw MissingSeparatorException("You must end '$nodeName' with 'colon' or 'display' if statement is not at end of code block.");
+            throw MissingSeparatorException("You must end '$nodeName' with 'colon' or 'display' if statement is not at end of code block.")
     }
 
     fun indent(s: String): String {
