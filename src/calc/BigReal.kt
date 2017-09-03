@@ -6,8 +6,9 @@ import java.math.BigDecimal
 /**
  * BigReal class
  * A container for either BigRealExact or BigDecimal
+ * Form: (a/b) * (c/d) ^ (e/f) or x
+ * Domain: Real
  */
-/* TODO: Operators implementation */
 
 class BigReal {
     private var exact: BigRealExact? = null

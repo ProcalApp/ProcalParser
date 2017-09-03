@@ -158,5 +158,5 @@ fun main(args: Array<String>) {
     assertEquals("6.3117452118341059282768268", (r2*r3).toString())
     assertEquals("1.5636886581835561738210269", (r2/r3).toString())
     assertEquals("2.0090909", (r3/r1).toString())
-    
+
 }
