@@ -3,38 +3,38 @@ package calc
 import java.math.BigDecimal
 
 /**
- * BigCmplxApprox class
+ * BigCmplxDecimal class
  *
  * A class storing a complex number with BigDeciaml real and imaginary parts
  * Form: a + bi
  * Domain: Complex
  */
 
-class BigCmplxApprox(real: BigDecimal = BigDecimal.ZERO, imag: BigDecimal = BigDecimal.ZERO) {
+class BigCmplxDecimal(real: BigDecimal = BigDecimal.ZERO, imag: BigDecimal = BigDecimal.ZERO) {
 
     private var real: BigDecimal = real.setScale(Utility.SCALE)
     private var imag: BigDecimal = imag.setScale(Utility.SCALE)
 
     constructor(a: String, b: String) : this(BigDecimal(a), BigDecimal(b))
 
-    fun conjugate(): BigCmplxApprox {
-        return BigCmplxApprox(this.real, this.imag.negate())
+    fun conjugate(): BigCmplxDecimal {
+        return BigCmplxDecimal(this.real, this.imag.negate())
     }
 
-    operator fun plus(rhs: BigCmplxApprox): BigCmplxApprox {
-        return BigCmplxApprox(this.real + rhs.real, this.imag + rhs.imag)
+    operator fun plus(rhs: BigCmplxDecimal): BigCmplxDecimal {
+        return BigCmplxDecimal(this.real + rhs.real, this.imag + rhs.imag)
     }
 
-    operator fun minus(rhs: BigCmplxApprox): BigCmplxApprox {
-        return BigCmplxApprox(this.real - rhs.real, this.imag - rhs.imag)
+    operator fun minus(rhs: BigCmplxDecimal): BigCmplxDecimal {
+        return BigCmplxDecimal(this.real - rhs.real, this.imag - rhs.imag)
     }
 
-    operator fun times(rhs: BigCmplxApprox): BigCmplxApprox {
-        return BigCmplxApprox(this.real * rhs.real - this.imag * rhs.imag, this.imag * rhs.real + this.real * rhs.imag)
+    operator fun times(rhs: BigCmplxDecimal): BigCmplxDecimal {
+        return BigCmplxDecimal(this.real * rhs.real - this.imag * rhs.imag, this.imag * rhs.real + this.real * rhs.imag)
     }
 
-    operator fun div(rhs: BigCmplxApprox): BigCmplxApprox {
-        return BigCmplxApprox((this.real * rhs.real + this.imag * rhs.imag) / (rhs.real.pow(2) + rhs.imag.pow(2)),
+    operator fun div(rhs: BigCmplxDecimal): BigCmplxDecimal {
+        return BigCmplxDecimal((this.real * rhs.real + this.imag * rhs.imag) / (rhs.real.pow(2) + rhs.imag.pow(2)),
                 (this.imag * rhs.real - this.real * rhs.imag) / (rhs.real.pow(2) + rhs.imag.pow(2)))
     }
 
@@ -67,7 +67,7 @@ class BigCmplxApprox(real: BigDecimal = BigDecimal.ZERO, imag: BigDecimal = BigD
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other?.javaClass != javaClass) return false
-        other as BigCmplxApprox
+        other as BigCmplxDecimal
         if (this.real == other.real && this.imag == other.imag) return true
         return false
     }
@@ -77,8 +77,8 @@ class BigCmplxApprox(real: BigDecimal = BigDecimal.ZERO, imag: BigDecimal = BigD
     }
 
     companion object {
-        val ONE = BigCmplxApprox(BigDecimal.ONE)
-        val ZERO = BigCmplxApprox(BigDecimal.ZERO)
-        val I = BigCmplxApprox(imag = BigDecimal.ONE)
+        val ONE = BigCmplxDecimal(BigDecimal.ONE)
+        val ZERO = BigCmplxDecimal(BigDecimal.ZERO)
+        val I = BigCmplxDecimal(imag = BigDecimal.ONE)
     }
 }

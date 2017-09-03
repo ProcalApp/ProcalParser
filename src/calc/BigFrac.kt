@@ -99,8 +99,8 @@ class BigFrac(numer: BigInteger = BigInteger.ZERO,
         }
     }
 
-    fun evaluate(): BigCmplxApprox {
-        return BigCmplxApprox(BigDecimal(this.numer).divide(BigDecimal(this.denom), 25, RoundingMode.HALF_UP))
+    fun evaluate(): BigCmplxDecimal {
+        return BigCmplxDecimal(BigDecimal(this.numer).divide(BigDecimal(this.denom), 25, RoundingMode.HALF_UP))
     }
 
     fun isInt(): Boolean {

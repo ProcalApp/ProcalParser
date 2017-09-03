@@ -30,8 +30,8 @@ class BigCmplxExact(real: BigRealExact = BigRealExact.ZERO, imag: BigRealExact =
         return isReal() && this.real.isInt()
     }
 
-    fun evaluate(): BigCmplxApprox {
-        return BigCmplxApprox(this.real.toDecimal(), this.imag.toDecimal())
+    fun evaluate(): BigCmplxDecimal {
+        return BigCmplxDecimal(this.real.toDecimal(), this.imag.toDecimal())
     }
 
     operator fun plus(rhs: BigCmplxExact): BigCmplxExact {

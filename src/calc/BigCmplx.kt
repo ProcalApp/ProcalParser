@@ -4,33 +4,33 @@ import exceptions.NullException
 
 /**
  * BigCmplx class
- * A container for either BigCmplxExact or BigCmplxApprox
+ * A container for either BigCmplxExact or BigCmplxDecimal
  */
 /* TODO: Operators implementation */
 
 class BigCmplx {
     private var exact: BigCmplxExact? = null
-    private var approx: BigCmplxApprox? = null
+    private var decimal: BigCmplxDecimal? = null
 
-    /** Prefer exact value than approx value */
+    /** Prefer exact value than decimal value */
     init {
-        if (exact != null) approx = null
+        if (exact != null) decimal = null
     }
 
     constructor(exact: BigCmplxExact) {
-        this.exact = exact; this.approx = null
+        this.exact = exact; this.decimal = null
     }
 
-    constructor(approx: BigCmplxApprox) {
-        this.approx = approx; this.exact = null
+    constructor(decimal: BigCmplxDecimal) {
+        this.decimal = decimal; this.exact = null
     }
 
     fun getVal(): Any {
-        return this.exact ?: this.approx ?: throw NullException()
+        return this.exact ?: this.decimal ?: throw NullException()
     }
 
-    fun getDec(): BigCmplxApprox {
-        return this.exact?.evaluate() ?: this.approx ?: throw NullException()
+    fun getDec(): BigCmplxDecimal {
+        return this.exact?.evaluate() ?: this.decimal ?: throw NullException()
     }
 
     operator fun plus(rhs: BigCmplx): BigCmplx {

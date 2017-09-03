@@ -137,9 +137,9 @@ fun main(args: Array<String>) {
     assertEquals("( 1 / 2 ) * pi", (pfp1 / pfp2).toString())
     assertEquals("0.6366197723675813430755351", (pfp2 / pfp1).toString())
 
-    /* The followings are tests of BigCmplxApprox class */
-    val cd1 = BigCmplxApprox("2", "3")
-    val cd2 = BigCmplxApprox("3", "-2")
+    /* The followings are tests of BigCmplxDecimal class */
+    val cd1 = BigCmplxDecimal("2", "3")
+    val cd2 = BigCmplxDecimal("3", "-2")
     assertEquals("5 + i", (cd1 + cd2).toString())
     assertEquals("-1 + 5i", (cd1 - cd2).toString())
     assertEquals("12 + 5i", (cd1 * cd2).toString())
