@@ -20,7 +20,7 @@ class DivisionNode : Node {
     }
 
     override fun evaluate(): BigCmplx {
-        TODO("not implemented")
+        return left.evaluate() / right.evaluate()
     }
 
     override fun toString(): String {

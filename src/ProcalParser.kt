@@ -2,7 +2,7 @@ import nodes.Node
 import org.bychan.core.basic.ParseResult
 import org.bychan.core.dynamic.Language
 
-class ProcalParser() {
+class ProcalParser {
 
     private var l: Language<Node>? = ProcalParserHelper.getProcalLanguage()
 
