@@ -27,16 +27,15 @@ object BigDecimalMath {
         var i = start
         var count = 0
         var newTerm = TaylorTerm(BigDecimal.ZERO)
-        var newResult = BigDecimal(0)
 
-        do {
-            result += newTerm.term
+        while (true) {
             newTerm = term(x, i++, newTerm.notes)
-            newResult += newTerm.term
+            val newResult = (result + newTerm.term).round(precision)
             count++
-        } while (count < TAYLOR_LEAST_TERMS || newResult.round(precision) != result.round(precision))
-
-        return newResult.round(precision)
+            if (count > TAYLOR_LEAST_TERMS && newResult.round(precision) == result.round(precision))
+                return newResult
+            result = newResult
+        }
 
     }
 
@@ -66,7 +65,10 @@ object BigDecimalMath {
 
     private fun sinTE(x: BigDecimal, n: Int, notes: MutableMap<String, BigDecimal>): TaylorTerm {
         val xPowerCarry = notes["X"]
-        val newXPower = (if (xPowerCarry == null) x else xPowerCarry * x.pow(2))
+
+        notes["X2"] = notes["X2"] ?: x.pow(2)
+
+        val newXPower = (if (xPowerCarry == null) x else xPowerCarry * notes["X2"]!!)
 
         notes["X"] = newXPower
 
@@ -81,11 +83,44 @@ object BigDecimalMath {
 
     private fun cosTE(x: BigDecimal, n: Int, notes: MutableMap<String, BigDecimal>): TaylorTerm {
         val xPowerCarry = notes["X"]
-        val newXPower = (if (xPowerCarry == null) BigDecimal.ONE else xPowerCarry * x.pow(2))
+
+        notes["X2"] = notes["X2"] ?: x.pow(2)
+
+        val newXPower = (if (xPowerCarry == null) BigDecimal.ONE else xPowerCarry * notes["X2"]!!)
 
         notes["X"] = newXPower
 
         val term = ((-BigDecimal.ONE).pow(n).divide(factorial(BigDecimal(2*n)), PRECISION) * newXPower)
+
+        return TaylorTerm(term, notes)
+    }
+
+    fun ln(x: BigDecimal): BigDecimal {
+        if (x <= BigDecimal.ZERO)
+            throw IllegalArgumentException("Ln cannot accept non-positive number")
+        if (x - BigDecimal.ONE <= BigDecimal.ONE)
+            return taylor(x - BigDecimal.ONE, BigDecimalMath::lnATE, PRECISION, 1).setScale(SCALE, RoundingMode.HALF_UP).stripTrailingZeros()
+        return (ln(x - BigDecimal.ONE) - taylor(x - BigDecimal.ONE, BigDecimalMath::lnBTE, PRECISION, 1)).setScale(SCALE, RoundingMode.HALF_UP).stripTrailingZeros()
+    }
+
+    private fun lnATE(x: BigDecimal, n: Int, notes: MutableMap<String, BigDecimal>): TaylorTerm {
+        val xPowerCarry = notes["X"]
+        val newXPower = (if (xPowerCarry == null) x else xPowerCarry * x)
+
+        notes["X"] = newXPower
+
+        val term = -((-BigDecimal.ONE).pow(n).divide(BigDecimal(n), PRECISION) * newXPower)
+
+        return TaylorTerm(term, notes)
+    }
+
+    private fun lnBTE(x: BigDecimal, n: Int, notes: MutableMap<String, BigDecimal>): TaylorTerm {
+        val xPowerCarry = notes["X"]
+        val newXPower = (if (xPowerCarry == null) x else xPowerCarry * x)
+
+        notes["X"] = newXPower
+
+        val term = ((-BigDecimal.ONE).pow(n).divide(BigDecimal(n) * newXPower, PRECISION))
 
         return TaylorTerm(term, notes)
     }
