@@ -162,7 +162,8 @@ fun main(args: Array<String>) {
     /* Test taylor expansion functions */
     assertEquals(BigDecimal(720), BigDecimalMath.factorial(BigDecimal(6)))
     assertEquals(BigDecimal.ZERO, BigDecimalMath.sin(Utility.PI))
-    assertEquals(BigDecimal.ONE, BigDecimalMath.sin(Utility.PI/BigDecimal(2)))
+    assertEquals(BigDecimal.ONE, BigDecimalMath.sin(Utility.PI/ BigDecimal(2)))
     assertEquals(-BigDecimal.ONE, BigDecimalMath.cos(Utility.PI))
+    assertEquals(BigDecimal.ONE, BigDecimalMath.tan(Utility.PI/BigDecimal(4)))
     assertEquals(BigDecimal.ONE, BigDecimalMath.ln(BigDecimal("2.718281828459045235360287471352662497757")))
 }

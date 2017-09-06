@@ -17,7 +17,7 @@ object BigDecimalMath {
     /**
      * This function continues to evaluates terms in the taylor series expansion until a certain precision is attained.
      * @param x The parameter of the function to be expanded
-     * @param term A function that accepts a fixed x and an incrementing n and returns a BigDecimal
+     * @param term A function that accepts a fixed x, an incrementing n and returns a BigDecimal and a notes map that may be used to store values that gets carried over to the next evaluation of the function
      * @param precision The MathContext to be used for comparing results to make sure of the return value's precision
      * @param start An optional parameter that specifies where to start counting up n
      */
@@ -59,8 +59,8 @@ object BigDecimalMath {
         return BigDecimal(factorial(x.toBigInteger()))
     }
 
-    fun sin(x: BigDecimal): BigDecimal {
-        return taylor(x, BigDecimalMath::sinTE, PRECISION, 0).setScale(SCALE, RoundingMode.HALF_UP).stripTrailingZeros()
+    fun sin(x: BigDecimal, scale: Int = SCALE): BigDecimal {
+        return taylor(x, BigDecimalMath::sinTE, PRECISION, 0).setScale(scale, RoundingMode.HALF_UP).stripTrailingZeros()
     }
 
     private fun sinTE(x: BigDecimal, n: Int, notes: MutableMap<String, BigDecimal>): TaylorTerm {
@@ -77,8 +77,16 @@ object BigDecimalMath {
         return TaylorTerm(term, notes)
     }
 
-    fun cos(x: BigDecimal): BigDecimal {
-        return taylor(x, BigDecimalMath::cosTE, PRECISION, 0).setScale(SCALE, RoundingMode.HALF_UP).stripTrailingZeros()
+    fun cos(x: BigDecimal, scale: Int = SCALE): BigDecimal {
+        return taylor(x, BigDecimalMath::cosTE, PRECISION, 0).setScale(scale, RoundingMode.HALF_UP).stripTrailingZeros()
+    }
+
+    fun tan(x: BigDecimal): BigDecimal {
+        return try {
+            (sin(x, SCALE + 1)/cos(x, SCALE + 1)).setScale(SCALE, RoundingMode.HALF_UP).stripTrailingZeros()
+        } catch (e: ArithmeticException) {
+            throw ArithmeticException("tan of multiple of PI/2 is undefined")
+        }
     }
 
     private fun cosTE(x: BigDecimal, n: Int, notes: MutableMap<String, BigDecimal>): TaylorTerm {
