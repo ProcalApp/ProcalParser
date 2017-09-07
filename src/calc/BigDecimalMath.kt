@@ -161,37 +161,24 @@ object BigDecimalMath {
     }
 
     /**
-     * This function accepts a non-negative decimal base and a real decimal power and always returns a real answer
+     * This function accepts a non-negative decimal base and a non-negative decimal power and always returns a real answer
      * @param base A non-negative BigDecimal
-     * @param power A BigDecimal
+     * @param power A non-negative BigDecimal
      * @param precision A MathContext that specifies the number of precision places and rounding method
      * @return base to the power of power
      */
     fun pow(base: BigDecimal, power: BigDecimal, precision: MathContext = PRECISION): BigDecimal {
-        if (base < BigDecimal.ZERO)
-            throw IllegalArgumentException("This power function does not accepts negative base")
+        if (base < BigDecimal.ZERO || power < BigDecimal.ZERO)
+            throw IllegalArgumentException("This power function does not accepts negative arguments")
         if (base.compareTo(BigDecimal.ZERO) == 0 && power.compareTo(BigDecimal.ZERO) == 0)
             throw ArithmeticException("0 to power of 0 is undefined");
 
-        val b = power.abs()
-        val negativePower = power < BigDecimal.ZERO
-
         //Use default power method if power is an integer
-        if (isInt(power)) {
-            return (if (negativePower) {
-                BigDecimal.ONE.divide(base.pow((-power).toInt()), precision)
-            } else {
-                base.pow(power.toInt())
-            }).stripTrailingZeros()
-        }
+        if (isInt(power))
+            return base.pow(power.toInt()).stripTrailingZeros()
 
         //Use custom solution if power if a decimal for a^b = e^(b*ln(a))
-        val magnitude = ePow(b * ln(base, upPrecision(precision, 2)), upPrecision(precision))
-
-        return (if (negativePower) {
-            BigDecimal.ONE.divide(magnitude, precision)
-        } else {
-            magnitude
-        }).round(precision).stripTrailingZeros()
+        return ePow(power * ln(base, upPrecision(precision, 2)), upPrecision(precision))
+                .round(precision).stripTrailingZeros()
     }
 }
