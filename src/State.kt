@@ -1,5 +1,6 @@
 import java.util.*
 import State.SettingValues.*
+import State.Settings.*
 
 object State {
 
@@ -24,5 +25,9 @@ object State {
                 throw IllegalArgumentException("Illegal setting value. $key only accepts ${key.acceptedValues}")
             return super.put(key, value)
         }
+    }
+
+    init {
+        settings[MODE] = COMP
     }
 }
