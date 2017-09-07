@@ -11,6 +11,8 @@ import java.math.RoundingMode
  */
 object Utility {
     val PI = BigDecimal("3.141592653589793238462643383279502884197")
+    val LN10 = BigDecimal("2.30258509299404568401799145468436420760110148862877")
+    val TWO = BigDecimal(2)
 
     val SCALE = Pair(25, RoundingMode.HALF_UP)
 

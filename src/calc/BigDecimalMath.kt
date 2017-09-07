@@ -103,15 +103,23 @@ object BigDecimalMath {
         return TaylorTerm(term, notes)
     }
 
-    fun ln(x: BigDecimal): BigDecimal {
+    fun ln(x: BigDecimal, scale: Int = SCALE): BigDecimal {
         if (x <= BigDecimal.ZERO)
             throw IllegalArgumentException("Ln cannot accept non-positive number")
-        if (x - BigDecimal.ONE <= BigDecimal.ONE)
-            return taylor(x - BigDecimal.ONE, BigDecimalMath::lnATE, PRECISION, 1).setScale(SCALE, RoundingMode.HALF_UP).stripTrailingZeros()
-        return (ln(x - BigDecimal.ONE) - taylor(x - BigDecimal.ONE, BigDecimalMath::lnBTE, PRECISION, 1)).setScale(SCALE, RoundingMode.HALF_UP).stripTrailingZeros()
+        return (if (x <= Utility.TWO) {
+            taylor(x - BigDecimal.ONE, BigDecimalMath::lnTE, PRECISION, 1)
+        } else {
+            var ln10Num = BigDecimal.ZERO
+            var y = x
+            while (y > Utility.TWO) {
+                y = y.divide(BigDecimal.TEN)
+                ln10Num += Utility.LN10
+            }
+            ln(y) + ln10Num
+        }).setScale(scale, RoundingMode.HALF_UP).stripTrailingZeros()
     }
 
-    private fun lnATE(x: BigDecimal, n: Int, notes: MutableMap<String, BigDecimal>): TaylorTerm {
+    private fun lnTE(x: BigDecimal, n: Int, notes: MutableMap<String, BigDecimal>): TaylorTerm {
         val xPowerCarry = notes["X"]
         val newXPower = (if (xPowerCarry == null) x else xPowerCarry * x)
 
@@ -122,14 +130,7 @@ object BigDecimalMath {
         return TaylorTerm(term, notes)
     }
 
-    private fun lnBTE(x: BigDecimal, n: Int, notes: MutableMap<String, BigDecimal>): TaylorTerm {
-        val xPowerCarry = notes["X"]
-        val newXPower = (if (xPowerCarry == null) x else xPowerCarry * x)
-
-        notes["X"] = newXPower
-
-        val term = ((-BigDecimal.ONE).pow(n).divide(BigDecimal(n) * newXPower, PRECISION))
-
-        return TaylorTerm(term, notes)
+    fun log(x: BigDecimal): BigDecimal {
+        return (ln(x, SCALE + 1).divide(ln(BigDecimal(10), SCALE + 1), PRECISION)).setScale(SCALE, RoundingMode.HALF_UP).stripTrailingZeros()
     }
 }
