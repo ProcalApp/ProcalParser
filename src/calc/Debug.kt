@@ -28,7 +28,7 @@ fun main(args: Array<String>) {
     assertEquals(true, BigFrac(1, -2).getNumer().compareTo(BigInteger.ZERO) < 0)
     assertEquals(BigFrac(-1, 2), frac3.negate())
     assertEquals(BigFrac(1, -2), frac3.negate())
-    assertEquals(BigDecimal(0.5), frac3.toDecimal())
+    assertEquals(BigDecimal(0.5), frac3.toRealDecimal())
     val frac4 = BigFrac(5, 1)
     assertEquals(true, frac4.isInt())
     assertEquals(false, frac4.isZero())
@@ -119,7 +119,7 @@ fun main(args: Array<String>) {
     /* The followings are tests of BigRealExact class */
     val pfp1 = BigRealExact.PI
     val pfp2 = (BigRealExact.ONE + BigRealExact.ONE) as BigRealExact
-    /** @fun toDecimal() */
+    /** @fun toRealDecimal() */
     assertEquals("3.1415926535897932384626434", pfp1.toDecimal().toString())
     /** @fun negate() */
     assertEquals("-1 * pi", pfp1.negate().toString())

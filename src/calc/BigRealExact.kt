@@ -25,6 +25,12 @@ class BigRealExact(private val bigFracPwr: BigFracPwr = BigFracPwr.ZERO,
         else bigFracPwr.toDecimal()
     }
 
+    fun evalaute(): BigCmplxDecimal {
+        return if (this.hasPi)
+            (bigFracPwr.evaluate() * BigCmplxDecimal(Utility.PI.setScale(Utility.SCALE))).setScale(Utility.SCALE)
+        else bigFracPwr.evaluate()
+    }
+
     fun negate(): BigRealExact {
         return BigRealExact(this.bigFracPwr.negate(), hasPi)
     }

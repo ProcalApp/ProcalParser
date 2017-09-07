@@ -1,6 +1,11 @@
 package calc
 
+import exceptions.UnfinishedException
+import exceptions.ZeroPowerZeroException
+import org.nevec.rjm.BigDecimalMath
 import java.math.BigDecimal
+import java.math.BigInteger
+import java.math.RoundingMode
 
 /**
  * BigCmplxDecimal class
@@ -61,6 +66,27 @@ class BigCmplxDecimal(real: BigDecimal = BigDecimal.ZERO, imag: BigDecimal = Big
             } else {
                 this.real.stripTrailingZeros().toPlainString() + " + " + this.imag.stripTrailingZeros().toPlainString() + "i"
             }
+        }
+    }
+
+    fun setScale(pair: Pair<Int, RoundingMode>): BigCmplxDecimal {
+        return BigCmplxDecimal(this.real.setScale(pair), this.imag.setScale(pair))
+    }
+
+    fun pow(rhs: BigCmplxDecimal): BigCmplxDecimal {
+        if(this.isReal() && rhs.isReal()) {
+            val rhsFrac = BigFrac(rhs.real)
+            // negative base & even denominator expn
+            if (this.real.compareTo(BigDecimal.ZERO) <= 0 && rhsFrac.getDenom().mod(BigInteger.valueOf(2)) == BigInteger.ZERO) {
+                throw UnfinishedException()
+            } else
+                return BigCmplxDecimal(this.real.pow(rhs.real))
+        } else {
+            val coeff: BigDecimal = BigDecimalMath.pow(this.real * this.real + this.imag * this.imag, rhs.real / BigDecimal(2)) *
+                    BigDecimalMath.pow(Utility.E, -rhs.imag * BigDecimalMath.atan(this.imag / this.real))
+
+
+            throw UnfinishedException()
         }
     }
 

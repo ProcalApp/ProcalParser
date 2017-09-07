@@ -91,16 +91,12 @@ class BigFrac(numer: BigInteger = BigInteger.ZERO,
         return BigFrac(this.numer.pow(expn), this.denom.pow(expn))
     }
 
-    fun toDecimal(): BigDecimal {
-        return try {
-            BigDecimal(this.numer).divide(BigDecimal(this.denom))
-        } catch (e: ArithmeticException) { // for un-ending decimals
-            BigDecimal(this.numer).divide(BigDecimal(this.denom), 25, RoundingMode.HALF_UP)
-        }
+    fun toRealDecimal(): BigDecimal {
+        return BigDecimal(this.numer).divide(BigDecimal(this.denom), Utility.SCALE)
     }
 
     fun evaluate(): BigCmplxDecimal {
-        return BigCmplxDecimal(BigDecimal(this.numer).divide(BigDecimal(this.denom), 25, RoundingMode.HALF_UP))
+        return BigCmplxDecimal(BigDecimal(this.numer).divide(BigDecimal(this.denom), Utility.SCALE))
     }
 
     fun isInt(): Boolean {

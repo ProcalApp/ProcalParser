@@ -11,6 +11,7 @@ import java.math.RoundingMode
  */
 object Utility {
     val PI = BigDecimal("3.141592653589793238462643383279502884197")
+    val E = BigDecimal("2.7182818284590452353602874713527")
 
     val SCALE = Pair(25, RoundingMode.HALF_UP)
 
@@ -40,6 +41,11 @@ object Utility {
 /** Override original BigDecimal.setScale method */
 fun BigDecimal.setScale(pair: Pair<Int, RoundingMode>): BigDecimal {
     return setScale(pair.first, pair.second)
+}
+
+/** Overide original BigDecimal.divide method */
+fun BigDecimal.divide(rhs: BigDecimal, pair: Pair<Int, RoundingMode>): BigDecimal {
+    return this.divide(rhs, pair.first, pair.second)
 }
 
 /** Override original BigDecimalMath .pow() method */

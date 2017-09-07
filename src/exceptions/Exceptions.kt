@@ -26,3 +26,6 @@ class InvalidException(override var message: String = "Should not have reached t
 
 /** Invoked as null BigCmplx is called */
 class NullException(override var message: String = "Attempting to resolve null value.") : RuntimeException()
+
+/** Placed at places with unfinished implementation */
+class UnfinishedException(override var message: String = "Unfinished.") : RuntimeException()

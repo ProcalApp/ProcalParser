@@ -77,9 +77,15 @@ open class BigFracPwr(prop: BigFrac = BigFrac.ONE,
             this(BigFrac(propNumer, propDenom), BigFrac(baseNumer, baseDenom), BigFrac(expnNumer, expnDenom))
 
     fun toDecimal(): BigDecimal {
-        return (prop.toDecimal().setScale(Utility.SCALE) *
-                base.toDecimal().setScale(Utility.SCALE)
-                        .pow(expn.toDecimal().setScale(Utility.SCALE))).setScale(Utility.SCALE)
+        return (prop.toRealDecimal().setScale(Utility.SCALE) *
+                base.toRealDecimal().setScale(Utility.SCALE)
+                        .pow(expn.toRealDecimal().setScale(Utility.SCALE))).setScale(Utility.SCALE)
+    }
+
+    fun evaluate(): BigCmplxDecimal {
+        return (prop.evaluate().setScale(Utility.SCALE) *
+                base.evaluate().setScale(Utility.SCALE)
+                        .pow(expn.evaluate().setScale(Utility.SCALE))).setScale(Utility.SCALE)
     }
 
     fun isZero(): Boolean {
