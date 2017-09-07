@@ -1,17 +1,15 @@
 package calc.math
 
 import api.Utility.fromUnicode
-import org.nevec.rjm.BigDecimalMath
 import java.math.BigDecimal
-import java.math.MathContext
 
 /**
  * Constants
  */
 enum class Constants(var value: BigDecimal, var constantName: String, var unit: String, var display: String) {
-    pi(BigDecimalMath.pi(MathContext(20)),
+    pi(calc.Utility.PI,
             "pi", "-", fromUnicode(0x03C0)),
-    exp(BigDecimalMath.exp(MathContext(20)),
+    exp(calc.Utility.E,
             "Euler's number", "-", fromUnicode(0x2147)),
     m_p(BigDecimal("1.67262171E-27"),
             "Proton mass", "kg", "m" + fromUnicode(0x209A)),
