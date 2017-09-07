@@ -11,8 +11,7 @@ import java.math.RoundingMode
 object BigDecimalMath {
 
     private val TAYLOR_LEAST_TERMS = 4
-    private val SCALE = 20
-    private val PRECISION = MathContext(50, RoundingMode.HALF_UP)
+    private val PRECISION = MathContext(30, RoundingMode.HALF_UP)
 
     /**
      * This function continues to evaluates terms in the taylor series expansion until a certain precision is attained.
@@ -21,7 +20,7 @@ object BigDecimalMath {
      * @param precision The MathContext to be used for comparing results to make sure of the return value's precision
      * @param start An optional parameter that specifies where to start counting up n
      */
-    private fun taylor(x: BigDecimal, term: (x: BigDecimal, n: Int, notes: MutableMap<String, BigDecimal>) -> TaylorTerm, precision: MathContext, start: Int = 0): BigDecimal {
+    private fun taylor(x: BigDecimal, term: (x: BigDecimal, n: Int, notes: MutableMap<String, BigDecimal>, precision: MathContext) -> TaylorTerm, precision: MathContext, start: Int = 0): BigDecimal {
 
         var result = BigDecimal(0)
         var i = start
@@ -29,11 +28,11 @@ object BigDecimalMath {
         var newTerm = TaylorTerm(BigDecimal.ZERO)
 
         while (true) {
-            newTerm = term(x, i++, newTerm.notes)
+            newTerm = term(x, i++, newTerm.notes, upPrecision(precision))
             val newResult = (result + newTerm.term).round(precision)
             count++
             if (count > TAYLOR_LEAST_TERMS && newResult.round(precision) == result.round(precision))
-                return newResult
+                return newResult.round(precision)
             result = newResult
         }
 
@@ -49,6 +48,10 @@ object BigDecimalMath {
         return BigInteger.ONE
     }
 
+    private fun upPrecision(precision: MathContext, n: Int = 1): MathContext {
+        return MathContext(precision.precision + n, RoundingMode.HALF_UP)
+    }
+
     fun isInt(x: BigDecimal): Boolean {
         return x.setScale(0, RoundingMode.HALF_UP) == x
     }
@@ -59,11 +62,11 @@ object BigDecimalMath {
         return BigDecimal(factorial(x.toBigInteger()))
     }
 
-    fun sin(x: BigDecimal, scale: Int = SCALE): BigDecimal {
-        return taylor(x, BigDecimalMath::sinTE, PRECISION, 0).setScale(scale, RoundingMode.HALF_UP).stripTrailingZeros()
+    fun sin(x: BigDecimal, precision: MathContext = PRECISION): BigDecimal {
+        return taylor(x, BigDecimalMath::sinTE, precision, 0).setScale(Utility.SCALE).stripTrailingZeros()
     }
 
-    private fun sinTE(x: BigDecimal, n: Int, notes: MutableMap<String, BigDecimal>): TaylorTerm {
+    private fun sinTE(x: BigDecimal, n: Int, notes: MutableMap<String, BigDecimal>, precision: MathContext): TaylorTerm {
         val xPowerCarry = notes["X"]
 
         notes["X2"] = notes["X2"] ?: x.pow(2)
@@ -72,24 +75,16 @@ object BigDecimalMath {
 
         notes["X"] = newXPower
 
-        val term = ((-BigDecimal.ONE).pow(n).divide(factorial(BigDecimal(2*n+1)), PRECISION) * newXPower)
+        val term = ((-BigDecimal.ONE).pow(n).divide(factorial(BigDecimal(2*n+1)), precision) * newXPower)
 
         return TaylorTerm(term, notes)
     }
 
-    fun cos(x: BigDecimal, scale: Int = SCALE): BigDecimal {
-        return taylor(x, BigDecimalMath::cosTE, PRECISION, 0).setScale(scale, RoundingMode.HALF_UP).stripTrailingZeros()
+    fun cos(x: BigDecimal, precision: MathContext = PRECISION): BigDecimal {
+        return taylor(x, BigDecimalMath::cosTE, precision, 0).setScale(Utility.SCALE).stripTrailingZeros()
     }
 
-    fun tan(x: BigDecimal, scale: Int = SCALE): BigDecimal {
-        return try {
-            (sin(x, scale + 1)/cos(x, scale + 1)).setScale(scale, RoundingMode.HALF_UP).stripTrailingZeros()
-        } catch (e: ArithmeticException) {
-            throw ArithmeticException("tan of multiple of PI/2 is undefined")
-        }
-    }
-
-    private fun cosTE(x: BigDecimal, n: Int, notes: MutableMap<String, BigDecimal>): TaylorTerm {
+    private fun cosTE(x: BigDecimal, n: Int, notes: MutableMap<String, BigDecimal>, precision: MathContext): TaylorTerm {
         val xPowerCarry = notes["X"]
 
         notes["X2"] = notes["X2"] ?: x.pow(2)
@@ -98,16 +93,25 @@ object BigDecimalMath {
 
         notes["X"] = newXPower
 
-        val term = ((-BigDecimal.ONE).pow(n).divide(factorial(BigDecimal(2*n)), PRECISION) * newXPower)
+        val term = ((-BigDecimal.ONE).pow(n).divide(factorial(BigDecimal(2*n)), precision) * newXPower)
 
         return TaylorTerm(term, notes)
     }
 
-    fun ln(x: BigDecimal, scale: Int = SCALE): BigDecimal {
+    fun tan(x: BigDecimal, precision: MathContext = PRECISION): BigDecimal {
+        val highPrecision = upPrecision(precision)
+        return try {
+            (sin(x, highPrecision)/cos(x, highPrecision)).setScale(Utility.SCALE).stripTrailingZeros()
+        } catch (e: ArithmeticException) {
+            throw ArithmeticException("tan of multiple of PI/2 is undefined")
+        }
+    }
+
+    fun ln(x: BigDecimal, precision: MathContext = PRECISION): BigDecimal {
         if (x <= BigDecimal.ZERO)
             throw IllegalArgumentException("Ln cannot accept non-positive number")
         return (if (x <= Utility.TWO) {
-            taylor(x - BigDecimal.ONE, BigDecimalMath::lnTE, PRECISION, 1)
+            taylor(x - BigDecimal.ONE, BigDecimalMath::lnTE, precision, 1)
         } else {
             var ln10Num = BigDecimal.ZERO
             var y = x
@@ -115,30 +119,35 @@ object BigDecimalMath {
                 y = y.divide(BigDecimal.TEN)
                 ln10Num += Utility.LN10
             }
-            ln(y, scale + 1) + ln10Num
-        }).setScale(scale, RoundingMode.HALF_UP).stripTrailingZeros()
+            ln(y, upPrecision(precision)) + ln10Num
+        }).round(precision).stripTrailingZeros()
     }
 
-    private fun lnTE(x: BigDecimal, n: Int, notes: MutableMap<String, BigDecimal>): TaylorTerm {
+    private fun lnTE(x: BigDecimal, n: Int, notes: MutableMap<String, BigDecimal>, precision: MathContext): TaylorTerm {
         val xPowerCarry = notes["X"]
         val newXPower = (if (xPowerCarry == null) x else xPowerCarry * x)
 
         notes["X"] = newXPower
 
-        val term = -((-BigDecimal.ONE).pow(n).divide(BigDecimal(n), PRECISION) * newXPower)
+        val term = -((-BigDecimal.ONE).pow(n).divide(BigDecimal(n), precision) * newXPower)
 
         return TaylorTerm(term, notes)
     }
 
-    fun log(x: BigDecimal, scale: Int = SCALE): BigDecimal {
-        return (ln(x, scale + 1).divide(Utility.LN10, PRECISION)).setScale(scale, RoundingMode.HALF_UP).stripTrailingZeros()
+    fun log(x: BigDecimal, precision: MathContext = PRECISION): BigDecimal {
+        return (ln(x, upPrecision(precision)).divide(Utility.LN10, precision)).round(precision).stripTrailingZeros()
     }
 
-    fun ePow(x: BigDecimal, scale: Int = SCALE): BigDecimal {
-        return taylor(x, BigDecimalMath::ePowTE, PRECISION).setScale(scale, RoundingMode.HALF_UP).stripTrailingZeros()
+    /**
+     *
+     * @param x A BigDecimal
+     * @param precision A MathContext that specifies the number of precision places and rounding method
+     */
+    fun ePow(x: BigDecimal, precision: MathContext = PRECISION): BigDecimal {
+        return taylor(x, BigDecimalMath::ePowTE, precision).stripTrailingZeros()
     }
 
-    private fun ePowTE(x: BigDecimal, n: Int, notes: MutableMap<String, BigDecimal>): TaylorTerm {
+    private fun ePowTE(x: BigDecimal, n: Int, notes: MutableMap<String, BigDecimal>, precision: MathContext): TaylorTerm {
         val k = notes["k"] ?: BigDecimal.ZERO
         val kFac = if (k == BigDecimal.ZERO) BigDecimal.ONE else (notes["kFac"] ?: BigDecimal.ONE) * k
         val xPowerCarry = notes["X"]
@@ -148,10 +157,19 @@ object BigDecimalMath {
         notes["kFac"] = kFac
         notes["X"] = newXPower
 
-        return TaylorTerm(newXPower.divide(kFac, PRECISION), notes)
+        return TaylorTerm(newXPower.divide(kFac, precision), notes)
     }
 
-    fun pow(base: BigDecimal, power: BigDecimal, scale: Int = SCALE): BigDecimal {
+    /**
+     * This function accepts a non-negative decimal base and a real decimal power and always returns a real answer
+     * @param base A non-negative BigDecimal
+     * @param power A BigDecimal
+     * @param precision A MathContext that specifies the number of precision places and rounding method
+     * @return base to the power of power
+     */
+    fun pow(base: BigDecimal, power: BigDecimal, precision: MathContext = PRECISION): BigDecimal {
+        if (base < BigDecimal.ZERO)
+            throw IllegalArgumentException("This power function does not accepts negative base")
         if (base.compareTo(BigDecimal.ZERO) == 0 && power.compareTo(BigDecimal.ZERO) == 0)
             throw ArithmeticException("0 to power of 0 is undefined");
 
@@ -161,19 +179,19 @@ object BigDecimalMath {
         //Use default power method if power is an integer
         if (isInt(power)) {
             return (if (negativePower) {
-                BigDecimal.ONE.divide(base.pow((-power).toInt()), PRECISION)
+                BigDecimal.ONE.divide(base.pow((-power).toInt()), precision)
             } else {
                 base.pow(power.toInt())
-            }).setScale(scale, RoundingMode.HALF_UP).stripTrailingZeros()
+            }).stripTrailingZeros()
         }
 
         //Use custom solution if power if a decimal for a^b = e^(b*ln(a))
-        val magnitude = ePow(b * ln(base, scale + 20), scale + 1)
+        val magnitude = ePow(b * ln(base, upPrecision(precision, 2)), upPrecision(precision))
 
         return (if (negativePower) {
-            BigDecimal.ONE.divide(magnitude, PRECISION)
+            BigDecimal.ONE.divide(magnitude, precision)
         } else {
             magnitude
-        }).setScale(scale+10, RoundingMode.HALF_UP).stripTrailingZeros()
+        }).round(precision).stripTrailingZeros()
     }
 }
