@@ -159,4 +159,18 @@ fun main(args: Array<String>) {
     assertEquals("1.5636886581835561738210269", (r2/r3).toString())
     assertEquals("2.0090909", (r3/r1).toString())
 
+    /* Test taylor expansion functions */
+    println("Testing factorial...")
+    assertEquals(BigDecimal(720), BigDecimalMath.factorial(BigDecimal(6)))
+    println("Testing sin...")
+    assertEquals(BigDecimal.ZERO, BigDecimalMath.sin(Utility.PI))
+    assertEquals(BigDecimal.ONE, BigDecimalMath.sin(Utility.PI/ BigDecimal(2)))
+    println("Testing cos...")
+    assertEquals(-BigDecimal.ONE, BigDecimalMath.cos(Utility.PI))
+    println("Testing tan...")
+    assertEquals(BigDecimal.ONE, BigDecimalMath.tan(Utility.PI/ BigDecimal(4)))
+    println("Testing ln...")
+    assertEquals(BigDecimal.ONE, BigDecimalMath.ln(BigDecimal("2.718281828459045235360287471352662497757")))
+    println("Testing log...")
+    assertEquals(BigDecimal.ONE, BigDecimalMath.log(BigDecimal(10)))
 }
