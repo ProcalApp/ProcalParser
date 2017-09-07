@@ -29,3 +29,6 @@ class NullException(override var message: String = "Attempting to resolve null v
 
 /** Placed at places with unfinished implementation */
 class UnfinishedException(override var message: String = "Unfinished.") : RuntimeException()
+
+/** Invoked when complex numbers are generated in REAL mode */
+class ComplexException(override var message: String = "Cannot have complex number.") : ArithmeticException()

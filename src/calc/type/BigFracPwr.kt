@@ -159,6 +159,18 @@ open class BigFracPwr(prop: BigFrac = BigFrac.ONE,
         return this.negate()
     }
 
+    fun getProp(): BigFrac {
+        return this.prop
+    }
+
+    fun getBase(): BigFrac {
+        return this.base
+    }
+
+    fun getExpn(): BigFrac {
+        return this.expn
+    }
+
     operator fun compareTo(other: BigFracPwr): Int {
         if (this == other) return 0
         val temp = this - other

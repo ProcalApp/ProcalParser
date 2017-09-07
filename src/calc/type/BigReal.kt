@@ -2,8 +2,10 @@ package calc.type
 
 import calc.Utility
 import calc.setScale
+import exceptions.ComplexException
 import exceptions.NullException
 import java.math.BigDecimal
+import java.math.BigInteger
 
 /**
  * BigReal class
@@ -18,7 +20,13 @@ class BigReal {
 
     /** Prefer exact value than decimal value */
     init {
-        if (exact != null) decimal = null
+        if (exact != null) {
+            decimal = null
+
+            /** Tell if current value is complex */
+            if (this.exact!!.getBase().isNeg() && this.exact!!.getExpn().getDenom().mod(BigInteger.valueOf(2)) == BigInteger.ZERO)
+                throw ComplexException()
+        }
 
     }
 

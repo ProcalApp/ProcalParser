@@ -85,6 +85,18 @@ class BigRealExact(private val bigFracPwr: BigFracPwr = BigFracPwr.ZERO,
         return this.bigFracPwr.isFrac() && !this.hasPi
     }
 
+    fun getProp(): BigFrac {
+        return this.bigFracPwr.getProp()
+    }
+
+    fun getBase(): BigFrac {
+        return this.bigFracPwr.getBase()
+    }
+
+    fun getExpn(): BigFrac {
+        return this.bigFracPwr.getExpn()
+    }
+
     override fun toString(): String {
         if (this.bigFracPwr == BigFracPwr.ONE) {
             return "pi"
