@@ -10,11 +10,19 @@ import java.math.RoundingMode
  */
 object BigDecimalMath {
 
+    /**
+     * A constant that specifies the least number of terms to be calculated by [taylor] until checking result precisions to halt evaluation
+     */
     private val TAYLOR_LEAST_TERMS = 4
+    /**
+     * A constant that specifies the precision of rounding in [BigDecimalMath]
+     */
     private val PRECISION = MathContext(30, RoundingMode.HALF_UP)
 
+    
+
     /**
-     * This function continues to evaluates terms in the taylor series expansion until a certain precision is attained.
+     * This function continues to evaluates terms in the Taylor series expansion until a certain precision is attained.
      * @param x The parameter of the function to be expanded
      * @param term A function that accepts a fixed x, an incrementing n and returns a BigDecimal and a notes map that may be used to store values that gets carried over to the next evaluation of the function
      * @param precision The MathContext to be used for comparing results to make sure of the return value's precision
@@ -38,8 +46,17 @@ object BigDecimalMath {
 
     }
 
+    /**
+     * A temporary value container for during Taylor series evaluation
+     * @param term A term in the Taylor series represented in BigDecimal
+     * @param notes A map for saving persistent values during Taylor series evaluation
+     */
     class TaylorTerm(val term: BigDecimal, val notes: MutableMap<String, BigDecimal> = HashMap<String, BigDecimal>())
 
+    /**
+     * Factorial function which accepts a BigInteger.
+     * @param x A BigInteger
+     */
     fun factorial(x: BigInteger): BigInteger {
         if (x < BigInteger.ZERO)
             throw IllegalArgumentException("Factorial cannot accept negative number")
@@ -48,6 +65,16 @@ object BigDecimalMath {
         return BigInteger.ONE
     }
 
+    /**
+     * Factorial function which accepts an integer represented in BigDecimal.
+     * @param x A BigDecimal
+     */
+    fun factorial(x: BigDecimal): BigDecimal {
+        if (!isInt(x))
+            throw IllegalArgumentException("Factorial must have an integer as parameter")
+        return BigDecimal(factorial(x.toBigInteger()))
+    }
+    
     private fun upPrecision(precision: MathContext, n: Int = 1): MathContext {
         return MathContext(precision.precision + n, RoundingMode.HALF_UP)
     }
@@ -56,12 +83,11 @@ object BigDecimalMath {
         return x.setScale(0, RoundingMode.HALF_UP) == x
     }
 
-    fun factorial(x: BigDecimal): BigDecimal {
-        if (!isInt(x))
-            throw IllegalArgumentException("Factorial must have an integer as parameter")
-        return BigDecimal(factorial(x.toBigInteger()))
-    }
-
+    /**
+     * Sine function. Evaluates solely with Taylor series expansion. Output result is scaled by [Utility.SCALE].
+     * @param x A non-negative BigDecimal
+     * @param precision A MathContext that specifies the number of precision places and rounding method
+     */
     fun sin(x: BigDecimal, precision: MathContext = PRECISION): BigDecimal {
         return taylor(x, BigDecimalMath::sinTE, precision, 0).setScale(Utility.SCALE).stripTrailingZeros()
     }
@@ -80,6 +106,11 @@ object BigDecimalMath {
         return TaylorTerm(term, notes)
     }
 
+    /**
+     * Cosine function. Evaluates solely with Taylor series expansion. Output result is scaled by [Utility.SCALE].
+     * @param x A non-negative BigDecimal
+     * @param precision A MathContext that specifies the number of precision places and rounding method
+     */
     fun cos(x: BigDecimal, precision: MathContext = PRECISION): BigDecimal {
         return taylor(x, BigDecimalMath::cosTE, precision, 0).setScale(Utility.SCALE).stripTrailingZeros()
     }
@@ -98,6 +129,11 @@ object BigDecimalMath {
         return TaylorTerm(term, notes)
     }
 
+    /**
+     * Tangent function. Underlying algorithm uses solely Taylor series expansion. Output result is scaled by [Utility.SCALE].
+     * @param x A non-negative BigDecimal
+     * @param precision A MathContext that specifies the number of precision places and rounding method
+     */
     fun tan(x: BigDecimal, precision: MathContext = PRECISION): BigDecimal {
         val highPrecision = upPrecision(precision)
         return try {
@@ -107,6 +143,11 @@ object BigDecimalMath {
         }
     }
 
+    /**
+     * Taylor function implementation of ln x
+     * @param x A non-negative BigDecimal
+     * @param precision A MathContext that specifies the number of precision places and rounding method
+     */
     fun ln(x: BigDecimal, precision: MathContext = PRECISION): BigDecimal {
         if (x <= BigDecimal.ZERO)
             throw IllegalArgumentException("Ln cannot accept non-positive number")
@@ -139,7 +180,7 @@ object BigDecimalMath {
     }
 
     /**
-     *
+     * Taylor function implementation of e^x
      * @param x A BigDecimal
      * @param precision A MathContext that specifies the number of precision places and rounding method
      */
@@ -161,11 +202,11 @@ object BigDecimalMath {
     }
 
     /**
-     * This function accepts a non-negative decimal base and a non-negative decimal power and always returns a real answer
+     * Power function for BigDecimal. Underlying algorithm uses Taylor series expansion which may slow down evaluation.
      * @param base A non-negative BigDecimal
      * @param power A non-negative BigDecimal
      * @param precision A MathContext that specifies the number of precision places and rounding method
-     * @return base to the power of power
+     * @return base^power
      */
     fun pow(base: BigDecimal, power: BigDecimal, precision: MathContext = PRECISION): BigDecimal {
         if (base < BigDecimal.ZERO || power < BigDecimal.ZERO)
