@@ -81,9 +81,9 @@ object BigDecimalMath {
         return taylor(x, BigDecimalMath::cosTE, PRECISION, 0).setScale(scale, RoundingMode.HALF_UP).stripTrailingZeros()
     }
 
-    fun tan(x: BigDecimal): BigDecimal {
+    fun tan(x: BigDecimal, scale: Int = SCALE): BigDecimal {
         return try {
-            (sin(x, SCALE + 1)/cos(x, SCALE + 1)).setScale(SCALE, RoundingMode.HALF_UP).stripTrailingZeros()
+            (sin(x, scale + 1)/cos(x, scale + 1)).setScale(scale, RoundingMode.HALF_UP).stripTrailingZeros()
         } catch (e: ArithmeticException) {
             throw ArithmeticException("tan of multiple of PI/2 is undefined")
         }
@@ -115,7 +115,7 @@ object BigDecimalMath {
                 y = y.divide(BigDecimal.TEN)
                 ln10Num += Utility.LN10
             }
-            ln(y) + ln10Num
+            ln(y, scale + 1) + ln10Num
         }).setScale(scale, RoundingMode.HALF_UP).stripTrailingZeros()
     }
 
@@ -130,7 +130,50 @@ object BigDecimalMath {
         return TaylorTerm(term, notes)
     }
 
-    fun log(x: BigDecimal): BigDecimal {
-        return (ln(x, SCALE + 1).divide(ln(BigDecimal(10), SCALE + 1), PRECISION)).setScale(SCALE, RoundingMode.HALF_UP).stripTrailingZeros()
+    fun log(x: BigDecimal, scale: Int = SCALE): BigDecimal {
+        return (ln(x, scale + 1).divide(Utility.LN10, PRECISION)).setScale(scale, RoundingMode.HALF_UP).stripTrailingZeros()
+    }
+
+    fun ePow(x: BigDecimal, scale: Int = SCALE): BigDecimal {
+        return taylor(x, BigDecimalMath::ePowTE, PRECISION).setScale(scale, RoundingMode.HALF_UP).stripTrailingZeros()
+    }
+
+    private fun ePowTE(x: BigDecimal, n: Int, notes: MutableMap<String, BigDecimal>): TaylorTerm {
+        val k = notes["k"] ?: BigDecimal.ZERO
+        val kFac = if (k == BigDecimal.ZERO) BigDecimal.ONE else (notes["kFac"] ?: BigDecimal.ONE) * k
+        val xPowerCarry = notes["X"]
+        val newXPower = if (xPowerCarry == null) BigDecimal.ONE else xPowerCarry * x
+
+        notes["k"] = k + BigDecimal.ONE
+        notes["kFac"] = kFac
+        notes["X"] = newXPower
+
+        return TaylorTerm(newXPower.divide(kFac, PRECISION), notes)
+    }
+
+    fun pow(base: BigDecimal, power: BigDecimal, scale: Int = SCALE): BigDecimal {
+        if (base.compareTo(BigDecimal.ZERO) == 0 && power.compareTo(BigDecimal.ZERO) == 0)
+            throw ArithmeticException("0 to power of 0 is undefined");
+
+        val b = power.abs()
+        val negativePower = power < BigDecimal.ZERO
+
+        //Use default power method if power is an integer
+        if (isInt(power)) {
+            return (if (negativePower) {
+                BigDecimal.ONE.divide(base.pow((-power).toInt()), PRECISION)
+            } else {
+                base.pow(power.toInt())
+            }).setScale(scale, RoundingMode.HALF_UP).stripTrailingZeros()
+        }
+
+        //Use custom solution if power if a decimal for a^b = e^(b*ln(a))
+        val magnitude = ePow(b * ln(base, scale + 20), scale + 1)
+
+        return (if (negativePower) {
+            BigDecimal.ONE.divide(magnitude, PRECISION)
+        } else {
+            magnitude
+        }).setScale(scale+10, RoundingMode.HALF_UP).stripTrailingZeros()
     }
 }
