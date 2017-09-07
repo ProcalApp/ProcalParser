@@ -131,11 +131,7 @@ class BigFrac(numer: BigInteger = BigInteger.ZERO,
         return when (this.isInt()) {
         /** Rule: Always omit denominator of 1 */
             true -> this.numer.toString()
-            false -> when (this.isNeg()) {
-            /** Rule: Negative sign outside bracket */
-                true -> "-( " + this.numer.negate().toString() + " / " + this.denom.toString() + " )"
-                false -> "( " + this.numer.toString() + " / " + this.denom.toString() + " )"
-            }
+            false -> "( " + this.numer.toString() + " / " + this.denom.toString() + " )"
         }
     }
 

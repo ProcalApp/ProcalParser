@@ -45,7 +45,7 @@ fun main(args: Array<String>) {
     assertTrue { BigFrac(1, -2).isNeg() }
     assertTrue { !BigFrac(0, -2).isNeg() }
 
-    assertEquals("-( 1 / 2 )", BigFrac(2, -4).toString())
+    assertEquals("( -1 / 2 )", BigFrac(2, -4).toString())
 
     assertEquals("( 4507624986057943639 / 5340232221128654848 )", BigFrac(dec = BigDecimal("2.12345678912398732114")).toString())
     assertEquals("( 25 / 9 )", BigFrac(dec = BigDecimal("2.777777777777777777777")).toString())
@@ -160,6 +160,11 @@ fun main(args: Array<String>) {
     assertEquals("6.3117452118341059282768268", (r2*r3).toString())
     assertEquals("1.5636886581835561738210269", (r2/r3).toString())
     assertEquals("2.0090909", (r3/r1).toString())
+    try {
+        val r4 = BigReal(BigRealExact(base = BigFrac(-2, 3), expn = BigFrac(1, 2)))
+    } catch (e: Exception) {
+        assertEquals("exceptions.ComplexException: Cannot have complex number.", e.toString())
+    }
 
     /* Test taylor expansion functions */
     println("Testing factorial...")

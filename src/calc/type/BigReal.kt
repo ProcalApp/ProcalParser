@@ -18,20 +18,11 @@ class BigReal {
     private var exact: BigRealExact? = null
     private var decimal: BigDecimal? = null
 
-    /** Prefer exact value than decimal value */
-    init {
-        if (exact != null) {
-            decimal = null
-
-            /** Tell if current value is complex */
-            if (this.exact!!.getBase().isNeg() && this.exact!!.getExpn().getDenom().mod(BigInteger.valueOf(2)) == BigInteger.ZERO)
-                throw ComplexException()
-        }
-
-    }
-
     constructor(exact: BigRealExact) {
         this.exact = exact; this.decimal = null
+        /** Tell if current value is complex */
+        if (this.exact!!.getBase().isNeg() && this.exact!!.getExpn().getDenom().mod(BigInteger.valueOf(2)) == BigInteger.ZERO)
+            throw ComplexException()
     }
 
     constructor(decimal: BigDecimal) {
