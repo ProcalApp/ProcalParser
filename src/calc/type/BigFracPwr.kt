@@ -1,5 +1,8 @@
-package calc
+package calc.type
 
+import calc.Utility
+import calc.pow
+import calc.setScale
 import exceptions.ZeroPowerZeroException
 import java.math.BigDecimal
 import java.math.BigInteger

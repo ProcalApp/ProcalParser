@@ -1,6 +1,6 @@
 package nodes
 
-import calc.BigCmplx
+import calc.type.BigCmplx
 
 /**
  * Node class interface

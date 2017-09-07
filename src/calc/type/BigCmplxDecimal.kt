@@ -1,7 +1,9 @@
-package calc
+package calc.type
 
+import calc.Utility
+import calc.pow
+import calc.setScale
 import exceptions.UnfinishedException
-import exceptions.ZeroPowerZeroException
 import org.nevec.rjm.BigDecimalMath
 import java.math.BigDecimal
 import java.math.BigInteger

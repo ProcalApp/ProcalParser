@@ -1,5 +1,6 @@
-package calc
+package calc.math
 
+import calc.type.BigFrac
 import java.math.BigDecimal
 import java.math.MathContext
 import java.math.RoundingMode
@@ -21,7 +22,7 @@ object DecToFrac {
         var decimal = dec
         if (decimal.compareTo(BigDecimal.ZERO) != 0) {
             decimal = BigDecimal.ONE.divide(decimal, MathContext(250, RoundingMode.HALF_UP))
-            this.digits.add(decimal.toInt())
+            digits.add(decimal.toInt())
             if (decimal.setScale(ACCURACY, BigDecimal.ROUND_HALF_UP)
                     .compareTo(BigDecimal(decimal.toInt())) != 0) {
                 decimal = decimal.subtract(BigDecimal(decimal.toInt()))
@@ -36,10 +37,10 @@ object DecToFrac {
         var numerator: Long
         var denominator: Long
         if (decimal.scale() >= BRUTE_THRESOLD) { //By brute forcing
-            this.digit = decimal.toInt()
-            if (this.digit != 0) {
-                this.digits.add(0)
-                this.digits.add(digit)
+            digit = decimal.toInt()
+            if (digit != 0) {
+                digits.add(0)
+                digits.add(digit)
                 decimal = decimal.subtract(BigDecimal(digit))
             }
             inversion(decimal)

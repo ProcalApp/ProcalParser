@@ -1,9 +1,6 @@
 package nodes
 
-import calc.BigCmplx
-import calc.BigCmplxExact
-import calc.BigFrac
-import calc.BigRealExact
+import calc.type.BigCmplx
 import org.bychan.core.basic.Lexeme
 import org.bychan.core.basic.Parser
 import java.math.BigDecimal

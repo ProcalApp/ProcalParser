@@ -1,10 +1,12 @@
-package calc
+package calc.type
 
+import calc.math.DecToFrac
+import calc.Utility
+import calc.divide
 import exceptions.DivideByZeroException
 import exceptions.IntegerTooLargeException
 import java.math.BigDecimal
 import java.math.BigInteger
-import java.math.RoundingMode
 
 /**
  * BigFrac Class
@@ -44,6 +46,8 @@ class BigFrac(numer: BigInteger = BigInteger.ZERO,
     constructor(copy: BigFrac) : this(copy.numer, copy.denom)
 
     constructor(dec: BigDecimal) : this(DecToFrac.dectofrac(dec))
+
+    constructor(numer: BigDecimal, denom: BigDecimal) : this(DecToFrac.dectofrac(numer) / DecToFrac.dectofrac(denom))
 
 
     //should not be used since fractions are simplified in constructors

@@ -1,5 +1,5 @@
-import calc.BigCmplx
-import calc.BigCmplxExact
+import calc.type.BigCmplx
+import calc.type.BigCmplxExact
 import exceptions.MissingSeparatorException
 import org.bychan.core.dynamic.Language
 import org.bychan.core.dynamic.LanguageBuilder
@@ -171,7 +171,7 @@ object ProcalParserHelper {
                 .matchesString("Ans")
                 .nud(::AnswerNode)
 
-        val variable = b.newToken().named("variable")
+        val variable = b.newToken().named("type")
                 .matchesPattern("\\$[A-Za-z_][A-Za-z_0-9]*")
                 .nud(::VariableNode)
 

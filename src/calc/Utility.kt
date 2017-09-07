@@ -1,5 +1,6 @@
 package calc
 
+import calc.type.BigFrac
 import exceptions.ZeroPowerZeroException
 import org.nevec.rjm.BigDecimalMath
 import java.math.BigDecimal
@@ -50,7 +51,7 @@ fun BigDecimal.divide(rhs: BigDecimal, pair: Pair<Int, RoundingMode>): BigDecima
     return this.divide(rhs, pair.first, pair.second)
 }
 
-/** Override original BigDecimalMath .pow() method */
+/** Override original Functions .pow() method */
 fun BigDecimal.pow(rhs: BigDecimal): BigDecimal {
     if (this >= BigDecimal.ZERO) {
         if (rhs.compareTo(BigDecimal.ZERO) == 0) {

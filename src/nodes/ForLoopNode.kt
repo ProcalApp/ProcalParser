@@ -3,7 +3,7 @@ package nodes
 import ProcalParserHelper.Tokens
 import ProcalParserHelper.VariableMap
 import ProcalParserHelper.nextMustBeSeparator
-import calc.BigCmplx
+import calc.type.BigCmplx
 import org.bychan.core.basic.Lexeme
 import org.bychan.core.basic.Parser
 

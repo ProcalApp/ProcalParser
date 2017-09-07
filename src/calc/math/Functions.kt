@@ -1,5 +1,7 @@
-package calc
+package calc.math
 
+import calc.Utility
+import calc.setScale
 import java.math.BigDecimal
 import java.math.BigInteger
 import java.math.MathContext
@@ -8,14 +10,14 @@ import java.math.RoundingMode
 /**
  * This object contains necessary methods surrounding calculations involving BigDecimal values.
  */
-object BigDecimalMath {
+object Functions {
 
     /**
      * A constant that specifies the least number of terms to be calculated by [taylor] until checking result precisions to halt evaluation
      */
     private val TAYLOR_LEAST_TERMS = 4
     /**
-     * A constant that specifies the precision of rounding in [BigDecimalMath]
+     * A constant that specifies the precision of rounding in [Functions]
      */
     private val PRECISION = MathContext(30, RoundingMode.HALF_UP)
 
@@ -89,7 +91,7 @@ object BigDecimalMath {
      * @param precision A MathContext that specifies the number of precision places and rounding method
      */
     fun sin(x: BigDecimal, precision: MathContext = PRECISION): BigDecimal {
-        return taylor(x, BigDecimalMath::sinTE, precision, 0).setScale(Utility.SCALE).stripTrailingZeros()
+        return taylor(x, Functions::sinTE, precision, 0).setScale(Utility.SCALE).stripTrailingZeros()
     }
 
     private fun sinTE(x: BigDecimal, n: Int, notes: MutableMap<String, BigDecimal>, precision: MathContext): TaylorTerm {
@@ -101,7 +103,7 @@ object BigDecimalMath {
 
         notes["X"] = newXPower
 
-        val term = ((-BigDecimal.ONE).pow(n).divide(factorial(BigDecimal(2*n+1)), precision) * newXPower)
+        val term = ((-BigDecimal.ONE).pow(n).divide(factorial(BigDecimal(2 * n + 1)), precision) * newXPower)
 
         return TaylorTerm(term, notes)
     }
@@ -112,7 +114,7 @@ object BigDecimalMath {
      * @param precision A MathContext that specifies the number of precision places and rounding method
      */
     fun cos(x: BigDecimal, precision: MathContext = PRECISION): BigDecimal {
-        return taylor(x, BigDecimalMath::cosTE, precision, 0).setScale(Utility.SCALE).stripTrailingZeros()
+        return taylor(x, Functions::cosTE, precision, 0).setScale(Utility.SCALE).stripTrailingZeros()
     }
 
     private fun cosTE(x: BigDecimal, n: Int, notes: MutableMap<String, BigDecimal>, precision: MathContext): TaylorTerm {
@@ -124,7 +126,7 @@ object BigDecimalMath {
 
         notes["X"] = newXPower
 
-        val term = ((-BigDecimal.ONE).pow(n).divide(factorial(BigDecimal(2*n)), precision) * newXPower)
+        val term = ((-BigDecimal.ONE).pow(n).divide(factorial(BigDecimal(2 * n)), precision) * newXPower)
 
         return TaylorTerm(term, notes)
     }
@@ -137,7 +139,7 @@ object BigDecimalMath {
     fun tan(x: BigDecimal, precision: MathContext = PRECISION): BigDecimal {
         val highPrecision = upPrecision(precision)
         return try {
-            (sin(x, highPrecision)/cos(x, highPrecision)).setScale(Utility.SCALE).stripTrailingZeros()
+            (sin(x, highPrecision) / cos(x, highPrecision)).setScale(Utility.SCALE).stripTrailingZeros()
         } catch (e: ArithmeticException) {
             throw ArithmeticException("tan of multiple of PI/2 is undefined")
         }
@@ -152,7 +154,7 @@ object BigDecimalMath {
         if (x <= BigDecimal.ZERO)
             throw IllegalArgumentException("Ln cannot accept non-positive number")
         return (if (x <= Utility.TWO) {
-            taylor(x - BigDecimal.ONE, BigDecimalMath::lnTE, precision, 1)
+            taylor(x - BigDecimal.ONE, Functions::lnTE, precision, 1)
         } else {
             var ln10Num = BigDecimal.ZERO
             var y = x
@@ -185,7 +187,7 @@ object BigDecimalMath {
      * @param precision A MathContext that specifies the number of precision places and rounding method
      */
     fun ePow(x: BigDecimal, precision: MathContext = PRECISION): BigDecimal {
-        return taylor(x, BigDecimalMath::ePowTE, precision).stripTrailingZeros()
+        return taylor(x, Functions::ePowTE, precision).stripTrailingZeros()
     }
 
     private fun ePowTE(x: BigDecimal, n: Int, notes: MutableMap<String, BigDecimal>, precision: MathContext): TaylorTerm {

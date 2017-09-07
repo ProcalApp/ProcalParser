@@ -1,4 +1,4 @@
-package calc
+package calc.type
 
 import exceptions.NullException
 

@@ -1,5 +1,7 @@
-package calc
+package calc.type
 
+import calc.Utility
+import calc.setScale
 import java.math.BigDecimal
 
 /**

@@ -1,7 +1,7 @@
 package nodes
 
-import calc.BigCmplx
-import calc.BigCmplxDecimal
+import calc.type.BigCmplx
+import calc.type.BigCmplxDecimal
 import org.bychan.core.basic.Lexeme
 import org.bychan.core.basic.Parser
 

@@ -1,4 +1,4 @@
-package calc
+package calc.math
 
 import api.Utility.fromUnicode
 import org.nevec.rjm.BigDecimalMath

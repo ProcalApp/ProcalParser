@@ -1,5 +1,7 @@
-package calc
+package calc.type
 
+import calc.Utility
+import calc.setScale
 import exceptions.NullException
 import java.math.BigDecimal
 
@@ -17,6 +19,7 @@ class BigReal {
     /** Prefer exact value than decimal value */
     init {
         if (exact != null) decimal = null
+
     }
 
     constructor(exact: BigRealExact) {

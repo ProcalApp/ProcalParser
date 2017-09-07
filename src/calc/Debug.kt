@@ -1,5 +1,7 @@
 package calc
 
+import calc.math.Functions
+import calc.type.*
 import exceptions.ZeroPowerZeroException
 import java.math.BigDecimal
 import java.math.BigInteger
@@ -161,19 +163,19 @@ fun main(args: Array<String>) {
 
     /* Test taylor expansion functions */
     println("Testing factorial...")
-    assertEquals(BigDecimal(720), BigDecimalMath.factorial(BigDecimal(6)))
+    assertEquals(BigDecimal(720), Functions.factorial(BigDecimal(6)))
     println("Testing sin...")
-    assertEquals(BigDecimal.ZERO, BigDecimalMath.sin(Utility.PI))
-    assertEquals(BigDecimal.ONE, BigDecimalMath.sin(Utility.PI/ BigDecimal(2)))
+    assertEquals(BigDecimal.ZERO, Functions.sin(Utility.PI))
+    assertEquals(BigDecimal.ONE, Functions.sin(Utility.PI/ BigDecimal(2)))
     println("Testing cos...")
-    assertEquals(-BigDecimal.ONE, BigDecimalMath.cos(Utility.PI))
+    assertEquals(-BigDecimal.ONE, Functions.cos(Utility.PI))
     println("Testing tan...")
-    assertEquals(BigDecimal.ONE, BigDecimalMath.tan(Utility.PI/ BigDecimal(4)))
+    assertEquals(BigDecimal.ONE, Functions.tan(Utility.PI/ BigDecimal(4)))
     println("Testing ln...")
-    assertEquals(BigDecimal.ONE, BigDecimalMath.ln(Utility.E))
+    assertEquals(BigDecimal.ONE, Functions.ln(Utility.E))
     println("Testing log...")
-    assertEquals(BigDecimal.ONE, BigDecimalMath.log(BigDecimal(10)))
-    println("Printing out e^1: ${BigDecimalMath.ePow(BigDecimal.ONE)}")
+    assertEquals(BigDecimal.ONE, Functions.log(BigDecimal(10)))
+    println("Printing out e^1: ${Functions.ePow(BigDecimal.ONE)}")
     println("Testing power...")
-    assertEquals(BigDecimal(32), BigDecimalMath.pow(BigDecimal(4), BigDecimal(2.5)))
+    assertEquals(BigDecimal(32), Functions.pow(BigDecimal(4), BigDecimal(2.5)))
 }

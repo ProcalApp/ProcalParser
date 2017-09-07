@@ -2,7 +2,7 @@ package nodes
 
 import ProcalParserHelper.Tokens
 import ProcalParserHelper.VariableMap
-import calc.BigCmplx
+import calc.type.BigCmplx
 import org.bychan.core.basic.Lexeme
 import org.bychan.core.basic.Parser
 
@@ -23,7 +23,7 @@ class AssignmentNode(left: Node?, parser: Parser<Node>, lexeme: Lexeme<Node>) : 
 
     init {
         if (parser.peek().token != Tokens.variable.token)
-            parser.abort<Any>("Invalid assignment RHS. Expected a variable name")
+            parser.abort<Any>("Invalid assignment RHS. Expected a type name")
         this.right = parser.expr(left, lexeme.lbp()) as VariableNode
         this.variableName = right.getName()
     }

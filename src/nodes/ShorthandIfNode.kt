@@ -1,6 +1,6 @@
 package nodes
 
-import calc.BigCmplx
+import calc.type.BigCmplx
 import org.bychan.core.basic.Lexeme
 import org.bychan.core.basic.Parser
 
