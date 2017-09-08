@@ -50,6 +50,7 @@ fun main(args: Array<String>) {
     assertEquals("( 4507624986057943639 / 5340232221128654848 )", BigFrac(dec = BigDecimal("2.12345678912398732114")).toString())
     assertEquals("( 25 / 9 )", BigFrac(dec = BigDecimal("2.777777777777777777777")).toString())
 
+    /* The followings are tests of BigFracPwr */
     /** @test BigFracPwr */
     /** @rule No 0^0 */
     try {
@@ -117,6 +118,12 @@ fun main(args: Array<String>) {
     assertEquals("2 ^ ( 1 / 6 )", (BigFracPwr(base = frac1, expn = frac2) / BigFracPwr(base = frac1, expn = frac1)).toString())
     /** @rule cast to BigDecimal if cannot be simplified */
     assertEquals("1.3747296369986026263834789", (BigFracPwr(base = frac1, expn = frac2) / BigFracPwr(base = frac2, expn = frac1)).toString())
+
+    /** @fun pow() */
+    assertEquals("( 4 / 9 ) ^ ( 3 / 5 )", (BigFracPwr(base = BigFrac(2,3), expn = BigFrac(2,1))
+            .pow(BigFracPwr(base = BigFrac(3,5)))).toString())
+    assertEquals("1.2887880299545085010165860", (BigFracPwr(prop = BigFrac(2,1), base = BigFrac(2,3), expn = BigFrac(2,3))
+            .pow(BigFracPwr(base = BigFrac(3,5)))).toString())
 
     /* The followings are tests of BigRealExact class */
     val pfp1 = BigRealExact.PI

@@ -7,6 +7,7 @@ import exceptions.NullException
  * A container for either BigCmplxExact or BigCmplxDecimal
  */
 /* TODO: Operators implementation */
+/* TODO: Handling negative root multiplication */
 
 class BigCmplx {
     private var exact: BigCmplxExact? = null

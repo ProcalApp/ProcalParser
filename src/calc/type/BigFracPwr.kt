@@ -16,10 +16,7 @@ import java.math.BigInteger
  */
 /* TODO: Roots simplification */
 /* TODO: Rationalization */
-/* TODO: Handling complex cases (probably need BigReal to achieve)
- *    |- Throw exceptions for negative base & fraction expn with even denominator
- *    |- Disallow root multiplication (e.g. sqrt(-2) * sqrt(-2) = -2 not 2)
- */
+
 
 /** Rule: Default value 0 */
 open class BigFracPwr(prop: BigFrac = BigFrac.ONE,
@@ -136,8 +133,12 @@ open class BigFracPwr(prop: BigFrac = BigFrac.ONE,
 
     operator fun times(rhs: BigFracPwr): Any {
         /** Rule: rhs expn == 1 -> multiply with prop */
-        return if (rhs.expn == BigFrac.ONE)
+        return if (rhs.expn == BigFrac.ONE && this.expn != BigFrac.ONE)
             BigFracPwr(this.prop * rhs.base, this.base, this.expn)
+        else if (this.expn == BigFrac.ONE && rhs.expn != BigFrac.ONE)
+            BigFracPwr(this.base * rhs.prop, rhs.base, rhs.expn)
+        else if (this.expn == BigFrac.ONE && rhs.expn == BigFrac.ONE)
+            BigFracPwr(base = this.base * rhs.base)
         /** Rule: same base -> indices law */
         else if (this.base == rhs.base)
             BigFracPwr(this.prop * rhs.prop, this.base, this.expn + rhs.expn)
@@ -153,6 +154,14 @@ open class BigFracPwr(prop: BigFrac = BigFrac.ONE,
 
     operator fun div(rhs: BigFracPwr): Any {
         return this * rhs.inverse()
+    }
+
+    //TODO: Allow complex decimal outputs when in CMPLX mode
+    fun pow(rhs: BigFracPwr): Any {
+        return if (rhs.isFrac())
+            BigFracPwr(base = this.prop, expn = rhs.base) * BigFracPwr(base = this.base, expn = this.expn * rhs.base)
+        else
+            this.toDecimal().pow(rhs.toDecimal())
     }
 
     operator fun unaryMinus(): BigFracPwr {
