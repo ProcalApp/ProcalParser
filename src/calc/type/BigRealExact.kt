@@ -1,7 +1,9 @@
 package calc.type
 
 import calc.Utility
+import calc.pow
 import calc.setScale
+import exceptions.ZeroPowerZeroException
 import java.math.BigDecimal
 
 /**
@@ -71,6 +73,29 @@ class BigRealExact(private val bigFracPwr: BigFracPwr = BigFracPwr.ZERO,
         } else {
             return (this.toDecimal() / rhs.toDecimal()).setScale(Utility.SCALE)
         }
+    }
+
+    fun pow(rhs: BigRealExact): Any {
+        if (rhs == ONE)
+            return this
+        else if (this == ONE)
+            return ONE
+        else if (this == ZERO && rhs == ZERO)
+            return ZeroPowerZeroException()
+        else if (this == ZERO)
+            return ZERO
+        else if (rhs == ZERO)
+            return ONE
+        else
+            /** Rule: both do not have pi may try exact pow */
+            if (!this.hasPi && !rhs.hasPi) {
+                val temp = this.pow(rhs)
+                if (temp is BigFracPwr) {
+                    return BigRealExact(bigFracPwr = temp)
+                } else
+                    return this.toDecimal().pow(rhs.toDecimal())
+            } else
+                return this.toDecimal().pow(rhs.toDecimal())
     }
 
     fun isZero(): Boolean {

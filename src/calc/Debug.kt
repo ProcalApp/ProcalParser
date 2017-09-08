@@ -145,6 +145,9 @@ fun main(args: Array<String>) {
     assertEquals("pi", (pfp1 / pfp1).toString())
     assertEquals("( 1 / 2 ) * pi", (pfp1 / pfp2).toString())
     assertEquals("0.6366197723675813430755351", (pfp2 / pfp1).toString())
+    /** @fun pow() */
+    assertEquals("9.869604401089358618834492", pfp1.pow(pfp2).toString())
+    assertEquals("pi", pfp1.pow(BigRealExact.ONE))
 
     /* The followings are tests of BigCmplxDecimal class */
     val cd1 = BigCmplxDecimal("2", "3")
