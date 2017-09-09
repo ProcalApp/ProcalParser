@@ -14,7 +14,7 @@ import java.math.BigInteger
  * Domain: Real
  */
 
-class BigReal {
+class BigReal : BigValue{
     private var exact: BigRealExact? = null
     private var decimal: BigDecimal? = null
 
