@@ -29,7 +29,7 @@ class BigReal : BigValue{
         this.decimal = decimal; this.exact = null
     }
 
-    fun negate(): BigReal {
+    override fun negate(): BigReal {
         return if (this.exact != null)
             BigReal(this.exact!!.negate())
         else BigReal(this.decimal!!.negate())

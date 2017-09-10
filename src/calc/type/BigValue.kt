@@ -1,9 +1,11 @@
 package calc.type
 
 /**
- * Empty inteface for BigReal and BigCmplx
+ * Empty interface for BigReal and BigCmplx
  */
 
-open interface BigValue{
+interface BigValue {
+
+    fun negate(): BigValue
 
 }
