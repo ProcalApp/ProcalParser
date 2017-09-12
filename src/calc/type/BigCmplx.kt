@@ -1,5 +1,7 @@
 package calc.type
 
+import exceptions.ComplexNumberComparisonException
+import exceptions.IllegalOperationException
 import exceptions.NullException
 
 /**
@@ -9,14 +11,9 @@ import exceptions.NullException
 /* TODO: Operators implementation */
 /* TODO: Handling negative root multiplication */
 
-class BigCmplx {
+class BigCmplx: BigValue {
     private var exact: BigCmplxExact? = null
     private var decimal: BigCmplxDecimal? = null
-
-    /** Prefer exact value than decimal value */
-    init {
-        if (exact != null) decimal = null
-    }
 
     constructor(exact: BigCmplxExact) {
         this.exact = exact; this.decimal = null
@@ -34,8 +31,18 @@ class BigCmplx {
         return this.exact?.evaluate() ?: this.decimal ?: throw NullException()
     }
 
-    operator fun plus(rhs: BigCmplx): BigCmplx {
-        return ZERO
+    //Operations
+
+    override fun negate(): BigCmplx {
+        TODO("not implemented")
+    }
+
+    override operator fun plus(rhs: BigCmplx): BigCmplx {
+        TODO("not implemented")
+    }
+
+    override operator fun plus(rhs: BigReal): BigCmplx {
+        TODO("not implemented")
     }
 
     operator fun minus(rhs: BigCmplx): BigCmplx {
@@ -50,10 +57,23 @@ class BigCmplx {
         return ZERO
     }
 
+    override fun compareTo(rhs: BigReal): Int {
+        throw ComplexNumberComparisonException()
+    }
+
+    override fun compareTo(rhs: BigCmplx): Int {
+        throw ComplexNumberComparisonException()
+    }
+
     companion object {
         val ONE = BigCmplx(BigCmplxExact.ONE)
         val ZERO = BigCmplx(BigCmplxExact.ZERO)
         val PI = BigCmplx(BigCmplxExact.PI)
         val I = BigCmplx(BigCmplxExact.I)
+    }
+
+    /** Prefer exact value than decimal value */
+    init {
+        if (exact != null) decimal = null
     }
 }

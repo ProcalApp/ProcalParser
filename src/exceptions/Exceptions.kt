@@ -32,3 +32,8 @@ class UnfinishedException(override var message: String = "Unfinished.") : Runtim
 
 /** Invoked when complex numbers are generated in REAL mode */
 class ComplexException(override var message: String = "Cannot have complex number.") : ArithmeticException()
+
+/** When a math unit does not support a certain mathematics or logical operation*/
+open class IllegalOperationException(override var message: String = "Operation not available to this math unit."): RuntimeException()
+
+class ComplexNumberComparisonException(override var message: String = "Comparing with complex numbers is meaningless."): IllegalOperationException()

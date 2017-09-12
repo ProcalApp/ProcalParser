@@ -2,6 +2,7 @@ package calc.type
 
 import calc.Utility
 import calc.setScale
+import exceptions.ComplexNumberComparisonException
 import exceptions.ComplexException
 import exceptions.NullException
 import java.math.BigDecimal
@@ -46,8 +47,10 @@ class BigReal : BigValue{
     fun hasExact(): Boolean {
         return this.exact != null
     }
+    
+    //Operators
 
-    operator fun plus(rhs: BigReal): BigReal {
+    override operator fun plus(rhs: BigReal): BigReal {
         return if (this.exact != null && rhs.exact != null){
             val temp = this.exact as BigRealExact + rhs.exact as BigRealExact
             if (temp is BigRealExact)
@@ -57,6 +60,10 @@ class BigReal : BigValue{
         } else {
             BigReal(this.getDec() + rhs.getDec())
         }
+    }
+
+    override operator fun plus(rhs: BigCmplx): BigCmplx {
+        TODO("not implemented")
     }
 
     operator fun minus(rhs: BigReal): BigReal {
@@ -93,6 +100,14 @@ class BigReal : BigValue{
         } else {
             BigReal((this.getDec() / rhs.getDec()).setScale(Utility.SCALE))
         }
+    }
+
+    override fun compareTo(rhs: BigReal): Int {
+        TODO("not implemented")
+    }
+
+    override fun compareTo(rhs: BigCmplx): Int {
+        throw ComplexNumberComparisonException()
     }
 
     companion object {
